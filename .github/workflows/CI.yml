@@ -42,12 +42,14 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-      
-    - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@49e6cd3b187936a73b8280d59ffd9da69df63ec9
+
+    - name: Build and analyze with Sonar
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn verify sonar:sonar \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.organization=${{SONAR_ORGANIZATION}} \
+          -Dsonar.projectKey=${{SONAR_PROJECT}}
           
     - name: Add coverage to PR
       id: jacoco
