@@ -47,7 +47,7 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: mvn clean verify sonar:sonar \
-          -Dsonar.token=$SONAR_TOKEN
+          -Dsonar.token=$SONAR_TOKEN \
           -Dsonar.host.url=https://sonarcloud.io \
           -Dsonar.organization=${{secrets.SONAR_ORGANIZATION}} \
           -Dsonar.projectKey=${{secrets.SONAR_PROJECT}}
