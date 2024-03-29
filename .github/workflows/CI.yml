@@ -46,10 +46,7 @@ jobs:
     - name: Analyze with Sonar
       env:
         SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
-      run: mvn verify sonar:sonar \
-        -D sonar.host.url=https://sonarcloud.io \
-        -D sonar.organization=${{secrets.SONAR_ORGANIZATION}} \
-        -D sonar.projectKey=${{secrets.SONAR_PROJECT}}
+      run: mvn verify sonar:sonar \ -D sonar.host.url=https://sonarcloud.io \ -D sonar.organization=${{secrets.SONAR_ORGANIZATION}} \ -D sonar.projectKey=${{secrets.SONAR_PROJECT}}
           
     - name: Add coverage to PR
       id: jacoco
