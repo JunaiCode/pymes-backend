@@ -14,6 +14,7 @@ public class Version {
 
     @Id
     private String versionId;
+    private String name;
     private Level[] levels;
     private Dimension[] dimensions;
 }
