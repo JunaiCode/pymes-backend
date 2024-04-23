@@ -7,6 +7,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.List;
+
 @Data
 @Document
 @AllArgsConstructor
@@ -19,8 +21,8 @@ public class Question {
     private QuestionType questionType;
     private Double weight;
     private int scorePositive;
-    private Option[] options;
-    private String[] recommendations;
+    private List<Option> options;
+    private List<String> recommendations;
     private String versionId;
     private String dimensionId;
     private String tagId;

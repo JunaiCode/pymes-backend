@@ -1,6 +1,7 @@
 package com.pdg.pymesbackend.service;
 
 import com.pdg.pymesbackend.dto.ModelDTO;
+import com.pdg.pymesbackend.dto.VersionDTO;
 import com.pdg.pymesbackend.model.Model;
 import com.pdg.pymesbackend.model.Version;
 
@@ -15,4 +16,6 @@ public interface ModelService {
     Model findById(String id);
 
     List<Version> findVersionsByModelId(String modelId);
+
+    Model addVersion(String modelId, VersionDTO version);
 }
