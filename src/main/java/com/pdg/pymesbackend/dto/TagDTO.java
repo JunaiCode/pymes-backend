@@ -1,19 +1,20 @@
-package com.pdg.pymesbackend.model;
+package com.pdg.pymesbackend.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Document
 @AllArgsConstructor
 @NoArgsConstructor
-public class Tag {
-    @Id
-    private String tagId;
+@Builder
+public class TagDTO {
+
+    @NotBlank
     private String name;
     private String description;
+    @NotBlank
     private String dimensionId;
 }

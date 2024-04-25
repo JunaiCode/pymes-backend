@@ -11,6 +11,7 @@ import com.pdg.pymesbackend.repository.VersionRepository;
 import com.pdg.pymesbackend.service.ModelService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +23,10 @@ public class ModelServiceImpl implements ModelService {
 
     private ModelRepository modelRepository;
     private VersionRepository versionRepository;
-    private VersionMapper  versionMapper;
+    private VersionServiceImpl versionService;
     private ModelMapper modelMapper;
 
+    @Transactional
     @Override
     public Model save(ModelDTO model) {
 
@@ -56,15 +58,13 @@ public class ModelServiceImpl implements ModelService {
         }
     }
 
+    @Transactional
     @Override
     public Model addVersion(String modelId, VersionDTO version) {
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new RuntimeException("Model not found"));
 
-        //Refactor this using version service
-        Version newVersion = versionMapper.fromDTO(version);
-        newVersion.setVersionId(UUID.randomUUID().toString());
-        Version saved = versionRepository.save(newVersion);
+        Version saved = versionService.save(version);
         List<String> updatedVersions = new ArrayList<>(model.getVersions());
         updatedVersions.add(saved.getVersionId());
         model.setVersions(updatedVersions);
