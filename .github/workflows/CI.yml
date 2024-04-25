@@ -2,7 +2,6 @@ name: CI
 on:
   pull_request:
     branches: [ "production", "develop" ]
-
 jobs:
   build:
     env:
@@ -21,12 +20,6 @@ jobs:
         env:
           MONGO_INITDB_ROOT_USERNAME: mongo
           MONGO_INITDB_ROOT_PASSWORD: mongodbpwd
-          
-        # Set health checks to wait until mongo has started
-        options: >-
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
         ports:
           # Maps tcp port 27017 on service container to the host
           - 27017:27017
