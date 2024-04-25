@@ -29,7 +29,7 @@ jobs:
           --health-retries 5
         ports:
           # Maps tcp port 27017 on service container to the host
-          - ${{env.DATABASE_PORT}}:${{env.DATABASE_PORT}}
+          - 27017:27017
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 17
