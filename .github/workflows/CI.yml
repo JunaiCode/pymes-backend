@@ -1,37 +1,28 @@
 name: CI
 on:
-  push:
-    branches: [ "production","develop" ]
   pull_request:
     branches: [ "production", "develop" ]
-
 jobs:
   build:
     env:
-      DATABASE_URL: localhost:5432/
-      DATABASE_USER: postgres
-      DATABASE_PASSWORD: postgres
+      DATABASE_HOST: localhost
+      DATABASE_PORT: 27017
+      DATABASE_USER: mongo
+      DATABASE_PASSWORD: mongodbpwd
     runs-on: ubuntu-latest
      # Service containers to run with `runner-job`
     services:
       # Label used to access the service container
-      postgres:
+      mongo:
         # Docker Hub image
-        image: postgres
-        # Provide the password for postgres
+        image: mongo:latest
+        # Provide the password for mongo
         env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-          
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          MONGO_INITDB_ROOT_USERNAME: mongo
+          MONGO_INITDB_ROOT_PASSWORD: mongodbpwd
         ports:
-          # Maps tcp port 5432 on service container to the host
-          - 5432:5432
+          # Maps tcp port 27017 on service container to the host
+          - 27017:27017
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 17
