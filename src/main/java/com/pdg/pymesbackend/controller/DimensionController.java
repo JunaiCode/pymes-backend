@@ -5,9 +5,11 @@ import com.pdg.pymesbackend.dto.DimensionDTO;
 import com.pdg.pymesbackend.model.Dimension;
 import com.pdg.pymesbackend.service.DimensionService;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin
 @AllArgsConstructor
 public class DimensionController implements DimensionAPI {
     private final DimensionService dimensionService;

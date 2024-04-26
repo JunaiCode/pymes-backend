@@ -1,6 +1,5 @@
 package com.pdg.pymesbackend.repository;
 
-import com.pdg.pymesbackend.model.Option;
 import com.pdg.pymesbackend.model.Tag;
 import org.springframework.data.mongodb.repository.MongoRepository;
 

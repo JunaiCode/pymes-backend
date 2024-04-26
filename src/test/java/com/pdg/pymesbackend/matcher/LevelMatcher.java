@@ -6,7 +6,7 @@ import org.mockito.ArgumentMatcher;
 
 public class LevelMatcher implements ArgumentMatcher<Level> {
 
-    private Level leftLevel;
+    private final Level leftLevel;
 
     public LevelMatcher(Level level) {
         leftLevel = level;
