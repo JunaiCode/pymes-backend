@@ -31,6 +31,7 @@ public class ModelServiceImpl implements ModelService {
 
         Model newModel = modelMapper.fromCreateDTO(model);
         newModel.setModelId(UUID.randomUUID().toString());
+        newModel.setVersions(new ArrayList<>());
         return modelRepository.save(newModel);
     }
 
