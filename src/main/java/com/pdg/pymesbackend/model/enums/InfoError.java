@@ -10,8 +10,8 @@ public enum InfoError {
     ARGUMENT_NOT_VALID("PR-04", "Error body request"),
     CONSTRAIN_VIOLATION("PR-05", "It was not possible to process this request");
 
-    private String code;
-    private String message;
+    private final String code;
+    private final String message;
 
     InfoError(String code, String message) {
         this.code = code;

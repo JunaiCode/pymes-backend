@@ -37,8 +37,6 @@ public class ModelServiceTest {
     private VersionServiceImpl versionService;
     @Spy
     private ModelMapper modelMapper;
-    @Spy
-    private VersionMapper versionMapper;
     @InjectMocks
     private ModelServiceImpl modelService;
 
