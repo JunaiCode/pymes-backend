@@ -1,6 +1,6 @@
 package com.pdg.pymesbackend.error;
 
-import com.pdg.pymesbackend.model.enums.InfoError;
+import com.pdg.pymesbackend.enums.InfoError;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

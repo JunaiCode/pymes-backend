@@ -1,4 +1,4 @@
-package com.pdg.pymesbackend.model.enums;
+package com.pdg.pymesbackend.enums;
 
 public enum QuestionType {
     MULTIPLE_CHOICE,
