@@ -29,7 +29,7 @@ public class VersionServiceTest {
     @Test
     void testCreateVersion() {
         when(versionMapper.fromDTO(createVersionDTO())).thenReturn(createVersion());
-        Version version = versionService.save(createVersionDTO());
+        versionService.save(createVersionDTO());
         Version version1 = createVersion();
         verify(versionRepository, times(1)).save(argThat(new VersionMatcher(version1)));
     }

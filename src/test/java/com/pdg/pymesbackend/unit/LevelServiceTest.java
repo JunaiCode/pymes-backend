@@ -30,7 +30,7 @@ public class LevelServiceTest {
     void testCreateLevel() {
 
         when(levelMapper.fromLevelDTO(createLevelDTO())).thenReturn(createLevel());
-        Level level = levelService.save(createLevelDTO());
+        levelService.save(createLevelDTO());
         Level level1 = createLevel();
         verify(levelRepository, times(1)).save(argThat(new LevelMatcher(level1)));
 

@@ -5,7 +5,7 @@ import org.mockito.ArgumentMatcher;
 
 public class TagMatcher implements ArgumentMatcher<Tag> {
 
-    private Tag left;
+    private final Tag left;
 
     public TagMatcher(Tag left) {
         this.left = left;

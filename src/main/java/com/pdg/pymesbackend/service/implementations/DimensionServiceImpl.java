@@ -8,7 +8,6 @@ import com.pdg.pymesbackend.model.Dimension;
 import com.pdg.pymesbackend.repository.DimensionRepository;
 import com.pdg.pymesbackend.service.DimensionService;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

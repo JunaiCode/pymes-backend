@@ -37,7 +37,7 @@ public class TagServiceTest {
     public void testCreateTag() {
         when(tagMapper.fromDTO(createTagDTO())).thenReturn(createTag());
         when(tagRepository.findByNameAndDimensionId("Tag 1", "1")).thenReturn(Optional.empty());
-        Tag tag = tagService.save(createTagDTO());
+        tagService.save(createTagDTO());
         Tag tag1 = createTag();
         verify(tagRepository, times(1)).save(argThat(new TagMatcher(tag1)));
     }
@@ -58,7 +58,7 @@ public class TagServiceTest {
     public void testUpdateTag() {
         when(tagRepository.findById("1")).thenReturn(Optional.of(createTag()));
         when(tagRepository.findByNameAndDimensionId("Tag 1", "1")).thenReturn(Optional.empty());
-        Tag tag = tagService.update("1", createTagDTO());
+        tagService.update("1", createTagDTO());
         Tag tag1 = createTag();
         verify(tagRepository, times(1)).save(argThat(new TagMatcher(tag1)));
     }

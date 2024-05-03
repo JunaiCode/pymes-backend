@@ -33,7 +33,7 @@ public class DimensionServiceTest {
     @Test
     public void testCreateDimension() {
         when(dimensionMapper.fromCreateDTO(createDimensionDTO())).thenReturn(createDimension());
-        Dimension dimension = dimensionService.save(createDimensionDTO());
+        dimensionService.save(createDimensionDTO());
         Dimension dimension1 = createDimension();
         verify(dimensionRepository, times(1)).save(argThat(new DimensionMatcher(dimension1)));
 
@@ -55,7 +55,7 @@ public class DimensionServiceTest {
     void testUpdateDimension() {
         when(dimensionRepository.findById("1")).thenReturn(Optional.of(createDimension()));
         when(dimensionRepository.findByName("Dimension Gente")).thenReturn(Optional.empty());
-        Dimension dimension = dimensionService.update("1", createDimensionDTO2());
+        dimensionService.update("1", createDimensionDTO2());
         Dimension dimension1 = createDimension2();
         verify(dimensionRepository, times(1)).save(argThat(new DimensionMatcher(dimension1)));
     }
