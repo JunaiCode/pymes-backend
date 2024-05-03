@@ -27,7 +27,7 @@ public class LevelServiceTest {
     private LevelServiceImpl levelService;
 
     @Test
-    public void testCreateLevel() {
+    void testCreateLevel() {
 
         when(levelMapper.fromLevelDTO(createLevelDTO())).thenReturn(createLevel());
         Level level = levelService.save(createLevelDTO());
@@ -36,7 +36,7 @@ public class LevelServiceTest {
 
     }
 
-    private Level createLevel() {
+    Level createLevel() {
         return Level.builder()
                 .levelId("1")
                 .name("Level 1")
@@ -46,7 +46,7 @@ public class LevelServiceTest {
                 .build();
     }
 
-    private LevelDTO createLevelDTO() {
+    LevelDTO createLevelDTO() {
         return LevelDTO.builder()
                 .name("Level 1")
                 .description("Level 1 description")

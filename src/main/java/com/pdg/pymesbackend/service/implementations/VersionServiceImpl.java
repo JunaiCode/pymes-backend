@@ -19,7 +19,6 @@ public class VersionServiceImpl implements VersionService {
     @Override
     public Version save(VersionDTO version) {
         Version newVersion = versionMapper.fromDTO(version);
-
         versionRepository.findByName(newVersion.getName())
                 .ifPresent(existingVersion -> {
                     throw new PymeException(PymeExceptionType.VERSION_ALREADY_EXISTS);

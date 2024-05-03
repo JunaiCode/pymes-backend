@@ -6,6 +6,7 @@ import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.TagMapper;
 import com.pdg.pymesbackend.model.Tag;
 import com.pdg.pymesbackend.repository.TagRepository;
+import com.pdg.pymesbackend.service.DimensionService;
 import com.pdg.pymesbackend.service.TagService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,12 +19,15 @@ public class TagServiceImpl implements TagService {
 
     private TagMapper tagMapper;
     private TagRepository tagRepository;
+    private DimensionService dimensionService;
 
     @Override
     public Tag save(TagDTO tag) {
         Tag newTag = tagMapper.fromDTO(tag);
-        tagRepository.findByNameAndDimensionId(tag.getName(), tag.getDimensionId()).orElseThrow(
-                () -> new PymeException(PymeExceptionType.TAG_ALREADY_EXISTS)
+        tagRepository.findByNameAndDimensionId(tag.getName(), tag.getDimensionId()).ifPresent(
+                existingTag -> {
+                    throw new PymeException(PymeExceptionType.TAG_ALREADY_EXISTS);
+                }
         );
         return tagRepository.save(newTag);
     }
@@ -43,13 +47,16 @@ public class TagServiceImpl implements TagService {
     }
 
     private void findByNameAndDimensionId(String name, String dimensionId) {
-        tagRepository.findByNameAndDimensionId(name, dimensionId).orElseThrow(
-                () -> new PymeException(PymeExceptionType.TAG_NOT_FOUND)
+        tagRepository.findByNameAndDimensionId(name, dimensionId).ifPresent(
+                existingTag -> {
+                    throw new PymeException(PymeExceptionType.TAG_ALREADY_EXISTS);
+                }
         );
     }
 
     @Override
     public List<Tag> dimensionTags(String dimensionId) {
+        dimensionService.get(dimensionId);
         return tagRepository.findByDimensionId(dimensionId);
     }
 }

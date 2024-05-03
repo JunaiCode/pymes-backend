@@ -13,7 +13,6 @@ import java.util.List;
 @Document
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class Version {
 
     @Id

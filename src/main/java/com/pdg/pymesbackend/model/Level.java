@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class Level {
 
     @Id

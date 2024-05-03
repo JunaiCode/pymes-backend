@@ -12,7 +12,6 @@ import java.util.List;
 @Data
 @Document
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 public class Model {
     @Id
