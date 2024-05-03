@@ -10,6 +10,7 @@ import com.pdg.pymesbackend.model.Version;
 import com.pdg.pymesbackend.repository.ModelRepository;
 import com.pdg.pymesbackend.repository.VersionRepository;
 import com.pdg.pymesbackend.service.implementations.ModelServiceImpl;
+import com.pdg.pymesbackend.service.implementations.VersionServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,6 +32,9 @@ public class ModelServiceTest {
 
     @Mock
     private VersionRepository versionRepository;
+
+    @Mock
+    private VersionServiceImpl versionService;
     @Spy
     private ModelMapper modelMapper;
     @Spy
@@ -79,7 +83,7 @@ public class ModelServiceTest {
         when(modelRepository.findById("1")).thenReturn(java.util.Optional.empty());
         try {
             modelService.findById("1");
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             assertEquals("Model not found", e.getMessage());
         }
     }
@@ -102,8 +106,7 @@ public class ModelServiceTest {
     @Test
     public void testAddVersion() {
         when(modelRepository.findById("1")).thenReturn(java.util.Optional.of(defaultModelCreate()));
-        when(versionMapper.fromDTO(createVersionDTO())).thenReturn(createVersion());
-        when(versionRepository.save(any())).thenReturn(createVersion());
+        when(versionService.save(createVersionDTO())).thenReturn(createVersion());
         Model model = modelService.addVersion("1", createVersionDTO());
         Model model1 = defaultModelCreate2();
         verify(modelRepository, times(1)).save(argThat(new ModelMatcher(model1)));
@@ -114,7 +117,7 @@ public class ModelServiceTest {
         when(modelRepository.findById("1")).thenReturn(java.util.Optional.empty());
         try {
             modelService.addVersion("1", createVersionDTO());
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             assertEquals("Model not found", e.getMessage());
         }
     }

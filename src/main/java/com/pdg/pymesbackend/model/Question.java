@@ -1,5 +1,6 @@
 package com.pdg.pymesbackend.model;
 
+import com.pdg.pymesbackend.model.enums.QuestionType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

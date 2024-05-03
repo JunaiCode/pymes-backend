@@ -2,6 +2,8 @@ package com.pdg.pymesbackend.service.implementations;
 
 import com.pdg.pymesbackend.dto.ModelDTO;
 import com.pdg.pymesbackend.dto.VersionDTO;
+import com.pdg.pymesbackend.error.PymeException;
+import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.ModelMapper;
 import com.pdg.pymesbackend.model.Model;
 import com.pdg.pymesbackend.model.Version;
@@ -62,7 +64,7 @@ public class ModelServiceImpl implements ModelService {
     @Override
     public Model addVersion(String modelId, VersionDTO version) {
         Model model = modelRepository.findById(modelId)
-                .orElseThrow(() -> new RuntimeException("Model not found"));
+                .orElseThrow(() -> new PymeException(PymeExceptionType.MODEL_NOT_FOUND));
 
         Version saved = versionService.save(version);
         List<String> updatedVersions = new ArrayList<>(model.getVersions());

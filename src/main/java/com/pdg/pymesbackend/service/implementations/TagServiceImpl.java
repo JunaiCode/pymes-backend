@@ -1,6 +1,8 @@
 package com.pdg.pymesbackend.service.implementations;
 
 import com.pdg.pymesbackend.dto.TagDTO;
+import com.pdg.pymesbackend.error.PymeException;
+import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.TagMapper;
 import com.pdg.pymesbackend.model.Tag;
 import com.pdg.pymesbackend.repository.TagRepository;
@@ -20,7 +22,9 @@ public class TagServiceImpl implements TagService {
     @Override
     public Tag save(TagDTO tag) {
         Tag newTag = tagMapper.fromDTO(tag);
-        findByNameAndDimensionId(newTag.getName(), newTag.getDimensionId());
+        tagRepository.findByNameAndDimensionId(tag.getName(), tag.getDimensionId()).orElseThrow(
+                () -> new PymeException(PymeExceptionType.TAG_ALREADY_EXISTS)
+        );
         return tagRepository.save(newTag);
     }
 
@@ -28,12 +32,9 @@ public class TagServiceImpl implements TagService {
     @Override
     public Tag update(String id, TagDTO tag) {
         Tag oldTag = tagRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Tag not found")
+                () -> new PymeException(PymeExceptionType.TAG_NOT_FOUND)
         );
         findByNameAndDimensionId(tag.getName(), tag.getDimensionId());
-
-        //Add validation to check id the dimension exists
-
         oldTag.setName(tag.getName());
         oldTag.setDescription(tag.getDescription());
         oldTag.setDimensionId(tag.getDimensionId());
@@ -43,7 +44,7 @@ public class TagServiceImpl implements TagService {
 
     private void findByNameAndDimensionId(String name, String dimensionId) {
         tagRepository.findByNameAndDimensionId(name, dimensionId).orElseThrow(
-                () -> new RuntimeException("Tag not found")
+                () -> new PymeException(PymeExceptionType.TAG_NOT_FOUND)
         );
     }
 
