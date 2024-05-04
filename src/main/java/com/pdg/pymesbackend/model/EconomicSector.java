@@ -14,4 +14,6 @@ public class EconomicSector {
     @Id
     private String economicSectorId;
     private String name;
+    private int companies;
+    private int score;
 }

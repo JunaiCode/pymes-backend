@@ -27,5 +27,4 @@ public class Question {
     private String versionId;
     private String dimensionId;
     private String tagId;
-
 }
