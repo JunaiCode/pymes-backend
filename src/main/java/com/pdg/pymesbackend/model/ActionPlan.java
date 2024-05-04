@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Document
@@ -18,7 +19,7 @@ public class ActionPlan {
     private String actionPlanId;
     private LocalDateTime start;
     private LocalDateTime end;
-    private Recommendation[] recommendations;
-    private Output[] outputs;
+    private List<Recommendation> recommendations;
+    private List<Output> outputs;
 
 }

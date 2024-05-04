@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Document
@@ -17,6 +18,6 @@ public class Evaluation {
     @Id
     private String evaluationId;
     private LocalDateTime date;
-    private EvaluationResult [] results;
+    private List<EvaluationResult> results;
     private String actionPlanId;
 }
