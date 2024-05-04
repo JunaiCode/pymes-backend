@@ -7,10 +7,11 @@ import java.util.List;
 
 public interface DimensionService {
 
-    Dimension save (DimensionDTO dimension);
+    Dimension save (DimensionDTO dimension, String versionId);
     Dimension update (String id, DimensionDTO dimension);
     void delete (String id);
 
     Dimension get (String id);
     List<Dimension> getAll ();
+
 }
