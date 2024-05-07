@@ -14,4 +14,6 @@ public class Recommendation {
     @Id
     private String recommendationId;
     private String description;
+    private int priorization;
+    private boolean completed;
 }
