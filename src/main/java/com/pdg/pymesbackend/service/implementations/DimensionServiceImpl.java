@@ -6,6 +6,7 @@ import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.DimensionMapper;
 import com.pdg.pymesbackend.model.Dimension;
 import com.pdg.pymesbackend.model.Model;
+import com.pdg.pymesbackend.model.Version;
 import com.pdg.pymesbackend.repository.DimensionRepository;
 import com.pdg.pymesbackend.service.DimensionService;
 import com.pdg.pymesbackend.service.ModelService;
@@ -26,7 +27,7 @@ public class DimensionServiceImpl implements DimensionService {
     @Override
     public Dimension save(DimensionDTO dimension, String versionId) {
         Dimension newDimension = dimensionMapper.fromCreateDTO(dimension);
-        findByName(dimension.getName());
+        findByName(dimension.getName(), versionId);
         dimensionRepository.save(newDimension);
         versionService.addDimension(versionId, newDimension);
         return newDimension;
@@ -37,9 +38,13 @@ public class DimensionServiceImpl implements DimensionService {
     public Dimension update(String id, DimensionDTO dimension) {
         Dimension oldDimension = dimensionRepository.findById(id)
                 .orElseThrow(() -> new PymeException(PymeExceptionType.DIMENSION_NOT_FOUND));
-        findByName(dimension.getName());
+        Version version = versionService.findVersionByDimensionId(id);
+        version.getDimensions().remove(oldDimension);
         oldDimension.setName(dimension.getName());
         oldDimension.setDescription(dimension.getDescription());
+        //Update the dimension in the version
+        version.getDimensions().add(oldDimension);
+        versionService.updateWithVersion(version);
         return dimensionRepository.save(oldDimension);
     }
     @Override
@@ -61,11 +66,8 @@ public class DimensionServiceImpl implements DimensionService {
 
 
 
-    private void findByName(String name) {
-        dimensionRepository.findByName(name)
-                .ifPresent(existingDimension -> {
-                    throw new PymeException(PymeExceptionType.DIMENSION_ALREADY_EXISTS);
-                });
+    private void findByName(String name, String versionId) {
+        versionService.findDimensionInVersionByName(versionId, name);
     }
 
     private Dimension findById(String id) {

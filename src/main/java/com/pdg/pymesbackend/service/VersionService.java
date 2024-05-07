@@ -12,4 +12,10 @@ public interface VersionService {
     void addDimension(String versionId, Dimension newDimension);
 
     Version get(String id);
+
+    void findDimensionInVersionByName(String versionId, String dimensionName);
+
+    Version findVersionByDimensionId(String dimensionId);
+
+    Version updateWithVersion(Version version);
 }

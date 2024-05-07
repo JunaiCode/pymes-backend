@@ -41,4 +41,29 @@ public class VersionServiceImpl implements VersionService {
                 .orElseThrow(() -> new PymeException(PymeExceptionType.VERSION_NOT_FOUND));
     }
 
+    @Override
+    public void findDimensionInVersionByName(String versionId, String dimensionName) {
+        Version version = versionRepository.findById(versionId)
+                .orElseThrow(() -> new PymeException(PymeExceptionType.VERSION_NOT_FOUND));
+        //Checks if thhere is already a dimension with the same name in the version
+        //if so, throws an exception, else, returns the dimension
+        version.getDimensions().stream()
+                .filter(dimension -> dimension.getName().equals(dimensionName))
+                .findAny()
+                .ifPresent(dimension -> {
+                    throw new PymeException(PymeExceptionType.DIMENSION_ALREADY_EXISTS);
+                });
+    }
+
+    @Override
+    public Version findVersionByDimensionId(String dimensionId) {
+        return versionRepository.findVersionByDimensionId(dimensionId)
+                .orElseThrow(() -> new PymeException(PymeExceptionType.VERSION_NOT_FOUND));
+    }
+
+    @Override
+    public Version updateWithVersion(Version version) {
+        return versionRepository.save(version);
+    }
+
 }

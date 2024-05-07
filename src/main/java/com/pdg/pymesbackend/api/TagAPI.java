@@ -11,7 +11,7 @@ import java.util.List;
 public interface TagAPI {
 
     @PostMapping("/add")
-    Tag save (TagDTO tag);
+    Tag save (@RequestBody TagDTO tag);
     @PutMapping("/update/{id}")
     Tag update (@PathVariable String id, @Valid @RequestBody TagDTO tag);
 

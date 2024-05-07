@@ -23,7 +23,7 @@ public class DimensionController implements DimensionAPI {
 
     @Override
     public Dimension getDimension(String id) {
-        return null;
+        return dimensionService.get(id);
     }
 
     @Override
