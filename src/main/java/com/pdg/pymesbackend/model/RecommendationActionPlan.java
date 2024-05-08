@@ -10,8 +10,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @AllArgsConstructor
 @NoArgsConstructor
-public class Recommendation {
+public class RecommendationActionPlan {
     @Id
-    private String recommendationId;
-    private String description;
+    private String recommendationActionPlanId;
+    private Recommendation recommendation;
+    private boolean completed;
 }
