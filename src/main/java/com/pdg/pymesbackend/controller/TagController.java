@@ -30,4 +30,9 @@ public class TagController implements TagAPI {
     public List<Tag> dimensionTags(String dimensionId) {
         return tagService.dimensionTags(dimensionId);
     }
+
+    @Override
+    public TagDTO getTag(String tagId) {
+        return tagService.getTag(tagId);
+    }
 }

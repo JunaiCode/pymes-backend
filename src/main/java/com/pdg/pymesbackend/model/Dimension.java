@@ -6,6 +6,8 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Data
 @Document
 @AllArgsConstructor
@@ -16,4 +18,5 @@ public class Dimension {
     private String dimensionId;
     private String name;
     private String description;
+    private List<Level> levels;
 }

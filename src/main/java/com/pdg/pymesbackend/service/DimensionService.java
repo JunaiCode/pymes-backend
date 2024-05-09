@@ -2,6 +2,7 @@ package com.pdg.pymesbackend.service;
 
 import com.pdg.pymesbackend.dto.DimensionDTO;
 import com.pdg.pymesbackend.model.Dimension;
+import com.pdg.pymesbackend.model.Level;
 
 import java.util.List;
 
@@ -13,5 +14,8 @@ public interface DimensionService {
 
     Dimension get (String id);
     List<Dimension> getAll ();
+
+    void addLevelToDimension (Level level, String dimensionId);
+
 
 }

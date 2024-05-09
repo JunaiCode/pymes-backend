@@ -5,6 +5,7 @@ import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.DimensionMapper;
 import com.pdg.pymesbackend.model.Dimension;
+import com.pdg.pymesbackend.model.Level;
 import com.pdg.pymesbackend.model.Model;
 import com.pdg.pymesbackend.model.Version;
 import com.pdg.pymesbackend.repository.DimensionRepository;
@@ -64,7 +65,16 @@ public class DimensionServiceImpl implements DimensionService {
         return dimensionRepository.findAll();
     }
 
-
+    @Override
+    public void addLevelToDimension(Level level, String dimensionId) {
+        Version version = versionService.findVersionByDimensionId(dimensionId);
+        Dimension dimension = findById(dimensionId);
+        version.getDimensions().remove(dimension);
+        dimension.getLevels().add(level);
+        version.getDimensions().add(dimension);
+        versionService.updateWithVersion(version);
+        dimensionRepository.save(dimension);
+    }
 
     private void findByName(String name, String versionId) {
         versionService.findDimensionInVersionByName(versionId, name);

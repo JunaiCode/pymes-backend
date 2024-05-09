@@ -10,4 +10,5 @@ public interface TagService {
     Tag save (TagDTO tag);
     Tag update (String id, TagDTO tag);
     List<Tag> dimensionTags(String dimensionId);
+    TagDTO getTag(String tagId);
 }

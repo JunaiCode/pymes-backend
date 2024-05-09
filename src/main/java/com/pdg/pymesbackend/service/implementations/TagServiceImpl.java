@@ -38,7 +38,7 @@ public class TagServiceImpl implements TagService {
         Tag oldTag = tagRepository.findById(id).orElseThrow(
                 () -> new PymeException(PymeExceptionType.TAG_NOT_FOUND)
         );
-        findByNameAndDimensionId(tag.getName(), tag.getDimensionId());
+        //findByNameAndDimensionId(tag.getName(), tag.getDimensionId());
         oldTag.setName(tag.getName());
         oldTag.setDescription(tag.getDescription());
         oldTag.setDimensionId(tag.getDimensionId());
@@ -58,5 +58,13 @@ public class TagServiceImpl implements TagService {
     public List<Tag> dimensionTags(String dimensionId) {
         dimensionService.get(dimensionId);
         return tagRepository.findByDimensionId(dimensionId);
+    }
+
+    @Override
+    public TagDTO getTag(String tagId) {
+        Tag tag = tagRepository.findById(tagId).orElseThrow(
+                () -> new PymeException(PymeExceptionType.TAG_NOT_FOUND)
+        );
+        return tagMapper.toDTO(tag);
     }
 }
