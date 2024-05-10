@@ -7,15 +7,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @Builder
 public class LevelDTO {
     @NotBlank
     private String name;
+    @NotBlank
     private String description;
     @Min(0)
-    private int scoreMin;
-    @Max(100)
-    private int scoreMax;
+    private Integer value;
+    private List<QuestionDTO> questions;
+
 }

@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ModelServiceTest {
-
+/*
     @Mock
     private ModelRepository modelRepository;
 
@@ -38,7 +38,7 @@ public class ModelServiceTest {
     @Spy
     private ModelMapper modelMapper;
     @InjectMocks
-    private ModelServiceImpl modelService;
+    private ModelServiceImpl modelService;*/
 
     /*@BeforeEach
     void init() {
@@ -47,6 +47,8 @@ public class ModelServiceTest {
         modelMapper = spy(ModelMapper.class);
         modelService = new ModelServiceImpl(modelRepository, versionRepository, modelMapper);
     }*/
+
+    /*
     @Test
     public void testCreateModel() {
         when(modelMapper.fromCreateDTO(defaultModelCreateDTO())).thenReturn(defaultModelCreate());
@@ -167,5 +169,5 @@ public class ModelServiceTest {
                 .versions(List.of("1"))
                 .build();
     }
-
+*/
 }

@@ -8,4 +8,5 @@ import org.mapstruct.Mapper;
 public interface TagMapper {
 
     Tag fromDTO(TagDTO tag);
+    TagDTO toDTO(Tag tag);
 }
