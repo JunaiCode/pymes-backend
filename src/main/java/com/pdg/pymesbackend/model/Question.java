@@ -24,8 +24,8 @@ public class Question {
     private int scorePositive;
     private List<Option> options;
     private List<String> recommendations;
-    private String versionId;
     private String dimensionId;
     private String tagId;
+    private String companyTypeId;
 
 }
