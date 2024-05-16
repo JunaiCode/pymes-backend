@@ -16,13 +16,14 @@ import java.util.List;
 public class DimensionController implements DimensionAPI {
     private final DimensionService dimensionService;
     @Override
-    public Dimension createDimension(DimensionDTO dimension) {
-        return dimensionService.save(dimension);
+    public Dimension createDimension(DimensionDTO dimension,String versionId) {
+
+        return dimensionService.save(dimension, versionId);
     }
 
     @Override
     public Dimension getDimension(String id) {
-        return null;
+        return dimensionService.get(id);
     }
 
     @Override
