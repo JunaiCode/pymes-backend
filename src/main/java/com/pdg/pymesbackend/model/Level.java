@@ -19,7 +19,7 @@ public class Level {
     private String name;
     private Integer value;
     private String description;
-    private List<Question> questions;
+    private List<String> questions;
 
 
 }

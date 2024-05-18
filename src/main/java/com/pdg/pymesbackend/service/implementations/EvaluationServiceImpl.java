@@ -56,7 +56,12 @@ public class EvaluationServiceImpl implements EvaluationService {
 
         List<RecommendationActionPlan> recommendationActionPlans = mapToRecommendationActionPlan(recommendations);
 
+        ActionPlan actionPlan = ActionPlan.builder()
+                .actionPlanId(UUID.randomUUID().toString())
+                .recommendations(recommendationActionPlans)
+                .build();
 
+        evaluation.setActionPlanId(actionPlan.getActionPlanId());
 
     }
 

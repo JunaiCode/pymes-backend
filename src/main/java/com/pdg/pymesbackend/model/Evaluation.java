@@ -22,5 +22,6 @@ public class Evaluation {
     private LocalDateTime date;
     private List<EvaluationResult> questionResults;
     private List<DimensionResult> dimensionResults;
+    private boolean completed;
     private String actionPlanId;
 }
