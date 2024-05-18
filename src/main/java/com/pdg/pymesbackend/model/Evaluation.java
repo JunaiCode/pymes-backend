@@ -20,6 +20,8 @@ public class Evaluation {
     @Id
     private String evaluationId;
     private LocalDateTime date;
-    private List<EvaluationResult> results;
+    private List<EvaluationResult> questionResults;
+    private List<DimensionResult> dimensionResults;
+    private boolean completed;
     private String actionPlanId;
 }

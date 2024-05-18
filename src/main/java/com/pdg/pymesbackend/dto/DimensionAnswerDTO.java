@@ -9,8 +9,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @Builder
-public class VersionDTO {
+public class DimensionAnswerDTO {
 
-        private String name;
-        private List<DimensionDTO> dimensions;
+    String dimensionId;
+    String levelId;
 }

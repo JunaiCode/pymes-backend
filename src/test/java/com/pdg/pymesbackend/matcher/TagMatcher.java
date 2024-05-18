@@ -5,15 +5,17 @@ import org.mockito.ArgumentMatcher;
 
 public class TagMatcher implements ArgumentMatcher<Tag> {
 
-    private final Tag left;
+    /* final Tag left;
 
     public TagMatcher(Tag left) {
         this.left = left;
-    }
+    }*/
     @Override
     public boolean matches(Tag tag) {
+        return false;
+        /*
         return left.getTagId()!=null &&
                 left.getName().equals(tag.getName()) &&
-                left.getDescription().equals(tag.getDescription());
+                left.getDescription().equals(tag.getDescription());*/
     }
 }

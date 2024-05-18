@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @Builder
-public class VersionDTO {
+public class QuestionAnswerDTO {
 
-        private String name;
-        private List<DimensionDTO> dimensions;
+    String questionId;
+    String dimensionId;
+    int score;
+
 }

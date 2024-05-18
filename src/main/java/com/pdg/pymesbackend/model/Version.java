@@ -17,6 +17,5 @@ public class Version {
     @Id
     private String versionId;
     private String name;
-    private List<Level> levels;
     private List<Dimension> dimensions;
 }

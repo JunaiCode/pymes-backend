@@ -5,8 +5,13 @@ import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.DimensionMapper;
 import com.pdg.pymesbackend.model.Dimension;
+import com.pdg.pymesbackend.model.Level;
+import com.pdg.pymesbackend.model.Model;
+import com.pdg.pymesbackend.model.Version;
 import com.pdg.pymesbackend.repository.DimensionRepository;
 import com.pdg.pymesbackend.service.DimensionService;
+import com.pdg.pymesbackend.service.ModelService;
+import com.pdg.pymesbackend.service.VersionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,20 +23,29 @@ public class DimensionServiceImpl implements DimensionService {
 
     private DimensionRepository dimensionRepository;
     private DimensionMapper dimensionMapper;
+    private VersionService versionService;
+
     @Override
-    public Dimension save(DimensionDTO dimension) {
+    public Dimension save(DimensionDTO dimension, String versionId) {
         Dimension newDimension = dimensionMapper.fromCreateDTO(dimension);
-        findByName(dimension.getName());
-        return dimensionRepository.save(newDimension);
+        findByName(dimension.getName(), versionId);
+        dimensionRepository.save(newDimension);
+        versionService.addDimension(versionId, newDimension);
+        return newDimension;
+
     }
 
     @Override
     public Dimension update(String id, DimensionDTO dimension) {
         Dimension oldDimension = dimensionRepository.findById(id)
                 .orElseThrow(() -> new PymeException(PymeExceptionType.DIMENSION_NOT_FOUND));
-        findByName(dimension.getName());
+        Version version = versionService.findVersionByDimensionId(id);
+        version.getDimensions().remove(oldDimension);
         oldDimension.setName(dimension.getName());
         oldDimension.setDescription(dimension.getDescription());
+        //Update the dimension in the version
+        version.getDimensions().add(oldDimension);
+        versionService.updateWithVersion(version);
         return dimensionRepository.save(oldDimension);
     }
     @Override
@@ -51,11 +65,19 @@ public class DimensionServiceImpl implements DimensionService {
         return dimensionRepository.findAll();
     }
 
-    private void findByName(String name) {
-        dimensionRepository.findByName(name)
-                .ifPresent(existingDimension -> {
-                    throw new PymeException(PymeExceptionType.DIMENSION_ALREADY_EXISTS);
-                });
+    @Override
+    public void addLevelToDimension(Level level, String dimensionId) {
+        Version version = versionService.findVersionByDimensionId(dimensionId);
+        Dimension dimension = findById(dimensionId);
+        version.getDimensions().remove(dimension);
+        dimension.getLevels().add(level);
+        version.getDimensions().add(dimension);
+        versionService.updateWithVersion(version);
+        dimensionRepository.save(dimension);
+    }
+
+    private void findByName(String name, String versionId) {
+        versionService.findDimensionInVersionByName(versionId, name);
     }
 
     private Dimension findById(String id) {
