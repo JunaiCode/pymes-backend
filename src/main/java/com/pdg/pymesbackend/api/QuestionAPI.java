@@ -2,7 +2,6 @@ package com.pdg.pymesbackend.api;
 
 import com.pdg.pymesbackend.dto.OptionDTO;
 import com.pdg.pymesbackend.dto.QuestionDTO;
-import com.pdg.pymesbackend.dto.RecommendationDTO;
 import com.pdg.pymesbackend.model.Question;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;

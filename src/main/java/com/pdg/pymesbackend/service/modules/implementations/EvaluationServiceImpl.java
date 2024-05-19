@@ -3,6 +3,8 @@ package com.pdg.pymesbackend.service.modules.implementations;
 import com.pdg.pymesbackend.dto.EvaluationDTO;
 import com.pdg.pymesbackend.dto.EvaluationInDTO;
 import com.pdg.pymesbackend.dto.QuestionAnswerDTO;
+import com.pdg.pymesbackend.error.PymeException;
+import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.DimensionResultMapper;
 import com.pdg.pymesbackend.mapper.EvaluationMapper;
 import com.pdg.pymesbackend.model.*;
@@ -56,12 +58,12 @@ public class EvaluationServiceImpl implements EvaluationService {
 
         List<RecommendationActionPlan> recommendationActionPlans = mapToRecommendationActionPlan(recommendations);
 
-        ActionPlan actionPlan = ActionPlan.builder()
+        /*ActionPlan actionPlan = ActionPlan.builder()
                 .actionPlanId(UUID.randomUUID().toString())
                 .recommendations(recommendationActionPlans)
-                .build();
+                .build();*/
 
-        evaluation.setActionPlanId(actionPlan.getActionPlanId());
+        //evaluation.setActionPlanId(actionPlan.getActionPlanId());
 
     }
 
@@ -79,8 +81,10 @@ public class EvaluationServiceImpl implements EvaluationService {
                 passed = true;
             }
             if(passed){
-                ArrayList<String> recommendationsIds = (ArrayList<String>) question.get().getRecommendations();
-                recommendations.addAll(recommendationRepository.findAllById(recommendationsIds));
+                String recommendationId = question.get().getRecommendation().getRecommendationId();
+                recommendations.add(recommendationRepository.findById(recommendationId).orElseThrow(
+                        () -> new PymeException(PymeExceptionType.RECOMMENDATION_NOT_FOUND)
+                ));
             }
         }
 
@@ -92,7 +96,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         for (Recommendation recommendation : recommendations) {
             RecommendationActionPlan recommendationActionPlan = new RecommendationActionPlan();
             recommendationActionPlan.setRecommendationActionPlanId(UUID.randomUUID().toString());
-            recommendationActionPlan.setRecommendation(recommendation);
+            //recommendationActionPlan.setRecommendation(recommendation);
             recommendationActionPlan.setCompleted(false);
             recommendationActionPlans.add(recommendationActionPlan);
         }
