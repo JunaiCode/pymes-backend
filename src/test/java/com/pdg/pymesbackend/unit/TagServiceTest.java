@@ -1,24 +1,9 @@
 package com.pdg.pymesbackend.unit;
 
-import com.pdg.pymesbackend.dto.TagDTO;
-import com.pdg.pymesbackend.mapper.TagMapper;
-import com.pdg.pymesbackend.matcher.TagMatcher;
-import com.pdg.pymesbackend.model.Dimension;
-import com.pdg.pymesbackend.model.Tag;
-import com.pdg.pymesbackend.repository.TagRepository;
-import com.pdg.pymesbackend.service.implementations.DimensionServiceImpl;
-import com.pdg.pymesbackend.service.implementations.TagServiceImpl;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TagServiceTest {

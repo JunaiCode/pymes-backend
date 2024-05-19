@@ -17,7 +17,8 @@ public enum PymeExceptionType {
     DIMENSION_ALREADY_EXISTS(402, "Dimension already exists", "dimensionId", HttpStatus.CONFLICT, LogLevel.INFO),
     VERSION_NOT_FOUND(501, "Version not found", "versionId", HttpStatus.NOT_FOUND, LogLevel.INFO),
     LEVEL_NOT_FOUND(601, "Level not found", "levelId", HttpStatus.NOT_FOUND, LogLevel.INFO),
-    LEVEL_ALREADY_EXISTS(602, "Level already exists", "levelId", HttpStatus.CONFLICT, LogLevel.INFO),;
+    LEVEL_ALREADY_EXISTS(602, "Level already exists", "levelId", HttpStatus.CONFLICT, LogLevel.INFO),
+    QUESTION_NOT_FOUND(701, "Question not found", "questionId", HttpStatus.NOT_FOUND, LogLevel.INFO),;
     private final int code;
     private final String message;
     private final String parameterName;

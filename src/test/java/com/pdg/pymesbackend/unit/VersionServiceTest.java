@@ -1,21 +1,9 @@
 package com.pdg.pymesbackend.unit;
 
-import com.pdg.pymesbackend.dto.VersionDTO;
-import com.pdg.pymesbackend.mapper.VersionMapper;
-import com.pdg.pymesbackend.matcher.VersionMatcher;
-import com.pdg.pymesbackend.model.Version;
-import com.pdg.pymesbackend.repository.VersionRepository;
-import com.pdg.pymesbackend.service.implementations.VersionServiceImpl;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class VersionServiceTest {

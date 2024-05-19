@@ -9,8 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @AllArgsConstructor
 @NoArgsConstructor
-public class SpecificQuestion {
-
-    private CompanyType companyType;
-    private String modifiedQuestion;
+public class Step {
+    private String stepId;
+    private String description;
+    private int order;
 }

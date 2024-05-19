@@ -1,4 +1,4 @@
-package com.pdg.pymesbackend.service;
+package com.pdg.pymesbackend.service.modules;
 
 import com.pdg.pymesbackend.dto.ModelDTO;
 import com.pdg.pymesbackend.dto.VersionDTO;

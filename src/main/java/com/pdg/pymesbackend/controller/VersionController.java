@@ -2,9 +2,8 @@ package com.pdg.pymesbackend.controller;
 
 import com.pdg.pymesbackend.api.VersionAPI;
 import com.pdg.pymesbackend.model.Version;
-import com.pdg.pymesbackend.service.VersionService;
+import com.pdg.pymesbackend.service.modules.VersionService;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 

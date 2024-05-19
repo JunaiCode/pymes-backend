@@ -1,4 +1,4 @@
-package com.pdg.pymesbackend.service.implementations;
+package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.ModelDTO;
 import com.pdg.pymesbackend.dto.VersionDTO;
@@ -9,7 +9,7 @@ import com.pdg.pymesbackend.model.Model;
 import com.pdg.pymesbackend.model.Version;
 import com.pdg.pymesbackend.repository.ModelRepository;
 import com.pdg.pymesbackend.repository.VersionRepository;
-import com.pdg.pymesbackend.service.ModelService;
+import com.pdg.pymesbackend.service.modules.ModelService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

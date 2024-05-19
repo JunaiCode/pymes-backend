@@ -1,4 +1,4 @@
-package com.pdg.pymesbackend.service;
+package com.pdg.pymesbackend.service.modules;
 
 import com.pdg.pymesbackend.dto.OptionDTO;
 import com.pdg.pymesbackend.dto.QuestionDTO;
@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface QuestionService {
     Question createQuestion(QuestionDTO questionDTO);
-    Question addRecommendation(String questionId, RecommendationDTO recommendation);
     Question addOption(String questionId, OptionDTO option);
     void deleteQuestion(String id);
     List<Question> getQuestions();

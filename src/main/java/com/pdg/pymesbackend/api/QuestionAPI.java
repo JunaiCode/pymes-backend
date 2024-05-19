@@ -18,9 +18,6 @@ public interface QuestionAPI {
     @PostMapping("/add")
     Question createQuestion(@RequestBody @Valid QuestionDTO question);
 
-    @PostMapping("/add/recommendation/{questionId}")
-    Question addRecommendation(@RequestBody @Valid RecommendationDTO recommendation, @PathVariable String questionId);
-
     @PutMapping("/add/option/{questionId}")
     Question addOption(@RequestBody @Valid OptionDTO option, @PathVariable String questionId);
 

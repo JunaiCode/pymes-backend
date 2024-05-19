@@ -21,7 +21,7 @@ public class ActionPlan {
     private String actionPlanId;
     private LocalDateTime start;
     private LocalDateTime end;
-    private List<RecommendationActionPlan> recommendations;
-    private List<Output> outputs;
+    private List<Recommendation> recommendations;
+    private List<RecommendationActionPlan> recommendationActionPlans;
 
 }

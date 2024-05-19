@@ -1,22 +1,22 @@
-package com.pdg.pymesbackend.service.implementations;
+package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.OptionDTO;
 import com.pdg.pymesbackend.dto.QuestionDTO;
-import com.pdg.pymesbackend.dto.RecommendationDTO;
 import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.OptionMapper;
 import com.pdg.pymesbackend.mapper.QuestionMapper;
-import com.pdg.pymesbackend.mapper.RecommendationMapper;
 import com.pdg.pymesbackend.model.Option;
 import com.pdg.pymesbackend.model.Question;
-import com.pdg.pymesbackend.model.Recommendation;
+import com.pdg.pymesbackend.model.Step;
 import com.pdg.pymesbackend.repository.QuestionRepository;
-import com.pdg.pymesbackend.service.QuestionService;
+import com.pdg.pymesbackend.service.modules.QuestionService;
+import com.pdg.pymesbackend.service.validator.DimensionValidator;
+import com.pdg.pymesbackend.service.validator.implementations.DimensionValidatorImpl;
+import com.pdg.pymesbackend.service.validator.implementations.VersionValidatorImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,31 +27,29 @@ public class QuestionServiceImpl implements QuestionService {
     private QuestionRepository questionRepository;
     private QuestionMapper questionMapper;
     private OptionMapper optionMapper;
-    private RecommendationMapper recommendationMapper;
-
+    private DimensionValidator dimensionValidator;
+    private VersionValidatorImpl versionValidator;
 
     @Override
     public Question createQuestion(QuestionDTO questionDTO) {
 
         //validar tag
-        //validar dimension
-        //validar version
+        dimensionValidator.validateDimensionExists(questionDTO.getDimensionId());
+        versionValidator.validateVersion(questionDTO.getVersionId());
+        //validar companyType
         Question question = questionMapper.fromDTO(questionDTO);
+        question.getRecommendation().setRecommendationId(UUID.randomUUID().toString());
+        for(Step step : question.getRecommendation().getSteps()){
+            step.setStepId(UUID.randomUUID().toString());
+        }
+        for(Option option : question.getOptions()){
+            option.setOptionId(UUID.randomUUID().toString());
+        }
+
         question.setQuestionId(UUID.randomUUID().toString());
-        question.setRecommendations(new ArrayList<>());
         return questionRepository.save(question);
     }
 
-    @Override
-    public Question addRecommendation(String questionId, RecommendationDTO recommendation) {
-
-        Question question = findById(questionId);
-        Recommendation newRecommendation = recommendationMapper.fromDTO(recommendation);
-        newRecommendation.setRecommendationId(UUID.randomUUID().toString());
-        question.getRecommendations().add(newRecommendation.getRecommendationId());
-        //se debe guardar recomendación en su respectiva tabla (?
-        return questionRepository.save(question);
-    }
 
     @Override
     public Question addOption(String questionId, OptionDTO option) {
@@ -84,5 +82,9 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public List<Question> getQuestionsByTag(String tag) {
         return questionRepository.findByTagId(tag);
+    }
+
+    public List<Question> filterQuestionsByCompanyType(List<String> questionsId, String companyTypeId) {
+        return questionRepository.findQuestionsByCompanyType(questionsId, companyTypeId);
     }
 }

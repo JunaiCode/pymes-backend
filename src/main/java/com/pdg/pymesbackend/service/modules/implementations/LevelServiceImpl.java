@@ -1,4 +1,4 @@
-package com.pdg.pymesbackend.service.implementations;
+package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.LevelDTO;
 import com.pdg.pymesbackend.error.PymeException;
@@ -7,8 +7,8 @@ import com.pdg.pymesbackend.mapper.LevelMapper;
 import com.pdg.pymesbackend.model.Dimension;
 import com.pdg.pymesbackend.model.Level;
 import com.pdg.pymesbackend.repository.LevelRepository;
-import com.pdg.pymesbackend.service.DimensionService;
-import com.pdg.pymesbackend.service.LevelService;
+import com.pdg.pymesbackend.service.modules.DimensionService;
+import com.pdg.pymesbackend.service.modules.LevelService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

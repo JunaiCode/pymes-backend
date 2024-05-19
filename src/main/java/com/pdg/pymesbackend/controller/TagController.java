@@ -3,7 +3,7 @@ package com.pdg.pymesbackend.controller;
 import com.pdg.pymesbackend.api.TagAPI;
 import com.pdg.pymesbackend.dto.TagDTO;
 import com.pdg.pymesbackend.model.Tag;
-import com.pdg.pymesbackend.service.TagService;
+import com.pdg.pymesbackend.service.modules.TagService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;

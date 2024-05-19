@@ -5,7 +5,7 @@ import com.pdg.pymesbackend.dto.ModelDTO;
 import com.pdg.pymesbackend.dto.VersionDTO;
 import com.pdg.pymesbackend.model.Model;
 import com.pdg.pymesbackend.model.Version;
-import com.pdg.pymesbackend.service.ModelService;
+import com.pdg.pymesbackend.service.modules.ModelService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;

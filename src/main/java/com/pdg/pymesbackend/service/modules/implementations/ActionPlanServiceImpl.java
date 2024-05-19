@@ -1,4 +1,4 @@
-package com.pdg.pymesbackend.service.implementations;
+package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.ActionPlanDTO;
 import com.pdg.pymesbackend.mapper.ActionPlanMapper;
@@ -8,7 +8,7 @@ import com.pdg.pymesbackend.model.Evaluation;
 import com.pdg.pymesbackend.repository.ActionPlanRepository;
 import com.pdg.pymesbackend.repository.CompanyRepository;
 import com.pdg.pymesbackend.repository.EvaluationRepository;
-import com.pdg.pymesbackend.service.ActionPlanService;
+import com.pdg.pymesbackend.service.modules.ActionPlanService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

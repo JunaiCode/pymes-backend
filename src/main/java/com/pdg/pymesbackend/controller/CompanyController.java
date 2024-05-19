@@ -3,7 +3,7 @@ package com.pdg.pymesbackend.controller;
 import com.pdg.pymesbackend.api.CompanyAPI;
 import com.pdg.pymesbackend.dto.CompanyDTO;
 import com.pdg.pymesbackend.model.Company;
-import com.pdg.pymesbackend.service.CompanyService;
+import com.pdg.pymesbackend.service.modules.CompanyService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;

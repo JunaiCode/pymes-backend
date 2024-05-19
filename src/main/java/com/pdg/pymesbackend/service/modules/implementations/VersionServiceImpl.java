@@ -1,4 +1,4 @@
-package com.pdg.pymesbackend.service.implementations;
+package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.VersionDTO;
 import com.pdg.pymesbackend.error.PymeException;
@@ -7,7 +7,9 @@ import com.pdg.pymesbackend.mapper.VersionMapper;
 import com.pdg.pymesbackend.model.Dimension;
 import com.pdg.pymesbackend.model.Version;
 import com.pdg.pymesbackend.repository.VersionRepository;
-import com.pdg.pymesbackend.service.VersionService;
+import com.pdg.pymesbackend.service.modules.VersionService;
+import com.pdg.pymesbackend.service.validator.VersionValidator;
+import com.pdg.pymesbackend.service.validator.implementations.VersionValidatorImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ public class VersionServiceImpl implements VersionService {
 
     private VersionRepository versionRepository;
     private VersionMapper versionMapper;
+    private VersionValidatorImpl versionValidator;
     @Override
     public Version save(VersionDTO version) {
         Version newVersion = versionMapper.fromDTO(version);
@@ -29,22 +32,19 @@ public class VersionServiceImpl implements VersionService {
 
     @Override
     public void addDimension(String versionId, Dimension newDimension) {
-        Version version = versionRepository.findById(versionId)
-                .orElseThrow(() -> new PymeException(PymeExceptionType.VERSION_NOT_FOUND));
+        Version version = versionValidator.validateVersion(versionId);
         version.getDimensions().add(newDimension);
         versionRepository.save(version);
     }
 
     @Override
     public Version get(String id) {
-        return versionRepository.findById(id)
-                .orElseThrow(() -> new PymeException(PymeExceptionType.VERSION_NOT_FOUND));
+        return versionValidator.validateVersion(id);
     }
 
     @Override
     public void findDimensionInVersionByName(String versionId, String dimensionName) {
-        Version version = versionRepository.findById(versionId)
-                .orElseThrow(() -> new PymeException(PymeExceptionType.VERSION_NOT_FOUND));
+        Version version = versionValidator.validateVersion(versionId);
         //Checks if thhere is already a dimension with the same name in the version
         //if so, throws an exception, else, returns the dimension
         version.getDimensions().stream()

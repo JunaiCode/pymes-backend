@@ -1,20 +1,15 @@
 package com.pdg.pymesbackend.unit;
 
-import com.pdg.pymesbackend.matcher.DimensionMatcher;
 import com.pdg.pymesbackend.model.*;
 import com.pdg.pymesbackend.repository.ActionPlanRepository;
 import com.pdg.pymesbackend.repository.CompanyRepository;
-import com.pdg.pymesbackend.repository.DimensionRepository;
 import com.pdg.pymesbackend.repository.EvaluationRepository;
-import com.pdg.pymesbackend.service.implementations.ActionPlanServiceImpl;
+import com.pdg.pymesbackend.service.modules.implementations.ActionPlanServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ActionPlanServiceTest {

@@ -1,22 +1,18 @@
 package com.pdg.pymesbackend.dto;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @Builder
-public class RecommendationDTO {
+public class StepDTO {
     @NotBlank
     private String description;
-    @NotEmpty
-    private List<StepDTO> steps;
-    @NotBlank
-    private String questionId;
-
+    @Min(value = 0, message = "Order must be greater than or equal to 0")
+    private int order;
 }
+

@@ -11,5 +11,5 @@ public interface QuestionRepository extends MongoRepository<Question, String>{
     List<Question> findByTagId(String tagId);
 
     @Query("{ 'questionId': { '$in': ?0 }, 'companyTypeId': ?1 }")
-    Question findQuestionsByCompanyType(List<String> id, String companyTypeId);
+    List<Question> findQuestionsByCompanyType(List<String> id, String companyTypeId);
 }

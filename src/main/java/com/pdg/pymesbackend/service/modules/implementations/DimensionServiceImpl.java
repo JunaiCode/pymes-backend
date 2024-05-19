@@ -1,4 +1,4 @@
-package com.pdg.pymesbackend.service.implementations;
+package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.DimensionDTO;
 import com.pdg.pymesbackend.error.PymeException;
@@ -6,12 +6,11 @@ import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.DimensionMapper;
 import com.pdg.pymesbackend.model.Dimension;
 import com.pdg.pymesbackend.model.Level;
-import com.pdg.pymesbackend.model.Model;
 import com.pdg.pymesbackend.model.Version;
 import com.pdg.pymesbackend.repository.DimensionRepository;
-import com.pdg.pymesbackend.service.DimensionService;
-import com.pdg.pymesbackend.service.ModelService;
-import com.pdg.pymesbackend.service.VersionService;
+import com.pdg.pymesbackend.service.modules.DimensionService;
+import com.pdg.pymesbackend.service.modules.VersionService;
+import com.pdg.pymesbackend.service.validator.DimensionValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +22,7 @@ public class DimensionServiceImpl implements DimensionService {
 
     private DimensionRepository dimensionRepository;
     private DimensionMapper dimensionMapper;
+    private DimensionValidator dimensionValidator;
     private VersionService versionService;
 
     @Override
@@ -37,8 +37,7 @@ public class DimensionServiceImpl implements DimensionService {
 
     @Override
     public Dimension update(String id, DimensionDTO dimension) {
-        Dimension oldDimension = dimensionRepository.findById(id)
-                .orElseThrow(() -> new PymeException(PymeExceptionType.DIMENSION_NOT_FOUND));
+        Dimension oldDimension = dimensionValidator.validateDimensionExists(id);
         Version version = versionService.findVersionByDimensionId(id);
         version.getDimensions().remove(oldDimension);
         oldDimension.setName(dimension.getName());

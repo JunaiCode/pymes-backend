@@ -1,4 +1,4 @@
-package com.pdg.pymesbackend.service.implementations;
+package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.EvaluationDTO;
 import com.pdg.pymesbackend.dto.EvaluationInDTO;
@@ -9,7 +9,7 @@ import com.pdg.pymesbackend.model.*;
 import com.pdg.pymesbackend.repository.EvaluationRepository;
 import com.pdg.pymesbackend.repository.QuestionRepository;
 import com.pdg.pymesbackend.repository.RecommendationRepository;
-import com.pdg.pymesbackend.service.EvaluationService;
+import com.pdg.pymesbackend.service.modules.EvaluationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

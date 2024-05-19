@@ -1,4 +1,4 @@
-package com.pdg.pymesbackend.service.implementations;
+package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.TagDTO;
 import com.pdg.pymesbackend.error.PymeException;
@@ -6,8 +6,8 @@ import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.TagMapper;
 import com.pdg.pymesbackend.model.Tag;
 import com.pdg.pymesbackend.repository.TagRepository;
-import com.pdg.pymesbackend.service.DimensionService;
-import com.pdg.pymesbackend.service.TagService;
+import com.pdg.pymesbackend.service.modules.DimensionService;
+import com.pdg.pymesbackend.service.modules.TagService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

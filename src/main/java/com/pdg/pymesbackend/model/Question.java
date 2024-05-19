@@ -18,12 +18,11 @@ public class Question {
     @Id
     private String questionId;
     @Field("default")
-    private String default_;
-    private QuestionType questionType;
+    private String question;
     private Double weight;
     private int scorePositive;
     private List<Option> options;
-    private List<String> recommendations;
+    private Recommendation recommendation;
     private String dimensionId;
     private String tagId;
     private String companyTypeId;

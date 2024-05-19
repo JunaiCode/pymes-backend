@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class RecommendationActionPlan {
     @Id
     private String recommendationActionPlanId;
-    private Recommendation recommendation;
+    private Step step;
     private boolean completed;
     private LocalDateTime date;
 

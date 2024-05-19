@@ -3,9 +3,8 @@ package com.pdg.pymesbackend.controller;
 import com.pdg.pymesbackend.api.QuestionAPI;
 import com.pdg.pymesbackend.dto.OptionDTO;
 import com.pdg.pymesbackend.dto.QuestionDTO;
-import com.pdg.pymesbackend.dto.RecommendationDTO;
 import com.pdg.pymesbackend.model.Question;
-import com.pdg.pymesbackend.service.QuestionService;
+import com.pdg.pymesbackend.service.modules.QuestionService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,10 +23,6 @@ public class QuestionController implements QuestionAPI {
         return questionService.createQuestion(question);
     }
 
-    @Override
-    public Question addRecommendation(RecommendationDTO recommendation, String questionId) {
-        return questionService.addRecommendation(questionId, recommendation);
-    }
 
     @Override
     public Question addOption(OptionDTO option, String questionId) {
