@@ -4,7 +4,6 @@ package com.pdg.pymesbackend.service.modules;
 import com.pdg.pymesbackend.dto.EvaluationDTO;
 import com.pdg.pymesbackend.dto.EvaluationInDTO;
 import com.pdg.pymesbackend.dto.EvaluationResultDTO;
-import com.pdg.pymesbackend.dto.QuestionAnswerDTO;
 import com.pdg.pymesbackend.dto.out.EvaluationResultOutDTO;
 import com.pdg.pymesbackend.model.Evaluation;
 import com.pdg.pymesbackend.model.EvaluationResult;

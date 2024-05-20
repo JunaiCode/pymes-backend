@@ -2,8 +2,6 @@ package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.EvaluationResultDTO;
 import com.pdg.pymesbackend.dto.out.EvaluationResultOutDTO;
-import com.pdg.pymesbackend.error.PymeException;
-import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.EvaluationResultMapper;
 import com.pdg.pymesbackend.model.EvaluationResult;
 import com.pdg.pymesbackend.model.Option;

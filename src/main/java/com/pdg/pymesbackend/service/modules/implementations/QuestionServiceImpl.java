@@ -12,7 +12,6 @@ import com.pdg.pymesbackend.model.Step;
 import com.pdg.pymesbackend.repository.QuestionRepository;
 import com.pdg.pymesbackend.service.modules.QuestionService;
 import com.pdg.pymesbackend.service.validator.DimensionValidator;
-import com.pdg.pymesbackend.service.validator.implementations.DimensionValidatorImpl;
 import com.pdg.pymesbackend.service.validator.implementations.VersionValidatorImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
