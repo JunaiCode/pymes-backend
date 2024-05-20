@@ -1,6 +1,7 @@
 package com.pdg.pymesbackend.controller;
 
 import com.pdg.pymesbackend.api.VersionAPI;
+import com.pdg.pymesbackend.dto.DimensionQuestionInDTO;
 import com.pdg.pymesbackend.dto.out.DimensionQuestionOutDTO;
 import com.pdg.pymesbackend.model.Version;
 import com.pdg.pymesbackend.service.modules.VersionService;
@@ -27,7 +28,7 @@ public class VersionController implements VersionAPI {
     }
 
     @Override
-    public List<DimensionQuestionOutDTO> getQuestionsByLevel(String id, String companyTypeId, String levelId) {
-        return versionService.getDimensionLevelQuestions(id, levelId, Integer.parseInt(levelId), companyTypeId);
+    public List<DimensionQuestionOutDTO> getQuestionsByLevel(DimensionQuestionInDTO dimensionQuestionInDTO) {
+        return versionService.getDimensionLevelQuestions(dimensionQuestionInDTO);
     }
 }

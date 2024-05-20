@@ -17,4 +17,5 @@ public class EvaluationResult {
     private String dimensionId;
     private String questionId;
     private String optionId;
+    private boolean marked;
 }

@@ -3,7 +3,7 @@ package com.pdg.pymesbackend.controller;
 import com.pdg.pymesbackend.api.EvaluationAPI;
 import com.pdg.pymesbackend.dto.EvaluationDTO;
 import com.pdg.pymesbackend.dto.EvaluationResultDTO;
-import com.pdg.pymesbackend.dto.out.EvaluationResultOutDTO;
+import com.pdg.pymesbackend.dto.out.QuestionOutDTO;
 import com.pdg.pymesbackend.model.Evaluation;
 import com.pdg.pymesbackend.model.EvaluationResult;
 import com.pdg.pymesbackend.service.modules.EvaluationService;
@@ -26,8 +26,8 @@ public class EvaluationController implements EvaluationAPI {
     }
 
     @Override
-    public EvaluationResult addAnswer(EvaluationResultDTO evaluationResultDTO, String evaluationId) {
-        return evaluationService.addEvaluationResult(evaluationId, evaluationResultDTO);
+    public List<EvaluationResult> addAnswers(List<EvaluationResultDTO> evaluationResultDTO, String evaluationId) {
+        return evaluationService.addEvaluationResults(evaluationId, evaluationResultDTO);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class EvaluationController implements EvaluationAPI {
     }
 
     @Override
-    public Map<String, List<EvaluationResultOutDTO>> getEvaluationResults(String evaluationId) {
+    public Map<String, List<QuestionOutDTO>> getEvaluationResults(String evaluationId) {
         return null;
     }
 }

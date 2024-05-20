@@ -4,7 +4,7 @@ import com.pdg.pymesbackend.dto.EvaluationDTO;
 import com.pdg.pymesbackend.dto.EvaluationInDTO;
 import com.pdg.pymesbackend.dto.EvaluationResultDTO;
 import com.pdg.pymesbackend.dto.QuestionAnswerDTO;
-import com.pdg.pymesbackend.dto.out.EvaluationResultOutDTO;
+import com.pdg.pymesbackend.dto.out.QuestionOutDTO;
 import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.DimensionResultMapper;
@@ -28,9 +28,10 @@ public class EvaluationServiceImpl implements EvaluationService {
     private EvaluationMapper evaluationMapper;
     private EvaluationRepository evaluationRepository;
     private QuestionRepository questionRepository;
+    private QuestionServiceImpl questionService;
+    private EvaluationResultServiceImpl evaluationResultService;
     private CompanyServiceImpl companyService;
     private RecommendationRepository recommendationRepository;
-    private EvaluationResultServiceImpl evaluationResultService;
     private DimensionResultMapper dimensionResultMapper;
 
     @Override
@@ -46,7 +47,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
-    public Map<String, List<EvaluationResultOutDTO>> getEvaluationResults(String evaluationId) {
+    public Map<String, List<QuestionOutDTO>> getEvaluationResults(String evaluationId) {
         Evaluation evaluation = getEvaluationById(evaluationId);
         //get results
         List<EvaluationResult> evaluationResult = evaluationResultService.getEvaluationResults(evaluation.getQuestionResults());
@@ -60,7 +61,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         return resultsByDimension.entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()
-                        .stream().map(evaluationResultService::mapToOutDTO).toList()));
+                        .stream().map(result -> questionService.mapAnswerToQuestionOutDTO(result)).toList()));
     }
 
     public Evaluation getEvaluationById(String evaluationId) {
@@ -68,12 +69,16 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
-    public EvaluationResult addEvaluationResult(String evaluationId, EvaluationResultDTO answer) {
+    public List<EvaluationResult> addEvaluationResults(String evaluationId, List<EvaluationResultDTO> answers) {
         Evaluation evaluation = getEvaluationById(evaluationId);
-        EvaluationResult evaluationResult = evaluationResultService.save(answer);
-        evaluation.getQuestionResults().add(evaluationResult.getEvaluationResultId());
+        List<EvaluationResult> evaluationResults = new ArrayList<>();
+        for (EvaluationResultDTO answer : answers) {
+            EvaluationResult evaluationResult = evaluationResultService.save(answer);
+            evaluation.getQuestionResults().add(evaluationResult.getEvaluationResultId());
+            evaluationResults.add(evaluationResult);
+        }
         evaluationRepository.save(evaluation);
-        return evaluationResult;
+        return evaluationResults;
     }
 
     @Override

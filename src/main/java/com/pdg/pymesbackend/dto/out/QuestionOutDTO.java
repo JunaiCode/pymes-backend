@@ -9,10 +9,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @Builder
-public class EvaluationResultOutDTO {
+public class QuestionOutDTO {
 
     private String question;
+    private String questionId;
     private List<Option> options;
     private Option answer;
+    private boolean marked;
 
 }

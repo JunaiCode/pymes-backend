@@ -1,6 +1,7 @@
 package com.pdg.pymesbackend.service.modules;
 
 
+import com.pdg.pymesbackend.dto.DimensionQuestionInDTO;
 import com.pdg.pymesbackend.dto.out.DimensionQuestionOutDTO;
 import com.pdg.pymesbackend.dto.VersionDTO;
 import com.pdg.pymesbackend.model.Dimension;
@@ -24,7 +25,5 @@ public interface VersionService {
 
     List<DimensionQuestionOutDTO> getFirstQuestions(String versionId, String companyTypeId);
 
-    List<DimensionQuestionOutDTO> getDimensionLevelQuestions(String versionId, String dimensionId, int levelValue, String companyTypeId);
-
-
+    List<DimensionQuestionOutDTO> getDimensionLevelQuestions(DimensionQuestionInDTO dimensionQuestionInDTO);
 }

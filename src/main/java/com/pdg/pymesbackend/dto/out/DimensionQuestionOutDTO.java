@@ -12,5 +12,5 @@ import java.util.List;
 public class DimensionQuestionOutDTO {
 
     private String dimensionId;
-    private List<LevelQuestionDTO> levels;
+    private List<QuestionOutDTO> questions;
 }

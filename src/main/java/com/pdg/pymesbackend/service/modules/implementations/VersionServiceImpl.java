@@ -1,5 +1,6 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
+import com.pdg.pymesbackend.dto.DimensionQuestionInDTO;
 import com.pdg.pymesbackend.dto.out.DimensionQuestionOutDTO;
 import com.pdg.pymesbackend.dto.out.LevelQuestionDTO;
 import com.pdg.pymesbackend.dto.VersionDTO;
@@ -7,6 +8,7 @@ import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.VersionMapper;
 import com.pdg.pymesbackend.model.Dimension;
+import com.pdg.pymesbackend.model.Level;
 import com.pdg.pymesbackend.model.Version;
 import com.pdg.pymesbackend.repository.VersionRepository;
 import com.pdg.pymesbackend.service.modules.VersionService;
@@ -77,28 +79,32 @@ public class VersionServiceImpl implements VersionService {
         return version.getDimensions().stream()
                 .map(dimension -> DimensionQuestionOutDTO.builder()
                         .dimensionId(dimension.getDimensionId())
-                        .levels(dimension.getLevels().stream().filter(level -> level.getValue() == 1)
-                                .map(level -> LevelQuestionDTO.builder()
-                                        .levelId(level.getLevelId())
-                                        .questions(questionService.filterQuestionsByCompanyType(level.getQuestions(),companyTypeId))
-                                        .build())
-                                .toList())
+                        .questions(dimension.getLevels()
+                                            .stream().filter(level -> level.getValue() == 1)
+                                            .map(level -> questionService.filterQuestionsByCompanyType(level.getQuestions(),companyTypeId))
+                                            .flatMap(List::stream)
+                                            .map(question -> questionService.mapQuestionToOutDTO(question))
+                                            .toList())
                         .build())
                 .toList();
-
     }
 
     @Override
-    public List<DimensionQuestionOutDTO> getDimensionLevelQuestions(String versionId, String dimensionId, int levelValue, String companyTypeId){
+    public List<DimensionQuestionOutDTO> getDimensionLevelQuestions(DimensionQuestionInDTO dimensionQuestionInDTO) {
+        String versionId = dimensionQuestionInDTO.getVersionId();
+        String levelId = dimensionQuestionInDTO.getLevelId();
+        String companyTypeId = dimensionQuestionInDTO.getCompanyTypeId();
+
         Version version = versionValidator.validateVersion(versionId);
-        return version.getDimensions().stream().filter(dimension -> dimension.getDimensionId().equals(dimensionId))
-                .map(dimension ->DimensionQuestionOutDTO.builder()
+
+        return version.getDimensions().stream()
+                .map(dimension -> DimensionQuestionOutDTO.builder()
                         .dimensionId(dimension.getDimensionId())
-                        .levels(dimension.getLevels().stream().filter(level -> level.getValue() == levelValue)
-                                .map(level -> LevelQuestionDTO.builder()
-                                        .levelId(level.getLevelId())
-                                        .questions(questionService.filterQuestionsByCompanyType(level.getQuestions(),companyTypeId))
-                                        .build())
+                        .questions(dimension.getLevels()
+                                .stream().filter(level -> level.getLevelId().equals(levelId))
+                                .map(level -> questionService.filterQuestionsByCompanyType(level.getQuestions(),companyTypeId))
+                                .flatMap(List::stream)
+                                .map(question -> questionService.mapQuestionToOutDTO(question))
                                 .toList())
                         .build())
                 .toList();

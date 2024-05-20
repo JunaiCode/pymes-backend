@@ -1,7 +1,7 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.EvaluationResultDTO;
-import com.pdg.pymesbackend.dto.out.EvaluationResultOutDTO;
+import com.pdg.pymesbackend.dto.out.QuestionOutDTO;
 import com.pdg.pymesbackend.mapper.EvaluationResultMapper;
 import com.pdg.pymesbackend.model.EvaluationResult;
 import com.pdg.pymesbackend.model.Option;
@@ -35,21 +35,4 @@ public class EvaluationResultServiceImpl implements EvaluationResultService {
         return evaluationResultRepository.findAllById(evaluationResultId);
     }
 
-    public EvaluationResultOutDTO mapToOutDTO(EvaluationResult evaluationResult){
-        Question question = questionService.getQuestion(evaluationResult.getQuestionId());
-
-        Option answer = null;
-
-        if(!Objects.equals(evaluationResult.getOptionId(), "")){
-            answer = question.getOptions()
-                    .stream()
-                    .filter(option -> option.getOptionId().equals(evaluationResult.getOptionId()))
-                    .findFirst().orElse(null);
-        }
-        return EvaluationResultOutDTO.builder()
-                .question(question.getQuestion())
-                .options(question.getOptions())
-                .answer(answer)
-                .build();
-    }
 }

@@ -1,11 +1,14 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
+import com.pdg.pymesbackend.dto.EvaluationResultDTO;
 import com.pdg.pymesbackend.dto.OptionDTO;
 import com.pdg.pymesbackend.dto.QuestionDTO;
+import com.pdg.pymesbackend.dto.out.QuestionOutDTO;
 import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.OptionMapper;
 import com.pdg.pymesbackend.mapper.QuestionMapper;
+import com.pdg.pymesbackend.model.EvaluationResult;
 import com.pdg.pymesbackend.model.Option;
 import com.pdg.pymesbackend.model.Question;
 import com.pdg.pymesbackend.model.Step;
@@ -17,6 +20,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -66,6 +70,36 @@ public class QuestionServiceImpl implements QuestionService {
 
     private Question findById(String id) {
         return questionRepository.findById(id).orElseThrow(() -> new PymeException(PymeExceptionType.QUESTION_NOT_FOUND));
+    }
+
+    public QuestionOutDTO mapQuestionToOutDTO(Question question){
+        return QuestionOutDTO.builder()
+                .question(question.getQuestion())
+                .questionId(question.getQuestionId())
+                .options(question.getOptions())
+                .answer(null)
+                .marked(false)
+                .build();
+    }
+
+    public QuestionOutDTO mapAnswerToQuestionOutDTO(EvaluationResult evaluationResult){
+
+        Question question = findById(evaluationResult.getQuestionId());
+        Option answer = null;
+
+        if(!Objects.equals(evaluationResult.getOptionId(), "")){
+            answer = question.getOptions()
+                    .stream()
+                    .filter(option -> option.getOptionId().equals(evaluationResult.getOptionId()))
+                    .findFirst().orElse(null);
+        }
+        return QuestionOutDTO.builder()
+                .question(question.getQuestion())
+                .questionId(question.getQuestionId())
+                .options(question.getOptions())
+                .answer(answer)
+                .marked(evaluationResult.isMarked())
+                .build();
     }
 
     @Override
