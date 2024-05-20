@@ -2,13 +2,11 @@ package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.DimensionQuestionInDTO;
 import com.pdg.pymesbackend.dto.out.DimensionQuestionOutDTO;
-import com.pdg.pymesbackend.dto.out.LevelQuestionDTO;
 import com.pdg.pymesbackend.dto.VersionDTO;
 import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.VersionMapper;
 import com.pdg.pymesbackend.model.Dimension;
-import com.pdg.pymesbackend.model.Level;
 import com.pdg.pymesbackend.model.Version;
 import com.pdg.pymesbackend.repository.VersionRepository;
 import com.pdg.pymesbackend.service.modules.VersionService;
