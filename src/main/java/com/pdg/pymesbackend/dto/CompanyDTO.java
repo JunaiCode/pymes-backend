@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -17,5 +18,4 @@ public class CompanyDTO {
     private int employees;
     private CompanyType companyType;
     private String economicSectorId;
-    private String[] evaluations;
 }

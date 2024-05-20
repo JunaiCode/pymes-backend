@@ -10,6 +10,9 @@ import com.pdg.pymesbackend.service.modules.CompanyService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 @AllArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
@@ -19,6 +22,8 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Company save(CompanyDTO companyDTO) {
         Company company = companyMapper.fromCompanyDTO(companyDTO);
+        company.setCompanyId(UUID.randomUUID().toString());
+        company.setEvaluations(List.of());
         return companyRepository.save(company);
     }
 
