@@ -2,7 +2,9 @@ package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.EvaluationDTO;
 import com.pdg.pymesbackend.dto.EvaluationInDTO;
+import com.pdg.pymesbackend.dto.EvaluationResultDTO;
 import com.pdg.pymesbackend.dto.QuestionAnswerDTO;
+import com.pdg.pymesbackend.dto.out.EvaluationResultOutDTO;
 import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.DimensionResultMapper;
@@ -16,10 +18,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -28,13 +28,52 @@ public class EvaluationServiceImpl implements EvaluationService {
     private EvaluationMapper evaluationMapper;
     private EvaluationRepository evaluationRepository;
     private QuestionRepository questionRepository;
+    private CompanyServiceImpl companyService;
     private RecommendationRepository recommendationRepository;
+    private EvaluationResultServiceImpl evaluationResultService;
     private DimensionResultMapper dimensionResultMapper;
 
     @Override
-    public Evaluation save(EvaluationDTO evaluationDTO) {
+    public Evaluation save(EvaluationDTO evaluationDTO, String companyId) {
         Evaluation evaluation = evaluationMapper.fromEvaluationDTO(evaluationDTO);
-        return evaluationRepository.save(evaluation);
+        evaluation.setEvaluationId(UUID.randomUUID().toString());
+        evaluation.setQuestionResults(List.of());
+        evaluation.setDimensionResults(List.of());
+        evaluation.setCompleted(false);
+        Evaluation newEvaluation = evaluationRepository.save(evaluation);
+        companyService.addEvaluationToCompany(companyId, newEvaluation.getEvaluationId());
+        return newEvaluation;
+    }
+
+    @Override
+    public Map<String, List<EvaluationResultOutDTO>> getEvaluationResults(String evaluationId) {
+        Evaluation evaluation = getEvaluationById(evaluationId);
+        //get results
+        List<EvaluationResult> evaluationResult = evaluationResultService.getEvaluationResults(evaluation.getQuestionResults());
+        //organize by dimension
+        Map<String, List<EvaluationResult>> resultsByDimension = evaluationResult
+                .stream()
+                .collect(Collectors.groupingBy(EvaluationResult::getDimensionId));
+
+        //map them to out entity
+
+        return resultsByDimension.entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()
+                        .stream().map(evaluationResultService::mapToOutDTO).toList()));
+    }
+
+    public Evaluation getEvaluationById(String evaluationId) {
+        return evaluationRepository.findById(evaluationId).orElseThrow(() -> new PymeException(PymeExceptionType.EVALUATION_NOT_FOUND));
+    }
+
+    @Override
+    public EvaluationResult addEvaluationResult(String evaluationId, EvaluationResultDTO answer) {
+        Evaluation evaluation = getEvaluationById(evaluationId);
+        EvaluationResult evaluationResult = evaluationResultService.save(answer);
+        evaluation.getQuestionResults().add(evaluationResult.getEvaluationResultId());
+        evaluationRepository.save(evaluation);
+        return evaluationResult;
     }
 
     @Override

@@ -6,4 +6,6 @@ import com.pdg.pymesbackend.model.Company;
 
 public interface CompanyService {
     Company save(CompanyDTO companyDTO);
+
+    Company getCompanyById(String companyId);
 }

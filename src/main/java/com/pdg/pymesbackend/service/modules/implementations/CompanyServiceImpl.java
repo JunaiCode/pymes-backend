@@ -1,6 +1,8 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.CompanyDTO;
+import com.pdg.pymesbackend.error.PymeException;
+import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.CompanyMapper;
 import com.pdg.pymesbackend.model.Company;
 import com.pdg.pymesbackend.repository.CompanyRepository;
@@ -18,5 +20,17 @@ public class CompanyServiceImpl implements CompanyService {
     public Company save(CompanyDTO companyDTO) {
         Company company = companyMapper.fromCompanyDTO(companyDTO);
         return companyRepository.save(company);
+    }
+
+    public Company addEvaluationToCompany(String companyId, String evaluationId) {
+        Company company = getCompanyById(companyId);
+        //pendiente validar si la evaluacion existe
+        company.getEvaluations().add(evaluationId);
+        return companyRepository.save(company);
+    }
+
+    @Override
+    public Company getCompanyById(String companyId) {
+        return companyRepository.findById(companyId).orElseThrow(() -> new PymeException(PymeExceptionType.COMPANY_NOT_FOUND));
     }
 }

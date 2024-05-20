@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -21,6 +22,6 @@ public class Company {
     private String email;
     private int employees;
     private CompanyType companyType;
-    private String[] evaluations;
+    private List<String> evaluations;
     private String economicSectorId;
 }

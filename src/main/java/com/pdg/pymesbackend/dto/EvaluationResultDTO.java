@@ -4,14 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Data
 @AllArgsConstructor
 @Builder
-public class EvaluationDTO {
-
-    private LocalDateTime date;
-    private boolean completed;
-
+public class EvaluationResultDTO {
+    private String dimensionId;
+    private String questionId;
+    private String optionId;
 }

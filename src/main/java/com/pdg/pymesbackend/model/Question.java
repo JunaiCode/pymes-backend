@@ -16,7 +16,6 @@ import java.util.List;
 public class Question {
     @Id
     private String questionId;
-    @Field("default")
     private String question;
     private Double weight;
     private int scorePositive;

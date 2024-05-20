@@ -15,6 +15,7 @@ import java.util.List;
 public class Model {
     @Id
     private String modelId;
+    private boolean active;
     private String name;
     private String description;
     private List<String> versions;

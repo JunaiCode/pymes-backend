@@ -19,6 +19,6 @@ public class LevelDTO {
     private String description;
     @Min(0)
     private Integer value;
-    private List<QuestionDTO> questions;
+    private List<String> questions;
 
 }

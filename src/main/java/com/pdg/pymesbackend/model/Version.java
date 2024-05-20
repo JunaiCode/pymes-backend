@@ -17,5 +17,6 @@ public class Version {
     @Id
     private String versionId;
     private String name;
+    private boolean active;
     private List<Dimension> dimensions;
 }

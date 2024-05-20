@@ -19,7 +19,10 @@ public enum PymeExceptionType {
     LEVEL_NOT_FOUND(601, "Level not found", "levelId", HttpStatus.NOT_FOUND, LogLevel.INFO),
     LEVEL_ALREADY_EXISTS(602, "Level already exists", "levelId", HttpStatus.CONFLICT, LogLevel.INFO),
     QUESTION_NOT_FOUND(701, "Question not found", "questionId", HttpStatus.NOT_FOUND, LogLevel.INFO),
-    RECOMMENDATION_NOT_FOUND(801, "Recommendation not found", "recommendationId", HttpStatus.NOT_FOUND, LogLevel.INFO),;
+    RECOMMENDATION_NOT_FOUND(801, "Recommendation not found", "recommendationId", HttpStatus.NOT_FOUND, LogLevel.INFO),
+    COMPANY_NOT_FOUND(901, "Company not found", "companyId", HttpStatus.NOT_FOUND, LogLevel.INFO),
+    EVALUATION_NOT_FOUND(1001, "Evaluation not found", "evaluationId", HttpStatus.NOT_FOUND, LogLevel.INFO),
+    EVALUATION_RESULT_ERROR(1002, "Error getting evaluation results", "evaluationId", HttpStatus.INTERNAL_SERVER_ERROR, LogLevel.INFO),;
     private final int code;
     private final String message;
     private final String parameterName;

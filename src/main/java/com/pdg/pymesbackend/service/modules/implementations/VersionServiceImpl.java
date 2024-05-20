@@ -1,5 +1,7 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
+import com.pdg.pymesbackend.dto.out.DimensionQuestionOutDTO;
+import com.pdg.pymesbackend.dto.out.LevelQuestionDTO;
 import com.pdg.pymesbackend.dto.VersionDTO;
 import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
@@ -8,10 +10,11 @@ import com.pdg.pymesbackend.model.Dimension;
 import com.pdg.pymesbackend.model.Version;
 import com.pdg.pymesbackend.repository.VersionRepository;
 import com.pdg.pymesbackend.service.modules.VersionService;
-import com.pdg.pymesbackend.service.validator.VersionValidator;
 import com.pdg.pymesbackend.service.validator.implementations.VersionValidatorImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -20,6 +23,7 @@ public class VersionServiceImpl implements VersionService {
     private VersionRepository versionRepository;
     private VersionMapper versionMapper;
     private VersionValidatorImpl versionValidator;
+    private QuestionServiceImpl questionService;
     @Override
     public Version save(VersionDTO version) {
         Version newVersion = versionMapper.fromDTO(version);
@@ -64,6 +68,40 @@ public class VersionServiceImpl implements VersionService {
     @Override
     public Version updateWithVersion(Version version) {
         return versionRepository.save(version);
+    }
+
+    @Override
+    public List<DimensionQuestionOutDTO> getFirstQuestions(String versionId, String companyTypeId) {
+        Version version = versionValidator.validateVersion(versionId);
+
+        return version.getDimensions().stream()
+                .map(dimension -> DimensionQuestionOutDTO.builder()
+                        .dimensionId(dimension.getDimensionId())
+                        .levels(dimension.getLevels().stream().filter(level -> level.getValue() == 1)
+                                .map(level -> LevelQuestionDTO.builder()
+                                        .levelId(level.getLevelId())
+                                        .questions(questionService.filterQuestionsByCompanyType(level.getQuestions(),companyTypeId))
+                                        .build())
+                                .toList())
+                        .build())
+                .toList();
+
+    }
+
+    @Override
+    public List<DimensionQuestionOutDTO> getDimensionLevelQuestions(String versionId, String dimensionId, int levelValue, String companyTypeId){
+        Version version = versionValidator.validateVersion(versionId);
+        return version.getDimensions().stream().filter(dimension -> dimension.getDimensionId().equals(dimensionId))
+                .map(dimension ->DimensionQuestionOutDTO.builder()
+                        .dimensionId(dimension.getDimensionId())
+                        .levels(dimension.getLevels().stream().filter(level -> level.getValue() == levelValue)
+                                .map(level -> LevelQuestionDTO.builder()
+                                        .levelId(level.getLevelId())
+                                        .questions(questionService.filterQuestionsByCompanyType(level.getQuestions(),companyTypeId))
+                                        .build())
+                                .toList())
+                        .build())
+                .toList();
     }
 
 }

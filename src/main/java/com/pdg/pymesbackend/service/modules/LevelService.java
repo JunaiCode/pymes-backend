@@ -10,4 +10,6 @@ public interface LevelService {
     Level save(LevelDTO level, String dimensionId);
 
     List<Level> getLevelsInDimension(String dimensionId);
+
+
 }

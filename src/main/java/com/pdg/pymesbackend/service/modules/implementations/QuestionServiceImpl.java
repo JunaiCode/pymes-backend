@@ -84,6 +84,7 @@ public class QuestionServiceImpl implements QuestionService {
         return questionRepository.findByTagId(tag);
     }
 
+    @Override
     public List<Question> filterQuestionsByCompanyType(List<String> questionsId, String companyTypeId) {
         return questionRepository.findQuestionsByCompanyType(questionsId, companyTypeId);
     }
