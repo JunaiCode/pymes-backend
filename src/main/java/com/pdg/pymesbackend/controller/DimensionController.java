@@ -2,6 +2,7 @@ package com.pdg.pymesbackend.controller;
 
 import com.pdg.pymesbackend.api.DimensionAPI;
 import com.pdg.pymesbackend.dto.DimensionDTO;
+import com.pdg.pymesbackend.dto.LevelDTO;
 import com.pdg.pymesbackend.model.Dimension;
 import com.pdg.pymesbackend.service.modules.DimensionService;
 import lombok.AllArgsConstructor;
@@ -39,5 +40,10 @@ public class DimensionController implements DimensionAPI {
     @Override
     public void deleteDimension(String id) {
         dimensionService.delete(id);
+    }
+
+    @Override
+    public Dimension addLevelToDimension(LevelDTO level, String id) {
+        return dimensionService.addLevelToDimension(level,id);
     }
 }

@@ -28,7 +28,7 @@ public class LevelServiceImpl implements LevelService {
         Level newLevel = levelMapper.fromLevelDTO(level);
         checkIfLevelExists(newLevel, dimensionId);
         newLevel = levelRepository.save(newLevel);
-        dimensionService.addLevelToDimension(newLevel, dimensionId);
+        dimensionService.addLevelToDimension(level, dimensionId);
         return newLevel;
     }
 
