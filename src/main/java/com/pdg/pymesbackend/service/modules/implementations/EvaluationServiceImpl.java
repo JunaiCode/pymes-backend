@@ -1,6 +1,5 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
-import com.pdg.pymesbackend.dto.EvaluationDTO;
 import com.pdg.pymesbackend.dto.EvaluationInDTO;
 import com.pdg.pymesbackend.dto.EvaluationResultDTO;
 import com.pdg.pymesbackend.dto.QuestionAnswerDTO;
@@ -8,10 +7,8 @@ import com.pdg.pymesbackend.dto.out.QuestionOutDTO;
 import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.DimensionResultMapper;
-import com.pdg.pymesbackend.mapper.EvaluationMapper;
 import com.pdg.pymesbackend.model.*;
 import com.pdg.pymesbackend.repository.EvaluationRepository;
-import com.pdg.pymesbackend.repository.QuestionRepository;
 import com.pdg.pymesbackend.repository.RecommendationRepository;
 import com.pdg.pymesbackend.service.modules.EvaluationService;
 import lombok.AllArgsConstructor;
@@ -25,26 +22,25 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class EvaluationServiceImpl implements EvaluationService {
 
-    private EvaluationMapper evaluationMapper;
     private EvaluationRepository evaluationRepository;
-    private QuestionRepository questionRepository;
     private QuestionServiceImpl questionService;
     private EvaluationResultServiceImpl evaluationResultService;
     private CompanyServiceImpl companyService;
-    private RecommendationRepository recommendationRepository;
     private DimensionResultMapper dimensionResultMapper;
 
     @Override
-    public Evaluation save(EvaluationDTO evaluationDTO, String companyId) {
-        Evaluation evaluation = evaluationMapper.fromEvaluationDTO(evaluationDTO);
-        evaluation.setEvaluationId(UUID.randomUUID().toString());
-        evaluation.setDate(evaluationDTO.getDate());
-        evaluation.setQuestionResults(List.of());
-        evaluation.setDimensionResults(List.of());
-        evaluation.setCompleted(false);
-        Evaluation newEvaluation = evaluationRepository.save(evaluation);
-        companyService.addEvaluationToCompany(companyId, newEvaluation.getEvaluationId());
-        return newEvaluation;
+    public Evaluation save(String companyId) {
+
+        Evaluation evaluation =  evaluationRepository.save(Evaluation.builder()
+                .evaluationId(UUID.randomUUID().toString())
+                .date(LocalDateTime.now())
+                .questionResults(List.of())
+                .dimensionResults(List.of())
+                .completed(false)
+                .build());
+
+        companyService.addEvaluationToCompany(companyId, evaluation.getEvaluationId());
+        return evaluation;
     }
 
     @Override

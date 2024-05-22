@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface EvaluationService {
-    Evaluation save(EvaluationDTO evaluationDTO, String companyId);
+    Evaluation save(String companyId);
 
     Map<String, List<QuestionOutDTO>> getEvaluationResults(String evaluationId);
 

@@ -20,9 +20,9 @@ import java.util.Map;
 public class EvaluationController implements EvaluationAPI {
     private final EvaluationService evaluationService;
     @Override
-    public Evaluation createEvaluation(EvaluationDTO evaluationDTO, String companyId) {
+    public Evaluation createEvaluation(String companyId) {
 
-        return evaluationService.save(evaluationDTO, companyId);
+        return evaluationService.save(companyId);
     }
 
     @Override
@@ -37,6 +37,6 @@ public class EvaluationController implements EvaluationAPI {
 
     @Override
     public Map<String, List<QuestionOutDTO>> getEvaluationResults(String evaluationId) {
-        return null;
+        return evaluationService.getEvaluationResults(evaluationId);
     }
 }

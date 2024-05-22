@@ -1,25 +1,18 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.ActionPlanDTO;
-import com.pdg.pymesbackend.dto.TagDTO;
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
-import com.pdg.pymesbackend.dto.out.RecomActionPlanOut;
-import com.pdg.pymesbackend.dto.out.StepOutDTO;
 import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.ActionPlanMapper;
 import com.pdg.pymesbackend.model.*;
 import com.pdg.pymesbackend.repository.ActionPlanRepository;
-import com.pdg.pymesbackend.repository.CompanyRepository;
-import com.pdg.pymesbackend.repository.EvaluationRepository;
-import com.pdg.pymesbackend.service.modules.ActionPlanConstructor;
 import com.pdg.pymesbackend.service.modules.ActionPlanService;
 import com.pdg.pymesbackend.service.modules.EvaluationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor

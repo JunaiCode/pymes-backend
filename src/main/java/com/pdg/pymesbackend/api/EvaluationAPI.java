@@ -14,7 +14,7 @@ import java.util.Map;
 @RequestMapping("/evaluation")
 public interface EvaluationAPI {
     @PostMapping("/add/{companyId}")
-    Evaluation createEvaluation(@RequestBody @Valid EvaluationDTO evaluationDTO, @PathVariable String companyId);
+    Evaluation createEvaluation(@PathVariable String companyId);
 
     @PostMapping("/{evaluationId}/addAnswers")
     List<EvaluationResult> addAnswers(@RequestBody @Valid List<EvaluationResultDTO> evaluationResultDTO, @PathVariable String evaluationId);
