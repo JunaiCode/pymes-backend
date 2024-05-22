@@ -22,7 +22,10 @@ public enum PymeExceptionType {
     RECOMMENDATION_NOT_FOUND(801, "Recommendation not found", "recommendationId", HttpStatus.NOT_FOUND, LogLevel.INFO),
     COMPANY_NOT_FOUND(901, "Company not found", "companyId", HttpStatus.NOT_FOUND, LogLevel.INFO),
     EVALUATION_NOT_FOUND(1001, "Evaluation not found", "evaluationId", HttpStatus.NOT_FOUND, LogLevel.INFO),
-    EVALUATION_RESULT_ERROR(1002, "Error getting evaluation results", "evaluationId", HttpStatus.INTERNAL_SERVER_ERROR, LogLevel.INFO),;
+    EVALUATION_RESULT_NOT_FOUND(1002, "Evaluation result not found", "evaluationResultId", HttpStatus.NOT_FOUND, LogLevel.INFO),
+    EVALUATION_RESULT_ERROR(1003, "Error getting evaluation results", "evaluationId", HttpStatus.INTERNAL_SERVER_ERROR, LogLevel.INFO),
+    EVALUATION_NOT_COMPLETED(1004, "Evaluation not completed", "evaluationId", HttpStatus.BAD_REQUEST, LogLevel.INFO),
+    ACTION_PLAN_NOT_FOUND(1101, "Action plan not found", "actionPlanId", HttpStatus.NOT_FOUND, LogLevel.INFO),;
     private final int code;
     private final String message;
     private final String parameterName;

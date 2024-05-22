@@ -61,10 +61,9 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public TagDTO getTag(String tagId) {
-        Tag tag = tagRepository.findById(tagId).orElseThrow(
+    public Tag getTag(String tagId) {
+        return tagRepository.findById(tagId).orElseThrow(
                 () -> new PymeException(PymeExceptionType.TAG_NOT_FOUND)
         );
-        return tagMapper.toDTO(tag);
     }
 }

@@ -1,53 +1,56 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.ActionPlanDTO;
+import com.pdg.pymesbackend.dto.TagDTO;
+import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
+import com.pdg.pymesbackend.dto.out.RecomActionPlanOut;
+import com.pdg.pymesbackend.dto.out.StepOutDTO;
+import com.pdg.pymesbackend.error.PymeException;
+import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.ActionPlanMapper;
-import com.pdg.pymesbackend.model.ActionPlan;
-import com.pdg.pymesbackend.model.Company;
-import com.pdg.pymesbackend.model.Evaluation;
+import com.pdg.pymesbackend.model.*;
 import com.pdg.pymesbackend.repository.ActionPlanRepository;
 import com.pdg.pymesbackend.repository.CompanyRepository;
 import com.pdg.pymesbackend.repository.EvaluationRepository;
+import com.pdg.pymesbackend.service.modules.ActionPlanConstructor;
 import com.pdg.pymesbackend.service.modules.ActionPlanService;
+import com.pdg.pymesbackend.service.modules.EvaluationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class ActionPlanServiceImpl implements ActionPlanService {
 
-    private CompanyRepository companyRepository;
-    private EvaluationRepository evaluationRepository;
     private ActionPlanRepository actionPlanRepository;
     private ActionPlanMapper actionPlanMapper;
+    private EvaluationService evaluationService;
+    private CompanyServiceImpl companyService;
+    private ActionPlanConstructorImpl actionPlanConstructor;
+
 
     @Override
-    public ActionPlan getActualActionPlanByCompanyId(String companyId) {
-        Optional<Company> company = companyRepository.findById(companyId);
-        if (company.isPresent()) {
-            List<String> evaluations = company.get().getEvaluations();
-            if (evaluations != null && !evaluations.isEmpty()) {
-                // Order Evaluations
-                evaluations.sort(Comparator.reverseOrder());
-                // Choose the most recent evaluation
-                String latestEvaluation = evaluations.get(0);
-                Optional<Evaluation> evaluation = evaluationRepository.findById(latestEvaluation);
-                if(evaluation.isPresent()){
-                    Optional<ActionPlan> actionPlan = actionPlanRepository.findById(evaluation.get().getActionPlanId());
-                  if(actionPlan.isPresent()){
-                      return actionPlan.get();
-                  };
-                }
-            }
+    public List<ActionPlanOutDTO> getActualActionPlanByCompanyId(String companyId) {
+        List<String> evaluations = companyService.getCompanyById(companyId).getEvaluations();
+
+        if(evaluations.isEmpty()){
+            return new ArrayList<>();
+        }else {
+            String evaluationId = evaluations.get(evaluations.size()-1);
+            Evaluation evaluation = evaluationService.getEvaluationById(evaluationId);
+            String actionPlanId = evaluation.getActionPlanId();
+            return actionPlanConstructor.constructActionPlan(findById(actionPlanId));
         }
-        return null;
     }
+
 
     @Override
     public ActionPlan findById(String id) {
-        return null;
+        return actionPlanRepository.findById(id).orElseThrow(() -> new PymeException(PymeExceptionType.ACTION_PLAN_NOT_FOUND));
+
     }
 
     @Override
@@ -56,8 +59,11 @@ public class ActionPlanServiceImpl implements ActionPlanService {
     }
 
     @Override
-    public ActionPlan save(ActionPlanDTO actionPlanDTO) {
+    public ActionPlan save(ActionPlanDTO actionPlanDTO, String evaluationId) {
         ActionPlan actionPlan = actionPlanMapper.fromActionPlanDTO(actionPlanDTO);
+        actionPlan.setActionPlanId(UUID.randomUUID().toString());
+        ActionPlan savedActionPlan = actionPlanRepository.save(actionPlan);
+        evaluationService.addActionPlanToEvaluation(evaluationId, savedActionPlan.getActionPlanId());
         return actionPlanRepository.save(actionPlan);
     }
 }

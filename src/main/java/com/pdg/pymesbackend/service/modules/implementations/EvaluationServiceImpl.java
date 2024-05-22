@@ -38,6 +38,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     public Evaluation save(EvaluationDTO evaluationDTO, String companyId) {
         Evaluation evaluation = evaluationMapper.fromEvaluationDTO(evaluationDTO);
         evaluation.setEvaluationId(UUID.randomUUID().toString());
+        evaluation.setDate(evaluationDTO.getDate());
         evaluation.setQuestionResults(List.of());
         evaluation.setDimensionResults(List.of());
         evaluation.setCompleted(false);
@@ -64,6 +65,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                         .stream().map(result -> questionService.mapAnswerToQuestionOutDTO(result)).toList()));
     }
 
+    @Override
     public Evaluation getEvaluationById(String evaluationId) {
         return evaluationRepository.findById(evaluationId).orElseThrow(() -> new PymeException(PymeExceptionType.EVALUATION_NOT_FOUND));
     }
@@ -79,6 +81,13 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
         evaluationRepository.save(evaluation);
         return evaluationResults;
+    }
+
+    @Override
+    public void addActionPlanToEvaluation(String evaluationId, String actionPlanId){
+        Evaluation evaluation = getEvaluationById(evaluationId);
+        evaluation.setActionPlanId(actionPlanId);
+        evaluationRepository.save(evaluation);
     }
 
     @Override
@@ -98,9 +107,9 @@ public class EvaluationServiceImpl implements EvaluationService {
             evaluation.getDimensionResults().add(dimensionResults.get(i));
         }
 
-        List<Recommendation> recommendations = getRecommendations(answers);
+        //List<Recommendation> recommendations = getRecommendations(answers);
 
-        List<RecommendationActionPlan> recommendationActionPlans = mapToRecommendationActionPlan(recommendations);
+        //List<RecommendationActionPlan> recommendationActionPlans = mapToRecommendationActionPlan(recommendations);
 
         /*ActionPlan actionPlan = ActionPlan.builder()
                 .actionPlanId(UUID.randomUUID().toString())
@@ -112,11 +121,25 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
 
-    private List<Recommendation> getRecommendations(List<QuestionAnswerDTO> evaluationDTO){
+    private List<Recommendation> getRecommendations(String evaluationId){
+
+        Evaluation evaluation = getEvaluationById(evaluationId);
+
+        List<EvaluationResult> evaluationResults = evaluation.getQuestionResults().stream()
+                .map(evaluationResultService::findById)
+                .toList();
+
+        boolean evaluationComplete = evaluationResults.stream().allMatch(evaluationResult -> evaluationResult.getOptionId()!=null);
+
+        if(!evaluationComplete){
+            throw new PymeException(PymeExceptionType.EVALUATION_NOT_COMPLETED);
+        }else {
+           // evaluationResults.stream().map(evaluationResult -> questionService.getQuestion(evaluationResult.getQuestionId()).
+        }
 
         List<Recommendation> recommendations = new ArrayList<>();
 
-        for (QuestionAnswerDTO evaluationResultDTO : evaluationDTO) {
+       /* for (QuestionAnswerDTO evaluationResultDTO : evaluationDTO) {
             //obtener pregunta cambiar por usar un servicio
             Optional<Question> question = questionRepository.findById(evaluationResultDTO.getQuestionId());
             boolean passed = false;
@@ -131,7 +154,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                 ));
             }
         }
-
+ */
         return recommendations;
     }
 

@@ -7,4 +7,5 @@ public interface RecommendationService {
 
     Recommendation createRecommendation(RecommendationDTO recommendation);
 
+    Recommendation getRecommendationById(String recommendationId);
 }

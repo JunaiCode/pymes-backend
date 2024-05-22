@@ -1,6 +1,8 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.EvaluationResultDTO;
+import com.pdg.pymesbackend.error.PymeException;
+import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.EvaluationResultMapper;
 import com.pdg.pymesbackend.model.EvaluationResult;
 import com.pdg.pymesbackend.repository.EvaluationResultRepository;
@@ -22,6 +24,11 @@ public class EvaluationResultServiceImpl implements EvaluationResultService {
         EvaluationResult evaluationResult = evaluationResultMapper.fromDTO(evaluationResultDTO);
         evaluationResult.setEvaluationResultId(UUID.randomUUID().toString());
         return evaluationResultRepository.save(evaluationResult);
+    }
+
+    @Override
+    public EvaluationResult findById(String id) {
+        return evaluationResultRepository.findById(id).orElseThrow(()-> new PymeException(PymeExceptionType.EVALUATION_RESULT_NOT_FOUND));
     }
 
     @Override

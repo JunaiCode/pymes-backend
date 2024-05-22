@@ -32,7 +32,7 @@ public class TagController implements TagAPI {
     }
 
     @Override
-    public TagDTO getTag(String tagId) {
+    public Tag getTag(String tagId) {
         return tagService.getTag(tagId);
     }
 }

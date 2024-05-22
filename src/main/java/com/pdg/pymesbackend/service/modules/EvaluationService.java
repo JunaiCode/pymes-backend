@@ -16,7 +16,11 @@ public interface EvaluationService {
 
     Map<String, List<QuestionOutDTO>> getEvaluationResults(String evaluationId);
 
+    Evaluation getEvaluationById(String evaluationId);
+
     List<EvaluationResult> addEvaluationResults(String evaluationId, List<EvaluationResultDTO> answers);
 
     void makeEvaluation(EvaluationInDTO evaluationInDTO);
+
+    void addActionPlanToEvaluation(String evaluationId, String actionPlanId);
 }

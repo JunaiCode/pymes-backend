@@ -9,5 +9,7 @@ public interface EvaluationResultService {
 
     EvaluationResult save(EvaluationResultDTO evaluationResultDTO);
 
+    EvaluationResult findById(String id);
+
     List<EvaluationResult> getEvaluationResults(List<String> evaluationResultId);
 }

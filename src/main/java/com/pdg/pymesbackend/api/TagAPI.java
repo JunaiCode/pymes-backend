@@ -19,5 +19,5 @@ public interface TagAPI {
     List<Tag> dimensionTags(@PathVariable String dimensionId);
 
     @GetMapping("/get/{tagId}")
-    TagDTO getTag( @PathVariable String tagId);
+    Tag getTag( @PathVariable String tagId);
 }
