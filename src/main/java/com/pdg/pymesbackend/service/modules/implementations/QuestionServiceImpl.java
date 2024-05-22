@@ -77,6 +77,7 @@ public class QuestionServiceImpl implements QuestionService {
                 .questionId(question.getQuestionId())
                 .options(question.getOptions())
                 .answer(null)
+                .maxScore(question.getScorePositive())
                 .marked(false)
                 .build();
     }
@@ -97,6 +98,7 @@ public class QuestionServiceImpl implements QuestionService {
                 .questionId(question.getQuestionId())
                 .options(question.getOptions())
                 .answer(answer)
+                .maxScore(question.getScorePositive())
                 .marked(evaluationResult.isMarked())
                 .build();
     }

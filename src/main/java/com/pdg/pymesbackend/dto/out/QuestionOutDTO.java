@@ -15,6 +15,7 @@ public class QuestionOutDTO {
     private String questionId;
     private List<Option> options;
     private Option answer;
+    private int maxScore;
     private boolean marked;
 
 }
