@@ -22,7 +22,6 @@ public interface DimensionAPI {
     List<Dimension> getAllDimensions ();
 
 
-
     @PutMapping("/update/{id}")
     Dimension updateDimension (@RequestBody @Valid DimensionDTO dimension, @PathVariable String id);
 
