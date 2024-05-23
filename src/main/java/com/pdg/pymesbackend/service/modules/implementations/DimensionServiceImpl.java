@@ -1,9 +1,11 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.DimensionDTO;
+import com.pdg.pymesbackend.dto.LevelDTO;
 import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.DimensionMapper;
+import com.pdg.pymesbackend.mapper.LevelMapper;
 import com.pdg.pymesbackend.model.Dimension;
 import com.pdg.pymesbackend.model.Level;
 import com.pdg.pymesbackend.model.Version;
@@ -15,6 +17,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -22,6 +25,7 @@ public class DimensionServiceImpl implements DimensionService {
 
     private DimensionRepository dimensionRepository;
     private DimensionMapper dimensionMapper;
+    private LevelMapper levelMapper;
     private DimensionValidator dimensionValidator;
     private VersionService versionService;
 
@@ -65,14 +69,16 @@ public class DimensionServiceImpl implements DimensionService {
     }
 
     @Override
-    public void addLevelToDimension(Level level, String dimensionId) {
+    public Dimension addLevelToDimension(LevelDTO level, String dimensionId) {
+        Level newLevel = levelMapper.fromLevelDTO(level);
         Version version = versionService.findVersionByDimensionId(dimensionId);
         Dimension dimension = findById(dimensionId);
         version.getDimensions().remove(dimension);
-        dimension.getLevels().add(level);
+        newLevel.setLevelId(UUID.randomUUID().toString());
+        dimension.getLevels().add(newLevel);
         version.getDimensions().add(dimension);
         versionService.updateWithVersion(version);
-        dimensionRepository.save(dimension);
+        return dimensionRepository.save(dimension);
     }
 
     private void findByName(String name, String versionId) {

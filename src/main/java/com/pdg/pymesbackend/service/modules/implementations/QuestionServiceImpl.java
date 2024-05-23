@@ -47,8 +47,8 @@ public class QuestionServiceImpl implements QuestionService {
         for(Option option : question.getOptions()){
             option.setOptionId(UUID.randomUUID().toString());
         }
-
         question.setQuestionId(UUID.randomUUID().toString());
+        question.getRecommendation().setQuestionId(question.getQuestionId());
         return questionRepository.save(question);
     }
 
@@ -57,6 +57,7 @@ public class QuestionServiceImpl implements QuestionService {
     public Question addOption(String questionId, OptionDTO option) {
         Question question = findById(questionId);
         Option newOption = optionMapper.fromDTO(option);
+        newOption.setOptionId(UUID.randomUUID().toString());
         question.getOptions().add(newOption);
         return questionRepository.save(question);
     }

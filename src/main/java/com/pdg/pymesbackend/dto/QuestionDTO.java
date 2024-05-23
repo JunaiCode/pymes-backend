@@ -18,7 +18,6 @@ public class QuestionDTO {
     private Double weight;
     @Min(0)
     private int scorePositive;
-    @NotEmpty
     private List<OptionDTO> options;
     @NotNull
     private RecommendationDTO recommendation;
