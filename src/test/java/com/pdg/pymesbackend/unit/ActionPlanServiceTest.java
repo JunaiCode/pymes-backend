@@ -11,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 @ExtendWith(MockitoExtension.class)
 public class ActionPlanServiceTest {
     @InjectMocks
@@ -26,7 +28,7 @@ public class ActionPlanServiceTest {
     @Test
     void getActualActionPlan(){
         Evaluation evaluation = Evaluation.builder().evaluationId("1").actionPlanId("1").build();
-        String[] evaluations = {"1"};
+        List<String> evaluations = List.of("1");
         Company company = Company.builder().companyId("1").companyType(CompanyType.builder().companyTypeId("1").build()).name("").email("J").address("A").employees(100).evaluations(evaluations).build();
         System.out.println(company);
         System.out.println(service.getActualActionPlanByCompanyId(company.getCompanyId()));

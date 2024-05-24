@@ -1,7 +1,6 @@
 package com.pdg.pymesbackend.service.modules;
 
 
-import com.pdg.pymesbackend.dto.EvaluationDTO;
 import com.pdg.pymesbackend.dto.EvaluationInDTO;
 import com.pdg.pymesbackend.dto.EvaluationResultDTO;
 import com.pdg.pymesbackend.dto.out.QuestionOutDTO;
@@ -13,6 +12,8 @@ import java.util.Map;
 
 public interface EvaluationService {
     Evaluation save(String companyId);
+
+    Evaluation finishEvaluation(String evaluationId);
 
     Map<String, List<QuestionOutDTO>> getEvaluationResults(String evaluationId);
 

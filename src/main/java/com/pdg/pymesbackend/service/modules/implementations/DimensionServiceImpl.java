@@ -32,6 +32,7 @@ public class DimensionServiceImpl implements DimensionService {
     @Override
     public Dimension save(DimensionDTO dimension, String versionId) {
         Dimension newDimension = dimensionMapper.fromCreateDTO(dimension);
+        newDimension.setDimensionId(UUID.randomUUID().toString());
         findByName(dimension.getName(), versionId);
         dimensionRepository.save(newDimension);
         versionService.addDimension(versionId, newDimension);

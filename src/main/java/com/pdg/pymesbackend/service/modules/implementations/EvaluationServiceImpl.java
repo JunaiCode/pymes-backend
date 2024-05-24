@@ -43,6 +43,30 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
+    public Evaluation finishEvaluation(String evaluationId){
+        Evaluation  evaluation = getEvaluationById(evaluationId);
+
+        //obtener todos los resultados en un mapa usando el id como key
+
+        Map<String, EvaluationResult> results = evaluation.getQuestionResults()
+                .stream()
+                .map(evaluationResultService::findById)
+                .collect(Collectors.toMap(EvaluationResult::getQuestionId, evaluationResult -> evaluationResult));
+
+        boolean evaluationComplete = results.values()
+                .stream()
+                .allMatch(evaluationResult -> evaluationResult.getOptionId()!=null);
+
+        if(!evaluationComplete){
+            throw new PymeException(PymeExceptionType.EVALUATION_NOT_COMPLETED);
+        }else {
+
+        }
+
+        return null;
+    }
+
+    @Override
     public Map<String, List<QuestionOutDTO>> getEvaluationResults(String evaluationId) {
         Evaluation evaluation = getEvaluationById(evaluationId);
         //get results

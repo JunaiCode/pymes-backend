@@ -26,6 +26,7 @@ public class LevelServiceImpl implements LevelService {
     @Override
     public Level save(LevelDTO level, String dimensionId) {
         Level newLevel = levelMapper.fromLevelDTO(level);
+        newLevel.setQuestions(List.of());
         checkIfLevelExists(newLevel, dimensionId);
         newLevel = levelRepository.save(newLevel);
         dimensionService.addLevelToDimension(level, dimensionId);

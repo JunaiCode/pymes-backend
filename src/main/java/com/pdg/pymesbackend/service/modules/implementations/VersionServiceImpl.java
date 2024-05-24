@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -27,6 +28,7 @@ public class VersionServiceImpl implements VersionService {
     @Override
     public Version save(VersionDTO version) {
         Version newVersion = versionMapper.fromDTO(version);
+        newVersion.setVersionId(UUID.randomUUID().toString());
         versionRepository.findByName(newVersion.getName())
                 .ifPresent(existingVersion -> {
                     throw new PymeException(PymeExceptionType.VERSION_ALREADY_EXISTS);

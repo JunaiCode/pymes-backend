@@ -14,7 +14,7 @@ public class VersionValidatorImpl implements VersionValidator {
     private VersionRepository versionRepository;
     @Override
     public Version validateVersion(String versionId) {
-        return versionRepository.findById(versionId)
+        return versionRepository.findByVersionId(versionId)
                 .orElseThrow(() -> new PymeException(PymeExceptionType.VERSION_NOT_FOUND));
     }
 }

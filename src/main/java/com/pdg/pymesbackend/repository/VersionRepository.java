@@ -9,6 +9,8 @@ import java.util.Optional;
 
 public interface VersionRepository extends MongoRepository<Version, String>{
 
+    Optional<Version> findByVersionId(String versionId);
+
     Optional<Version> findByName(String name);
 
     List<Version> findVersionByVersionIdIn(List<String> versionIds);
