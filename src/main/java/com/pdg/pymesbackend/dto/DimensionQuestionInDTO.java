@@ -14,7 +14,7 @@ public class DimensionQuestionInDTO {
         private String dimensionId;
         //@NotBlank
         private String levelId;
-        @NotBlank
+        //@NotBlank
         private String versionId;
         //@NotBlank
         private String companyTypeId;

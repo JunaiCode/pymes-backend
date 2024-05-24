@@ -3,10 +3,7 @@ package com.pdg.pymesbackend.api;
 import com.pdg.pymesbackend.dto.DimensionQuestionInDTO;
 import com.pdg.pymesbackend.dto.out.DimensionQuestionOutDTO;
 import com.pdg.pymesbackend.model.Version;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -21,5 +18,5 @@ public interface VersionAPI {
     List<DimensionQuestionOutDTO> getQuestionsFirstLevel(@PathVariable String id, @PathVariable String companyTypeId);
 
     @PostMapping("/get/questions/company-type/level")
-    List<DimensionQuestionOutDTO> getQuestionsByLevel(@Valid DimensionQuestionInDTO dimensionQuestionInDTO);
+    List<DimensionQuestionOutDTO> getQuestionsByLevel(@RequestBody @Valid DimensionQuestionInDTO dimensionQuestionInDTO);
 }

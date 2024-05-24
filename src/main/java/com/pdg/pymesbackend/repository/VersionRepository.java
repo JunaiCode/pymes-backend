@@ -15,6 +15,6 @@ public interface VersionRepository extends MongoRepository<Version, String>{
 
     List<Version> findVersionByVersionIdIn(List<String> versionIds);
 
-    @Query(value = "{ 'dimensions._id' : ObjectId(?0) }")
+    @Query(value = "{ 'dimensions._id' : ?0 }")
     Optional<Version> findVersionByDimensionId(String dimensionId);
 }

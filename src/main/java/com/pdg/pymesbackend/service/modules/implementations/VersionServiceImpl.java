@@ -12,6 +12,8 @@ import com.pdg.pymesbackend.repository.VersionRepository;
 import com.pdg.pymesbackend.service.modules.VersionService;
 import com.pdg.pymesbackend.service.validator.implementations.VersionValidatorImpl;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +22,9 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class VersionServiceImpl implements VersionService {
+
+    private static final Logger logger = LoggerFactory.getLogger(VersionServiceImpl.class);
+
 
     private VersionRepository versionRepository;
     private VersionMapper versionMapper;
@@ -91,6 +96,10 @@ public class VersionServiceImpl implements VersionService {
 
     @Override
     public List<DimensionQuestionOutDTO> getDimensionLevelQuestions(DimensionQuestionInDTO dimensionQuestionInDTO) {
+
+        logger.info("Getting questions for version: " + dimensionQuestionInDTO.getVersionId());
+        logger.info(dimensionQuestionInDTO.toString());
+
         String versionId = dimensionQuestionInDTO.getVersionId();
         String levelId = dimensionQuestionInDTO.getLevelId();
         String companyTypeId = dimensionQuestionInDTO.getCompanyTypeId();
