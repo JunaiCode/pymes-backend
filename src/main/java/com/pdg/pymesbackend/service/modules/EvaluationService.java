@@ -3,19 +3,17 @@ package com.pdg.pymesbackend.service.modules;
 
 import com.pdg.pymesbackend.dto.EvaluationResultDTO;
 import com.pdg.pymesbackend.dto.out.OnGoingEvaluationOutDTO;
-import com.pdg.pymesbackend.dto.out.QuestionOutDTO;
 import com.pdg.pymesbackend.model.Evaluation;
 import com.pdg.pymesbackend.model.EvaluationResult;
 
 import java.util.List;
-import java.util.Map;
 
 public interface EvaluationService {
     Evaluation save(String companyId);
 
     void finishEvaluation(String evaluationId);
 
-    public OnGoingEvaluationOutDTO checkUncompletedEvaluation(String companyId);
+    OnGoingEvaluationOutDTO checkUncompletedEvaluation(String companyId);
 
     Evaluation getEvaluationById(String evaluationId);
 
