@@ -1,7 +1,6 @@
 package com.pdg.pymesbackend.controller;
 
 import com.pdg.pymesbackend.api.EvaluationAPI;
-import com.pdg.pymesbackend.dto.EvaluationDTO;
 import com.pdg.pymesbackend.dto.EvaluationResultDTO;
 import com.pdg.pymesbackend.dto.out.QuestionOutDTO;
 import com.pdg.pymesbackend.model.Evaluation;
@@ -23,6 +22,11 @@ public class EvaluationController implements EvaluationAPI {
     public Evaluation createEvaluation(String companyId) {
 
         return evaluationService.save(companyId);
+    }
+
+    @Override
+    public void finishEvaluation(String evaluationId) {
+        evaluationService.finishEvaluation(evaluationId);
     }
 
     @Override

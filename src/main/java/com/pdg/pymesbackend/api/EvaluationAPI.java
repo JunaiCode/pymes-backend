@@ -15,6 +15,9 @@ public interface EvaluationAPI {
     @PostMapping("/add/{companyId}")
     Evaluation createEvaluation(@PathVariable String companyId);
 
+    @PostMapping("/finish/{evaluationId}")
+    void finishEvaluation(@PathVariable String evaluationId);
+
     @PostMapping("/{evaluationId}/addAnswers")
     List<EvaluationResult> addAnswers(@RequestBody @Valid List<EvaluationResultDTO> evaluationResultDTO, @PathVariable String evaluationId);
 
