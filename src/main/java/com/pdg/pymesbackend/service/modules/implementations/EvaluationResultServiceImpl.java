@@ -31,6 +31,18 @@ public class EvaluationResultServiceImpl implements EvaluationResultService {
         return evaluationResultRepository.findById(id).orElseThrow(()-> new PymeException(PymeExceptionType.EVALUATION_RESULT_NOT_FOUND));
     }
 
+    public List<EvaluationResult> saveAll(List<EvaluationResultDTO> evaluationResults){
+        List<EvaluationResult> newResults = evaluationResults.stream()
+                .map(evaluationResultMapper::fromDTO)
+                .toList();
+        newResults.forEach(evaluationResult -> evaluationResult.setEvaluationResultId(UUID.randomUUID().toString()));
+        return evaluationResultRepository.saveAll(newResults);
+    }
+
+    public void deleteAllById(List<String> evaluationResultId){
+        evaluationResultRepository.deleteAllById(evaluationResultId);
+    }
+
     @Override
     public List<EvaluationResult> getEvaluationResults(List<String> evaluationResultId) {
         return evaluationResultRepository.findAllById(evaluationResultId);

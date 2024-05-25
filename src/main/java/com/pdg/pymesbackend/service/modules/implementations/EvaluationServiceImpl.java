@@ -1,12 +1,9 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
-import com.pdg.pymesbackend.dto.EvaluationInDTO;
 import com.pdg.pymesbackend.dto.EvaluationResultDTO;
-import com.pdg.pymesbackend.dto.QuestionAnswerDTO;
 import com.pdg.pymesbackend.dto.out.QuestionOutDTO;
 import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
-import com.pdg.pymesbackend.mapper.DimensionResultMapper;
 import com.pdg.pymesbackend.model.*;
 import com.pdg.pymesbackend.repository.EvaluationRepository;
 import com.pdg.pymesbackend.service.modules.EvaluationService;
@@ -25,7 +22,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     private QuestionServiceImpl questionService;
     private EvaluationResultServiceImpl evaluationResultService;
     private CompanyServiceImpl companyService;
-    private DimensionResultMapper dimensionResultMapper;
+    private ActionPlanServiceImpl actionPlanService;
 
     @Override
     public Evaluation save(String companyId) {
@@ -43,32 +40,106 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
-    public Evaluation finishEvaluation(String evaluationId){
+    public void finishEvaluation(String evaluationId){
         Evaluation  evaluation = getEvaluationById(evaluationId);
 
-        //obtener todos los resultados en un mapa usando el id como key
+        //obtener todos los resultados
 
-        Map<String, EvaluationResult> results = evaluation.getQuestionResults()
-                .stream()
+        List<EvaluationResult> results = evaluation.getQuestionResults().stream()
                 .map(evaluationResultService::findById)
-                .collect(Collectors.toMap(EvaluationResult::getQuestionId, evaluationResult -> evaluationResult));
+                .toList();
 
-        boolean evaluationComplete = results.values()
+
+        //validar que todas las preguntas tengan respuesta
+        boolean evaluationComplete = results
                 .stream()
                 .allMatch(evaluationResult -> evaluationResult.getOptionId()!=null);
 
         if(!evaluationComplete){
             throw new PymeException(PymeExceptionType.EVALUATION_NOT_COMPLETED);
         }else {
+            //determinar que recomendaciones aplican a la hoja de ruta y
+            //crear las entidades para hacer seguimiento de los pasos de las recomendaciones
+            evaluation.setCompleted(true);
+            List<Recommendation> recommendations = getRecommendations(results);
+            List<RecommendationActionPlan> recommendationActionPlans = getRecommendationTracking(recommendations);
+
+            ActionPlan newActionPlan = ActionPlan.builder()
+                    .actionPlanId(UUID.randomUUID().toString())
+                    .recommendationActionPlans(recommendationActionPlans)
+                    .recommendations(recommendations)
+                    .build();
+            actionPlanService.save(newActionPlan);
+            evaluation.setActionPlanId(newActionPlan.getActionPlanId());
+            evaluationRepository.save(evaluation);
 
         }
+    }
 
-        return null;
+    private List<Recommendation> getRecommendations(List<EvaluationResult> evaluationResults){
+
+        List<Recommendation> recommendations = new ArrayList<>();
+
+        for (EvaluationResult evaluationResult : evaluationResults) {
+            //obtener pregunta
+            Question question = questionService.getQuestion(evaluationResult.getQuestionId());
+            boolean passed = false;
+            //obtener valor de pregunta seleccionada y puntaje de aprobación
+            int selected = question.getOptions()
+                    .stream()
+                    .filter(option -> option.getOptionId().equals(evaluationResult.getOptionId()))
+                    .toList()
+                    .get(0)
+                    .getValue();
+            int scorePassed = question.getScorePositive();
+            if (selected >= scorePassed) {
+                passed = true;
+            }
+            if(passed){
+                recommendations.add(question.getRecommendation());
+            }
+        }
+
+        return recommendations;
+
+    }
+
+    private List<RecommendationActionPlan> getRecommendationTracking(List<Recommendation> recommendations){
+
+        return  recommendations
+                .stream()
+                .flatMap(recommendation -> recommendation.getSteps()
+                        .stream()
+                        .map(step -> RecommendationActionPlan.builder()
+                                .recommendationActionPlanId(UUID.randomUUID().toString())
+                                .recommendationId(recommendation.getRecommendationId())
+                                .completed(false)
+                                .step(step)
+                                .date(null)
+                                .build()))
+                .toList();
+
     }
 
     @Override
-    public Map<String, List<QuestionOutDTO>> getEvaluationResults(String evaluationId) {
-        Evaluation evaluation = getEvaluationById(evaluationId);
+    public Map<String, List<QuestionOutDTO>> checkUncompletedEvaluation(String companyId){
+        Company company = companyService.getCompanyById(companyId);
+        List<String> evaluations = company.getEvaluations();
+        if(evaluations.isEmpty()){
+            return null;
+        }else {
+            String evaluationId = evaluations.get(evaluations.size()-1);
+            Evaluation evaluation = getEvaluationById(evaluationId);
+            if(evaluation.isCompleted()){
+                return null;
+            }else {
+                return getEvaluationResults(evaluation);
+            }
+        }
+
+    }
+
+    private Map<String, List<QuestionOutDTO>> getEvaluationResults(Evaluation evaluation) {
         //get results
         List<EvaluationResult> evaluationResult = evaluationResultService.getEvaluationResults(evaluation.getQuestionResults());
         //organize by dimension
@@ -92,14 +163,20 @@ public class EvaluationServiceImpl implements EvaluationService {
     @Override
     public List<EvaluationResult> addEvaluationResults(String evaluationId, List<EvaluationResultDTO> answers) {
         Evaluation evaluation = getEvaluationById(evaluationId);
-        List<EvaluationResult> evaluationResults = new ArrayList<>();
-        for (EvaluationResultDTO answer : answers) {
-            EvaluationResult evaluationResult = evaluationResultService.save(answer);
-            evaluation.getQuestionResults().add(evaluationResult.getEvaluationResultId());
-            evaluationResults.add(evaluationResult);
-        }
+        //obtener antiguas respuestas
+        List<String> oldAnswers = evaluation.getQuestionResults();
+
+        //crear nuevas respuestas
+        List<EvaluationResult> newResults = evaluationResultService.saveAll(answers);
+        List<String> evaluationResultsIds = newResults.stream().map(EvaluationResult::getEvaluationResultId).toList();
+
+        //settear nuevas respuestas
+        evaluation.setQuestionResults(evaluationResultsIds);
         evaluationRepository.save(evaluation);
-        return evaluationResults;
+        //borrar antiguas respuestas
+        evaluationResultService.deleteAllById(oldAnswers);
+
+        return newResults;
     }
 
     @Override
@@ -109,84 +186,5 @@ public class EvaluationServiceImpl implements EvaluationService {
         evaluationRepository.save(evaluation);
     }
 
-    @Override
-    public void makeEvaluation(EvaluationInDTO evaluationInDTO) {
-
-        Evaluation evaluation = new Evaluation();
-        evaluation.setDate(LocalDateTime.now());
-        evaluation.setEvaluationId(UUID.randomUUID().toString());
-        evaluation.setDimensionResults(List.of());
-
-        List<QuestionAnswerDTO> answers = new ArrayList<>();
-        List<DimensionResult> dimensionResults = evaluationInDTO.getDimensionResults().stream().map(dimensionResultMapper::fromAnswerDTO).toList();
-
-        for (int i = 0; i < evaluationInDTO.getDimensionResults().size(); i++) {
-            //validar si la dimension existe
-            //validar si el nivel existe
-            evaluation.getDimensionResults().add(dimensionResults.get(i));
-        }
-
-        //List<Recommendation> recommendations = getRecommendations(answers);
-
-        //List<RecommendationActionPlan> recommendationActionPlans = mapToRecommendationActionPlan(recommendations);
-
-        /*ActionPlan actionPlan = ActionPlan.builder()
-                .actionPlanId(UUID.randomUUID().toString())
-                .recommendations(recommendationActionPlans)
-                .build();*/
-
-        //evaluation.setActionPlanId(actionPlan.getActionPlanId());
-
-    }
-
-
-    private List<Recommendation> getRecommendations(String evaluationId){
-
-        Evaluation evaluation = getEvaluationById(evaluationId);
-
-        List<EvaluationResult> evaluationResults = evaluation.getQuestionResults().stream()
-                .map(evaluationResultService::findById)
-                .toList();
-
-        boolean evaluationComplete = evaluationResults.stream().allMatch(evaluationResult -> evaluationResult.getOptionId()!=null);
-
-        if(!evaluationComplete){
-            throw new PymeException(PymeExceptionType.EVALUATION_NOT_COMPLETED);
-        }else {
-           // evaluationResults.stream().map(evaluationResult -> questionService.getQuestion(evaluationResult.getQuestionId()).
-        }
-
-        List<Recommendation> recommendations = new ArrayList<>();
-
-       /* for (QuestionAnswerDTO evaluationResultDTO : evaluationDTO) {
-            //obtener pregunta cambiar por usar un servicio
-            Optional<Question> question = questionRepository.findById(evaluationResultDTO.getQuestionId());
-            boolean passed = false;
-            int scorePassed = question.get().getScorePositive();
-            if (evaluationResultDTO.getScore() >= scorePassed) {
-                passed = true;
-            }
-            if(passed){
-                String recommendationId = question.get().getRecommendation().getRecommendationId();
-                recommendations.add(recommendationRepository.findById(recommendationId).orElseThrow(
-                        () -> new PymeException(PymeExceptionType.RECOMMENDATION_NOT_FOUND)
-                ));
-            }
-        }
- */
-        return recommendations;
-    }
-
-    private List<RecommendationActionPlan> mapToRecommendationActionPlan(List<Recommendation> recommendations){
-        List<RecommendationActionPlan> recommendationActionPlans = new ArrayList<>();
-        for (Recommendation recommendation : recommendations) {
-            RecommendationActionPlan recommendationActionPlan = new RecommendationActionPlan();
-            recommendationActionPlan.setRecommendationActionPlanId(UUID.randomUUID().toString());
-            //recommendationActionPlan.setRecommendation(recommendation);
-            recommendationActionPlan.setCompleted(false);
-            recommendationActionPlans.add(recommendationActionPlan);
-        }
-        return recommendationActionPlans;
-    }
 
 }

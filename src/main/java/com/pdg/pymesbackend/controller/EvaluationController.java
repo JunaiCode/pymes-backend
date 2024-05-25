@@ -36,7 +36,7 @@ public class EvaluationController implements EvaluationAPI {
     }
 
     @Override
-    public Map<String, List<QuestionOutDTO>> getEvaluationResults(String evaluationId) {
-        return evaluationService.getEvaluationResults(evaluationId);
+    public Map<String, List<QuestionOutDTO>> checkUncompletedEvaluation(String companyId) {
+        return evaluationService.checkUncompletedEvaluation(companyId);
     }
 }

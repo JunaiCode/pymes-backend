@@ -13,15 +13,13 @@ import java.util.Map;
 public interface EvaluationService {
     Evaluation save(String companyId);
 
-    Evaluation finishEvaluation(String evaluationId);
+    void finishEvaluation(String evaluationId);
 
-    Map<String, List<QuestionOutDTO>> getEvaluationResults(String evaluationId);
+    Map<String, List<QuestionOutDTO>> checkUncompletedEvaluation(String companyId);
 
     Evaluation getEvaluationById(String evaluationId);
 
     List<EvaluationResult> addEvaluationResults(String evaluationId, List<EvaluationResultDTO> answers);
-
-    void makeEvaluation(EvaluationInDTO evaluationInDTO);
 
     void addActionPlanToEvaluation(String evaluationId, String actionPlanId);
 }

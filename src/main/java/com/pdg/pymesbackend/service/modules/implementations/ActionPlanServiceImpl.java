@@ -53,10 +53,13 @@ public class ActionPlanServiceImpl implements ActionPlanService {
 
     @Override
     public ActionPlan save(ActionPlanDTO actionPlanDTO, String evaluationId) {
-        ActionPlan actionPlan = actionPlanMapper.fromActionPlanDTO(actionPlanDTO);
-        actionPlan.setActionPlanId(UUID.randomUUID().toString());
-        ActionPlan savedActionPlan = actionPlanRepository.save(actionPlan);
-        evaluationService.addActionPlanToEvaluation(evaluationId, savedActionPlan.getActionPlanId());
+        String actionPlanId = evaluationService.getEvaluationById(evaluationId).getActionPlanId();
+        ActionPlan actionPlan = findById(actionPlanId);
+        actionPlan.setStart(actionPlanDTO.getStartDate());
+        return actionPlanRepository.save(actionPlan);
+    }
+
+    public ActionPlan save(ActionPlan actionPlan) {
         return actionPlanRepository.save(actionPlan);
     }
 }

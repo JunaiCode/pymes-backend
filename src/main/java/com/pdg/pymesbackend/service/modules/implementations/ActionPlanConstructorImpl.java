@@ -23,6 +23,7 @@ public class ActionPlanConstructorImpl implements ActionPlanConstructor {
     @Override
     public List<ActionPlanOutDTO> constructActionPlan(ActionPlan actionPlan) {
         // Primero obtenemos todas las recomendaciones y preguntas necesarias para evitar múltiples llamadas a servicios
+        //posteriormente
         Map<String, Recommendation> recommendationsMap = actionPlan.getRecommendations().stream()
                 .collect(Collectors.toMap(Recommendation::getRecommendationId, recommendation -> recommendation));
 

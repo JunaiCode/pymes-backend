@@ -1,6 +1,5 @@
 package com.pdg.pymesbackend.api;
 
-import com.pdg.pymesbackend.dto.EvaluationDTO;
 import com.pdg.pymesbackend.dto.EvaluationResultDTO;
 import com.pdg.pymesbackend.dto.out.QuestionOutDTO;
 import com.pdg.pymesbackend.model.Evaluation;
@@ -22,6 +21,6 @@ public interface EvaluationAPI {
     @GetMapping("/{evaluationId}")
     Evaluation getEvaluation(@PathVariable String evaluationId);
 
-    @GetMapping("/{evaluationId}/results")
-    Map<String, List<QuestionOutDTO>> getEvaluationResults(@PathVariable String evaluationId);
+    @GetMapping("/company/{companyId}/results")
+    Map<String, List<QuestionOutDTO>> checkUncompletedEvaluation(@PathVariable String companyId);
 }

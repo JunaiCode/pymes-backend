@@ -97,8 +97,7 @@ public class VersionServiceImpl implements VersionService {
     @Override
     public List<DimensionQuestionOutDTO> getDimensionLevelQuestions(DimensionQuestionInDTO dimensionQuestionInDTO) {
 
-        logger.info("Getting questions for version: " + dimensionQuestionInDTO.getVersionId());
-        logger.info(dimensionQuestionInDTO.toString());
+        logger.info("Getting questions for version: " + dimensionQuestionInDTO.getVersionId());;
 
         String versionId = dimensionQuestionInDTO.getVersionId();
         String levelId = dimensionQuestionInDTO.getLevelId();

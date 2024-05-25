@@ -1,21 +1,21 @@
 package com.pdg.pymesbackend.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 
 @Data
 @AllArgsConstructor
 @Builder
 public class DimensionQuestionInDTO {
-        //@NotBlank
+        @NotBlank
         private String dimensionId;
-        //@NotBlank
+        @NotBlank
         private String levelId;
-        //@NotBlank
+        @NotBlank
         private String versionId;
-        //@NotBlank
+        @NotBlank
         private String companyTypeId;
 }
