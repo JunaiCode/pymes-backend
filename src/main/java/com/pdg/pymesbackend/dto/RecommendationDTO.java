@@ -17,6 +17,6 @@ public class RecommendationDTO {
     @NotEmpty
     private List<StepDTO> steps;
     @NotBlank
-    private String questionId;
+    private String title;
 
 }

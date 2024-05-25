@@ -15,6 +15,7 @@ import java.util.List;
 public class Recommendation {
     @Id
     private String recommendationId;
+    private String title;
     private String description;
     private List<Step> steps;
     private String questionId;
