@@ -22,7 +22,6 @@ public class EvaluationServiceImpl implements EvaluationService {
     private QuestionServiceImpl questionService;
     private EvaluationResultServiceImpl evaluationResultService;
     private CompanyServiceImpl companyService;
-    private ActionPlanServiceImpl actionPlanService;
 
     @Override
     public Evaluation save(String companyId) {
@@ -58,19 +57,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         if(!evaluationComplete){
             throw new PymeException(PymeExceptionType.EVALUATION_NOT_COMPLETED);
         }else {
-            //determinar que recomendaciones aplican a la hoja de ruta y
-            //crear las entidades para hacer seguimiento de los pasos de las recomendaciones
             evaluation.setCompleted(true);
-            List<Recommendation> recommendations = getRecommendations(results);
-            List<RecommendationActionPlan> recommendationActionPlans = getRecommendationTracking(recommendations);
-
-            ActionPlan newActionPlan = ActionPlan.builder()
-                    .actionPlanId(UUID.randomUUID().toString())
-                    .recommendationActionPlans(recommendationActionPlans)
-                    .recommendations(recommendations)
-                    .build();
-            actionPlanService.save(newActionPlan);
-            evaluation.setActionPlanId(newActionPlan.getActionPlanId());
             evaluationRepository.save(evaluation);
 
         }
