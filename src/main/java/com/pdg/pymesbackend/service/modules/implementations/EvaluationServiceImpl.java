@@ -63,51 +63,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
     }
 
-    private List<Recommendation> getRecommendations(List<EvaluationResult> evaluationResults){
-
-        List<Recommendation> recommendations = new ArrayList<>();
-
-        for (EvaluationResult evaluationResult : evaluationResults) {
-            //obtener pregunta
-            Question question = questionService.getQuestion(evaluationResult.getQuestionId());
-            boolean passed = false;
-            //obtener valor de pregunta seleccionada y puntaje de aprobación
-            int selected = question.getOptions()
-                    .stream()
-                    .filter(option -> option.getOptionId().equals(evaluationResult.getOptionId()))
-                    .toList()
-                    .get(0)
-                    .getValue();
-            int scorePassed = question.getScorePositive();
-            if (selected >= scorePassed) {
-                passed = true;
-            }
-            if(passed){
-                recommendations.add(question.getRecommendation());
-            }
-        }
-
-        return recommendations;
-
-    }
-
-    private List<RecommendationActionPlan> getRecommendationTracking(List<Recommendation> recommendations){
-
-        return  recommendations
-                .stream()
-                .flatMap(recommendation -> recommendation.getSteps()
-                        .stream()
-                        .map(step -> RecommendationActionPlan.builder()
-                                .recommendationActionPlanId(UUID.randomUUID().toString())
-                                .recommendationId(recommendation.getRecommendationId())
-                                .completed(false)
-                                .step(step)
-                                .date(null)
-                                .build()))
-                .toList();
-
-    }
-
     @Override
     public Map<String, List<QuestionOutDTO>> checkUncompletedEvaluation(String companyId){
         Company company = companyService.getCompanyById(companyId);
