@@ -2,7 +2,7 @@ package com.pdg.pymesbackend.controller;
 
 import com.pdg.pymesbackend.api.EvaluationAPI;
 import com.pdg.pymesbackend.dto.EvaluationResultDTO;
-import com.pdg.pymesbackend.dto.out.QuestionOutDTO;
+import com.pdg.pymesbackend.dto.out.OnGoingEvaluationOutDTO;
 import com.pdg.pymesbackend.model.Evaluation;
 import com.pdg.pymesbackend.model.EvaluationResult;
 import com.pdg.pymesbackend.service.modules.EvaluationService;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -40,7 +39,7 @@ public class EvaluationController implements EvaluationAPI {
     }
 
     @Override
-    public Map<String, List<QuestionOutDTO>> checkUncompletedEvaluation(String companyId) {
+    public OnGoingEvaluationOutDTO checkUncompletedEvaluation(String companyId) {
         return evaluationService.checkUncompletedEvaluation(companyId);
     }
 }

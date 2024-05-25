@@ -1,6 +1,7 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.EvaluationResultDTO;
+import com.pdg.pymesbackend.dto.out.OnGoingEvaluationOutDTO;
 import com.pdg.pymesbackend.dto.out.QuestionOutDTO;
 import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
@@ -64,7 +65,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
-    public Map<String, List<QuestionOutDTO>> checkUncompletedEvaluation(String companyId){
+    public OnGoingEvaluationOutDTO checkUncompletedEvaluation(String companyId){
         Company company = companyService.getCompanyById(companyId);
         List<String> evaluations = company.getEvaluations();
         if(evaluations.isEmpty()){
@@ -80,10 +81,10 @@ public class EvaluationServiceImpl implements EvaluationService {
 
                 List<QuestionOutDTO> answers = evaluationResult.stream().map(result -> questionService.mapAnswerToQuestionOutDTO(result)).toList();
 
-                Map<String, List<QuestionOutDTO>> response = new HashMap<>();
-                response.put(evaluationId, answers);
-
-                return response;
+                return OnGoingEvaluationOutDTO.builder()
+                        .evaluationId(evaluationId)
+                        .questions(answers)
+                        .build();
             }
         }
 
