@@ -70,12 +70,20 @@ public class EvaluationServiceImpl implements EvaluationService {
         if(evaluations.isEmpty()){
             return null;
         }else {
+            //tomar última evaluación
             String evaluationId = evaluations.get(evaluations.size()-1);
             Evaluation evaluation = getEvaluationById(evaluationId);
             if(evaluation.isCompleted()){
                 return null;
             }else {
-                return getEvaluationResults(evaluation);
+                List<EvaluationResult> evaluationResult = evaluationResultService.getEvaluationResults(evaluation.getQuestionResults());
+
+                List<QuestionOutDTO> answers = evaluationResult.stream().map(result -> questionService.mapAnswerToQuestionOutDTO(result)).toList();
+
+                Map<String, List<QuestionOutDTO>> response = new HashMap<>();
+                response.put(evaluationId, answers);
+
+                return response;
             }
         }
 
