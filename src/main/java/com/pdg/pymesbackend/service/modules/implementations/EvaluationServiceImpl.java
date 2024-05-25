@@ -125,7 +125,8 @@ public class EvaluationServiceImpl implements EvaluationService {
         evaluation.setQuestionResults(evaluationResultsIds);
         evaluationRepository.save(evaluation);
         //borrar antiguas respuestas
-        evaluationResultService.deleteAllById(oldAnswers);
+        oldAnswers.forEach(answer -> evaluationResultService.deleteById(answer));
+        //evaluationResultService.deleteAllById(oldAnswers);
 
         return newResults;
     }

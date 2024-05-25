@@ -43,6 +43,10 @@ public class EvaluationResultServiceImpl implements EvaluationResultService {
         evaluationResultRepository.deleteAllById(evaluationResultId);
     }
 
+    public void deleteById(String evaluationResultId){
+        evaluationResultRepository.deleteById(evaluationResultId);
+    }
+
     @Override
     public List<EvaluationResult> getEvaluationResults(List<String> evaluationResultId) {
         return evaluationResultRepository.findAllById(evaluationResultId);
