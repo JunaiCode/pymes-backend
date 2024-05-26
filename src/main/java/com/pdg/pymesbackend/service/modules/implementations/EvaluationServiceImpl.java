@@ -118,15 +118,17 @@ public class EvaluationServiceImpl implements EvaluationService {
         List<String> oldAnswers = evaluation.getQuestionResults();
 
         //crear nuevas respuestas
+
         List<EvaluationResult> newResults = evaluationResultService.saveAll(answers);
         List<String> evaluationResultsIds = newResults.stream().map(EvaluationResult::getEvaluationResultId).toList();
 
         //settear nuevas respuestas
         evaluation.setQuestionResults(evaluationResultsIds);
         evaluationRepository.save(evaluation);
+
         //borrar antiguas respuestas
-        oldAnswers.forEach(answer -> evaluationResultService.deleteById(answer));
-        //evaluationResultService.deleteAllById(oldAnswers);
+        //oldAnswers.forEach(answer -> evaluationResultService.deleteById(answer));
+        evaluationResultService.deleteAllById(oldAnswers);
 
         return newResults;
     }

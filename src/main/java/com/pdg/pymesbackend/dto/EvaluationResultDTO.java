@@ -8,7 +8,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class EvaluationResultDTO {
-    private String dimensionId;
     private String questionId;
     private String optionId;
     private boolean marked;

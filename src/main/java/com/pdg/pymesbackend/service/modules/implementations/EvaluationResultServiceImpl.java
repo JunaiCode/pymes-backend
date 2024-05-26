@@ -5,8 +5,10 @@ import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.EvaluationResultMapper;
 import com.pdg.pymesbackend.model.EvaluationResult;
+import com.pdg.pymesbackend.model.Question;
 import com.pdg.pymesbackend.repository.EvaluationResultRepository;
 import com.pdg.pymesbackend.service.modules.EvaluationResultService;
+import com.pdg.pymesbackend.service.modules.QuestionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ public class EvaluationResultServiceImpl implements EvaluationResultService {
 
     private EvaluationResultRepository evaluationResultRepository;
     private EvaluationResultMapper evaluationResultMapper;
+    private QuestionServiceImpl questionService;
     @Override
     public EvaluationResult save(EvaluationResultDTO evaluationResultDTO) {
         EvaluationResult evaluationResult = evaluationResultMapper.fromDTO(evaluationResultDTO);
@@ -35,12 +38,21 @@ public class EvaluationResultServiceImpl implements EvaluationResultService {
         List<EvaluationResult> newResults = evaluationResults.stream()
                 .map(evaluationResultMapper::fromDTO)
                 .toList();
-        newResults.forEach(evaluationResult -> evaluationResult.setEvaluationResultId(UUID.randomUUID().toString()));
+
+        //añadirle un id a cada uno de los resultados
+        //añadirle el id de la dimensión a la que pertenece
+
+        newResults.forEach(evaluationResult -> {
+            evaluationResult.setEvaluationResultId(UUID.randomUUID().toString());
+            Question question = questionService.getQuestion(evaluationResult.getQuestionId());
+            evaluationResult.setQuestionId(question.getQuestionId());
+        });
+
         return evaluationResultRepository.saveAll(newResults);
     }
 
     public void deleteAllById(List<String> evaluationResultId){
-        evaluationResultRepository.deleteAllById(evaluationResultId);
+        evaluationResultRepository.deleteAllByEvaluationResultIdIn(evaluationResultId);
     }
 
     public void deleteById(String evaluationResultId){
