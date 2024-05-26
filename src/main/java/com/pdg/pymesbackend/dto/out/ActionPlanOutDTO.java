@@ -11,8 +11,6 @@ import java.util.List;
 @Builder
 public class ActionPlanOutDTO {
 
-    private String dimension;
-    private String dimensionId;
-    private String description;
-    private List<RecomActionPlanOut> recommendations;
+    private String actionPlanId;
+    private List<DimensionAPlanOutDTO> info;
 }

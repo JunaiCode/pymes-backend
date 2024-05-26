@@ -1,6 +1,7 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
+import com.pdg.pymesbackend.dto.out.DimensionAPlanOutDTO;
 import com.pdg.pymesbackend.dto.out.RecomActionPlanOut;
 import com.pdg.pymesbackend.dto.out.StepOutDTO;
 import com.pdg.pymesbackend.model.*;
@@ -21,7 +22,7 @@ public class ActionPlanConstructorImpl implements ActionPlanConstructor {
     private QuestionServiceImpl questionService;
 
     @Override
-    public List<ActionPlanOutDTO> constructActionPlan(ActionPlan actionPlan) {
+    public ActionPlanOutDTO constructActionPlan(ActionPlan actionPlan) {
         // Primero obtenemos todas las recomendaciones y preguntas necesarias para evitar múltiples llamadas a servicios
         //posteriormente
         Map<String, Recommendation> recommendationsMap = actionPlan.getRecommendations().stream()
@@ -69,14 +70,14 @@ public class ActionPlanConstructorImpl implements ActionPlanConstructor {
                 .toList();
 
         //build the action plan out entity
-        return recomActionPlanOuts.stream()
+        List<DimensionAPlanOutDTO> dimensions = recomActionPlanOuts.stream()
                 .collect(Collectors.groupingBy(RecomActionPlanOut::getDimensionId))
                 .entrySet().stream()
                 .map(entry -> {
                     String dimensionId = entry.getKey();
                     Dimension dimension = dimensionService.get(dimensionId);
 
-                    return ActionPlanOutDTO.builder()
+                    return DimensionAPlanOutDTO.builder()
                             .dimensionId(dimensionId)
                             .dimension(dimension.getName())
                             .description(dimension.getDescription())
@@ -84,5 +85,7 @@ public class ActionPlanConstructorImpl implements ActionPlanConstructor {
                             .build();
                 })
                 .toList();
+
+        return ActionPlanOutDTO.builder().actionPlanId(actionPlan.getActionPlanId()).info(dimensions).build();
     }
 }

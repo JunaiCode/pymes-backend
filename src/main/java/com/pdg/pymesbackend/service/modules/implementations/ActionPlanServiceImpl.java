@@ -27,11 +27,11 @@ public class ActionPlanServiceImpl implements ActionPlanService {
 
 
     @Override
-    public List<ActionPlanOutDTO> getActualActionPlanByCompanyId(String companyId) {
+    public ActionPlanOutDTO getActualActionPlanByCompanyId(String companyId) {
         List<String> evaluations = companyService.getCompanyById(companyId).getEvaluations();
 
         if(evaluations.isEmpty()){
-            return new ArrayList<>();
+            return null;
         }else {
             String evaluationId = evaluations.get(evaluations.size()-1);
             Evaluation evaluation = evaluationService.getEvaluationById(evaluationId);

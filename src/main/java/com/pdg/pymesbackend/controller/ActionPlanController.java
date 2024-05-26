@@ -2,6 +2,7 @@ package com.pdg.pymesbackend.controller;
 
 import com.pdg.pymesbackend.api.ActionPlanAPI;
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
+import com.pdg.pymesbackend.dto.out.DimensionAPlanOutDTO;
 import com.pdg.pymesbackend.model.ActionPlan;
 import com.pdg.pymesbackend.service.modules.ActionPlanService;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ public class ActionPlanController implements ActionPlanAPI {
     private final ActionPlanService actionPlanService;
 
     @Override
-    public List<ActionPlanOutDTO> getActualActionPlan(String id) {
+    public ActionPlanOutDTO getActualActionPlan(String id) {
         return actionPlanService.getActualActionPlanByCompanyId(id);
     }
 
