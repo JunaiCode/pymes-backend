@@ -90,22 +90,6 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     }
 
-    private Map<String, List<QuestionOutDTO>> getEvaluationResults(Evaluation evaluation) {
-        //get results
-        List<EvaluationResult> evaluationResult = evaluationResultService.getEvaluationResults(evaluation.getQuestionResults());
-        //organize by dimension
-        Map<String, List<EvaluationResult>> resultsByDimension = evaluationResult
-                .stream()
-                .collect(Collectors.groupingBy(EvaluationResult::getDimensionId));
-
-        //map them to out entity
-
-        return resultsByDimension.entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()
-                        .stream().map(result -> questionService.mapAnswerToQuestionOutDTO(result)).toList()));
-    }
-
     @Override
     public Evaluation getEvaluationById(String evaluationId) {
         return evaluationRepository.findById(evaluationId).orElseThrow(() -> new PymeException(PymeExceptionType.EVALUATION_NOT_FOUND));

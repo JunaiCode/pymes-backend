@@ -1,11 +1,9 @@
 package com.pdg.pymesbackend.api;
 
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
-import com.pdg.pymesbackend.dto.out.DimensionAPlanOutDTO;
 import com.pdg.pymesbackend.model.ActionPlan;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RequestMapping("/actionPlan")
 public interface ActionPlanAPI {
