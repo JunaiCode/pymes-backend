@@ -11,7 +11,7 @@ import java.util.List;
 public interface EvaluationService {
     Evaluation save(String companyId);
 
-    void finishEvaluation(String evaluationId);
+    void finishEvaluation(String evaluationId, String versionId);
 
     OnGoingEvaluationOutDTO checkUncompletedEvaluation(String companyId);
 

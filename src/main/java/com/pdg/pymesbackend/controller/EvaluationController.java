@@ -24,8 +24,8 @@ public class EvaluationController implements EvaluationAPI {
     }
 
     @Override
-    public void finishEvaluation(String evaluationId) {
-        evaluationService.finishEvaluation(evaluationId);
+    public void finishEvaluation(String evaluationId, String versionId) {
+        evaluationService.finishEvaluation(evaluationId,versionId);
     }
 
     @Override

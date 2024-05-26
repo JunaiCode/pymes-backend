@@ -23,6 +23,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     private QuestionServiceImpl questionService;
     private EvaluationResultServiceImpl evaluationResultService;
     private CompanyServiceImpl companyService;
+    private VersionServiceImpl versionService;
 
     @Override
     public Evaluation save(String companyId) {
@@ -40,7 +41,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
-    public void finishEvaluation(String evaluationId){
+    public void finishEvaluation(String evaluationId, String versionId){
         Evaluation  evaluation = getEvaluationById(evaluationId);
 
         //obtener todos los resultados
@@ -59,10 +60,105 @@ public class EvaluationServiceImpl implements EvaluationService {
             throw new PymeException(PymeExceptionType.EVALUATION_NOT_COMPLETED);
         }else {
             evaluation.setCompleted(true);
+            List<DimensionResult> dimensionResults = calculateLevel(evaluation, versionId);
+            evaluation.setDimensionResults(dimensionResults);
             evaluationRepository.save(evaluation);
 
         }
     }
+
+    private List<DimensionResult> calculateLevel(Evaluation evaluation, String versionId){
+
+        //separar las respuestas por dimension
+        Map<String, List<EvaluationResult>> resultsByDimension = evaluation.getQuestionResults()
+                .stream()
+                .map(evaluationResultService::findById)
+                .collect(Collectors.groupingBy(EvaluationResult::getDimensionId));
+
+        //obtener las dimensiones de la versión
+
+        List<Dimension> dimensions = versionService.get(versionId).getDimensions();
+
+        //calcular nivel por dimensión
+
+        return dimensions.stream()
+                .map(dimension -> calculateDimension(dimension, resultsByDimension.get(dimension.getDimensionId())))
+                .toList();
+
+    }
+
+    private DimensionResult calculateDimension(Dimension dimension, List<EvaluationResult> answers){
+
+        int approvedLevel = 0;
+        boolean continueCalculating = true;
+
+        for(int i = 0; i < dimension.getLevels().size() && continueCalculating; i++){
+            Level level = dimension.getLevels().get(i);
+
+            //obtener las preguntas del nivel
+            List<String> questions = level.getQuestions();
+            //determinar cuales preguntas fueron aprobadas
+            Map<String, Boolean> approvedAnswers = getApprovedQuestions(answers);
+            if(allQuestionsApproved(questions, approvedAnswers)){
+                approvedLevel++;
+            }else {
+                continueCalculating = false;
+            }
+        }
+
+        final int approvedLevelFinal = approvedLevel+1;
+
+        Level level = dimension.getLevels()
+                .stream()
+                .filter(l -> l.getValue() == approvedLevelFinal)
+                .toList()
+                .get(0);
+
+        return DimensionResult.builder()
+                .dimensionId(dimension.getDimensionId())
+                .dimensionName(dimension.getName())
+                .levelId(level.getLevelId())
+                .levelName(level.getName())
+                .levelValue(level.getValue())
+                .build();
+    }
+
+    private Map<String, Boolean> getApprovedQuestions(List<EvaluationResult> answers){
+
+        Map<String, Boolean> approvedQuestions = new HashMap<>();
+
+        for (EvaluationResult evaluationResult : answers) {
+            //obtener pregunta
+            Question question = questionService.getQuestion(evaluationResult.getQuestionId());
+            boolean passed = false;
+            //obtener valor de pregunta seleccionada y puntaje de aprobación
+            int selected = question.getOptions()
+                    .stream()
+                    .filter(option -> option.getOptionId().equals(evaluationResult.getOptionId()))
+                    .toList()
+                    .get(0)
+                    .getValue();
+            int scorePassed = question.getScorePositive();
+            if (selected >= scorePassed) {
+                passed = true;
+            }
+            approvedQuestions.put(question.getQuestionId(), passed);
+        }
+
+        return approvedQuestions;
+    }
+
+    private boolean allQuestionsApproved(List<String> levelQuestions, Map<String, Boolean> approved){
+        int approvedQuestions = 0;
+        for(String question: levelQuestions){
+            if(approved.get(question)){
+                approvedQuestions++;
+            }
+        }
+        return approvedQuestions == levelQuestions.size();
+    }
+
+
 
     @Override
     public OnGoingEvaluationOutDTO checkUncompletedEvaluation(String companyId){
@@ -110,6 +206,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         evaluation.setQuestionResults(evaluationResultsIds);
         evaluationRepository.save(evaluation);
 
+        //bug: no se borran las respuestas antiguas del repositorio TODO
         //borrar antiguas respuestas
         //oldAnswers.forEach(answer -> evaluationResultService.deleteById(answer));
         evaluationResultService.deleteAllById(oldAnswers);
