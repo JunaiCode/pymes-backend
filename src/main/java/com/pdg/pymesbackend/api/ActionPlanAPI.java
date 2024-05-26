@@ -1,5 +1,6 @@
 package com.pdg.pymesbackend.api;
 
+import com.pdg.pymesbackend.dto.ActionPlanDateDTO;
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.model.ActionPlan;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ public interface ActionPlanAPI {
     ActionPlan createActionPlan(@PathVariable String evaluationId);
 
     @PutMapping("/updateEnd/{actionPlanId}")
-    void updateEndDate(@RequestBody String date, @PathVariable String actionPlanId);
+    void updateEndDate(@RequestBody ActionPlanDateDTO date, @PathVariable String actionPlanId);
 
     @PutMapping("/updateStepTrack/{actionPlanId}/{recommendationActionPlanId}/{completed}")
     void updateStepTrack(@PathVariable String actionPlanId, @PathVariable String recommendationActionPlanId, @PathVariable boolean completed);

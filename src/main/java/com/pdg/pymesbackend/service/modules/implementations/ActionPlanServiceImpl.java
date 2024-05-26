@@ -1,5 +1,6 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
+import com.pdg.pymesbackend.dto.ActionPlanDateDTO;
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
@@ -141,10 +142,10 @@ public class ActionPlanServiceImpl implements ActionPlanService {
     }
 
     @Override
-    public void updateEndDate(String date, String actionPlanId) {
+    public void updateEndDate(ActionPlanDateDTO date, String actionPlanId) {
         ActionPlan actionPlan = findById(actionPlanId);
         try{
-            actionPlan.setEnd(LocalDateTime.parse(date));
+            actionPlan.setEnd(LocalDateTime.parse(date.getDate()));
             save(actionPlan);
         }catch (DateTimeParseException e){
             throw new PymeException(PymeExceptionType.INVALID_DATE_FORMAT);
@@ -160,6 +161,7 @@ public class ActionPlanServiceImpl implements ActionPlanService {
                 .findFirst()
                 .orElseThrow(() -> new PymeException(PymeExceptionType.RECOMMENDATION_ACTION_PLAN_NOT_FOUND));
         recommendationActionPlan.setCompleted(completed);
+        recommendationActionPlan.setDate(LocalDateTime.now());
         save(actionPlan);
     }
 
