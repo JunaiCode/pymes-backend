@@ -28,6 +28,4 @@ public interface DimensionAPI {
     @DeleteMapping("/delete/{id}")
     void deleteDimension (@PathVariable String id);
 
-    @PostMapping("/add/level/{id}")
-    Dimension addLevelToDimension(@RequestBody @Valid LevelDTO level, @PathVariable String id);
 }

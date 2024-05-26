@@ -29,4 +29,6 @@ public class QuestionDTO {
     private String tagId;
     @NotBlank
     private String companyTypeId;
+    @NotBlank
+    private String levelId;
 }

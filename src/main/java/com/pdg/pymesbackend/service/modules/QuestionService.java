@@ -15,4 +15,6 @@ public interface QuestionService {
     List<Question> getQuestionsByTag(String tag);
     List<Question> filterQuestionsByCompanyType(List<String> questionsId, String companyTypeId);
 
+    List<Question> getQuestionsByLevel(String level);
+
 }

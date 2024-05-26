@@ -16,5 +16,6 @@ public interface DimensionService {
     Dimension get (String id);
     List<Dimension> getAll ();
 
-    Dimension addLevelToDimension(LevelDTO level, String dimensionId);
+
+    Dimension addLevelToDimension(Level level, String dimensionId);
 }
