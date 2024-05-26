@@ -45,7 +45,7 @@ public class EvaluationResultServiceImpl implements EvaluationResultService {
         newResults.forEach(evaluationResult -> {
             evaluationResult.setEvaluationResultId(UUID.randomUUID().toString());
             Question question = questionService.getQuestion(evaluationResult.getQuestionId());
-            evaluationResult.setQuestionId(question.getQuestionId());
+            evaluationResult.setDimensionId(question.getDimensionId());
         });
 
         return evaluationResultRepository.saveAll(newResults);
