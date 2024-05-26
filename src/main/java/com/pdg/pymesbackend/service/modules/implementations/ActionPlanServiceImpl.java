@@ -11,6 +11,7 @@ import com.pdg.pymesbackend.service.modules.ActionPlanService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -54,12 +55,12 @@ public class ActionPlanServiceImpl implements ActionPlanService {
     }
 
     @Override
-    public ActionPlan save(ActionPlanDTO actionPlanDTO, String evaluationId) {
+    public ActionPlan save(String evaluationId) {
         Evaluation evaluation = evaluationService.getEvaluationById(evaluationId);
 
         if(evaluation.isCompleted()){
 
-            ActionPlan fullActionPlan = buildActionPlan(actionPlanDTO, evaluation);
+            ActionPlan fullActionPlan = buildActionPlan(evaluation);
             evaluationService.addActionPlanToEvaluation(evaluationId, fullActionPlan.getActionPlanId());
             return save(fullActionPlan);
 
@@ -70,11 +71,11 @@ public class ActionPlanServiceImpl implements ActionPlanService {
 
     }
 
-    private ActionPlan buildActionPlan(ActionPlanDTO actionPlan, Evaluation evaluation){
+    private ActionPlan buildActionPlan(Evaluation evaluation){
 
         ActionPlan newActionPlan = ActionPlan.builder()
                 .actionPlanId(UUID.randomUUID().toString())
-                .start(actionPlan.getStartDate())
+                .start(LocalDateTime.now())
                 .recommendationActionPlans(List.of())
                 .recommendations(List.of())
                 .build();

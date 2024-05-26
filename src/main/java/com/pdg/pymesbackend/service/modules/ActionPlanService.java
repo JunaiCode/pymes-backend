@@ -14,5 +14,5 @@ public interface ActionPlanService {
 
     ActionPlan getAll();
 
-    ActionPlan save(ActionPlanDTO actionPlanDTO, String evaluationId);
+    ActionPlan save(String evaluationId);
 }

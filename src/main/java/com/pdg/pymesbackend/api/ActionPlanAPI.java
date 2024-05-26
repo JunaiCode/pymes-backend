@@ -3,18 +3,15 @@ package com.pdg.pymesbackend.api;
 import com.pdg.pymesbackend.dto.ActionPlanDTO;
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.model.ActionPlan;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequestMapping("/actionPlan")
 public interface ActionPlanAPI {
-    @GetMapping("/getActualActionPlan")
-    List<ActionPlanOutDTO> getActualActionPlan(@RequestBody String id);
+    @GetMapping("/getActualActionPlan/{companyId}")
+    List<ActionPlanOutDTO> getActualActionPlan(@PathVariable String companyId);
 
-    @PostMapping("/add")
-    ActionPlan createActionPlan(ActionPlanDTO actionPlanDTO, String evaluationId);
+    @PostMapping("/add/evaluation/{evaluationId}")
+    ActionPlan createActionPlan(@PathVariable String evaluationId);
 }

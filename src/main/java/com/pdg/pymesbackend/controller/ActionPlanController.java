@@ -24,7 +24,7 @@ public class ActionPlanController implements ActionPlanAPI {
     }
 
     @Override
-    public ActionPlan createActionPlan(ActionPlanDTO actionPlanDTO, String evaluationId) {
-        return actionPlanService.save(actionPlanDTO, evaluationId);
+    public ActionPlan createActionPlan(String evaluationId) {
+        return actionPlanService.save(evaluationId);
     }
 }
