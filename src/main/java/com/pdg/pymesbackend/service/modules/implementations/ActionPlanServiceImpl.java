@@ -1,6 +1,5 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
-import com.pdg.pymesbackend.dto.ActionPlanDTO;
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;

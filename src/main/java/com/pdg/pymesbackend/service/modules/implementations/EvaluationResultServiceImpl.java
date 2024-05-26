@@ -8,7 +8,6 @@ import com.pdg.pymesbackend.model.EvaluationResult;
 import com.pdg.pymesbackend.model.Question;
 import com.pdg.pymesbackend.repository.EvaluationResultRepository;
 import com.pdg.pymesbackend.service.modules.EvaluationResultService;
-import com.pdg.pymesbackend.service.modules.QuestionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
