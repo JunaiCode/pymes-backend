@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -12,5 +13,7 @@ import java.util.List;
 public class ActionPlanOutDTO {
 
     private String actionPlanId;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private List<DimensionAPlanOutDTO> info;
 }

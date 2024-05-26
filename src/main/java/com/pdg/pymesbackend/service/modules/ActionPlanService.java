@@ -12,4 +12,10 @@ public interface ActionPlanService {
     ActionPlan getAll();
 
     ActionPlan save(String evaluationId);
+
+    void updateEndDate(String date, String actionPlanId);
+
+    void updateStepTrack(String actionPlanId, String recommendationActionPlanId, boolean completed);
+
+
 }

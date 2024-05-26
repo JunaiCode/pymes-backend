@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 @Service
@@ -66,8 +67,6 @@ public class ActionPlanServiceImpl implements ActionPlanService {
         }else {
             throw new PymeException(PymeExceptionType.EVALUATION_NOT_COMPLETED);
         }
-
-
     }
 
     private ActionPlan buildActionPlan(Evaluation evaluation){
@@ -141,7 +140,31 @@ public class ActionPlanServiceImpl implements ActionPlanService {
 
     }
 
-    public ActionPlan save(ActionPlan actionPlan) {
+    @Override
+    public void updateEndDate(String date, String actionPlanId) {
+        ActionPlan actionPlan = findById(actionPlanId);
+        try{
+            actionPlan.setEnd(LocalDateTime.parse(date));
+            save(actionPlan);
+        }catch (DateTimeParseException e){
+            throw new PymeException(PymeExceptionType.INVALID_DATE_FORMAT);
+        }
+    }
+
+    @Override
+    public void updateStepTrack(String actionPlanId, String recommendationActionPlanId, boolean completed) {
+        ActionPlan actionPlan = findById(actionPlanId);
+        List<RecommendationActionPlan> recommendationActionPlans = actionPlan.getRecommendationActionPlans();
+        RecommendationActionPlan recommendationActionPlan = recommendationActionPlans.stream()
+                .filter(recommendationActionPlan1 -> recommendationActionPlan1.getRecommendationActionPlanId().equals(recommendationActionPlanId))
+                .findFirst()
+                .orElseThrow(() -> new PymeException(PymeExceptionType.RECOMMENDATION_ACTION_PLAN_NOT_FOUND));
+        recommendationActionPlan.setCompleted(completed);
+        save(actionPlan);
+    }
+
+
+    private ActionPlan save(ActionPlan actionPlan) {
         return actionPlanRepository.save(actionPlan);
     }
 }

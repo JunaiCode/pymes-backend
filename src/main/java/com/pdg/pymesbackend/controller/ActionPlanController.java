@@ -25,4 +25,14 @@ public class ActionPlanController implements ActionPlanAPI {
     public ActionPlan createActionPlan(String evaluationId) {
         return actionPlanService.save(evaluationId);
     }
+
+    @Override
+    public void updateEndDate(String date, String actionPlanId) {
+        actionPlanService.updateEndDate(date, actionPlanId);
+    }
+
+    @Override
+    public void updateStepTrack(String actionPlanId, String recommendationActionPlanId, boolean completed) {
+        actionPlanService.updateStepTrack(actionPlanId, recommendationActionPlanId, completed);
+    }
 }

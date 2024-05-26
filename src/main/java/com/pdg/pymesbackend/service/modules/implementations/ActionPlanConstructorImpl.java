@@ -86,6 +86,10 @@ public class ActionPlanConstructorImpl implements ActionPlanConstructor {
                 })
                 .toList();
 
-        return ActionPlanOutDTO.builder().actionPlanId(actionPlan.getActionPlanId()).info(dimensions).build();
+        return ActionPlanOutDTO.builder()
+                .actionPlanId(actionPlan.getActionPlanId())
+                .startDate(actionPlan.getStart())
+                .endDate(actionPlan.getEnd())
+                .info(dimensions).build();
     }
 }
