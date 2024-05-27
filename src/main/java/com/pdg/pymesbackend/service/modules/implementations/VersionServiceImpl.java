@@ -1,12 +1,15 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.DimensionQuestionInDTO;
+import com.pdg.pymesbackend.dto.QuestionDTO;
 import com.pdg.pymesbackend.dto.out.DimensionQuestionOutDTO;
 import com.pdg.pymesbackend.dto.VersionDTO;
 import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.VersionMapper;
 import com.pdg.pymesbackend.model.Dimension;
+import com.pdg.pymesbackend.model.Level;
+import com.pdg.pymesbackend.model.Question;
 import com.pdg.pymesbackend.model.Version;
 import com.pdg.pymesbackend.repository.VersionRepository;
 import com.pdg.pymesbackend.service.modules.VersionService;
@@ -16,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +38,7 @@ public class VersionServiceImpl implements VersionService {
     public Version save(VersionDTO version) {
         Version newVersion = versionMapper.fromDTO(version);
         newVersion.setVersionId(UUID.randomUUID().toString());
+        newVersion.setActive(false);
         versionRepository.findByName(newVersion.getName())
                 .ifPresent(existingVersion -> {
                     throw new PymeException(PymeExceptionType.VERSION_ALREADY_EXISTS);
@@ -44,7 +49,9 @@ public class VersionServiceImpl implements VersionService {
     @Override
     public void addDimension(String versionId, Dimension newDimension) {
         Version version = versionValidator.validateVersion(versionId);
-        version.getDimensions().add(newDimension);
+        List<Dimension> dimensions = new ArrayList<>(version.getDimensions());
+        dimensions.add(newDimension);
+        version.setDimensions(dimensions);
         versionRepository.save(version);
     }
 
@@ -74,6 +81,35 @@ public class VersionServiceImpl implements VersionService {
 
     @Override
     public Version updateWithVersion(Version version) {
+        return versionRepository.save(version);
+    }
+
+    @Override
+    public Version addQuestion(QuestionDTO questionDTO){
+        Version version = versionValidator.validateVersion(questionDTO.getVersionId());
+
+        Question newQuestion = questionService.createQuestion(questionDTO);
+
+        String dimensionId = questionDTO.getDimensionId();
+        String levelId = questionDTO.getLevelId();
+
+        Dimension dimension = version.getDimensions().stream()
+                .filter(dimension1 -> dimension1.getDimensionId().equals(dimensionId))
+                .findAny()
+                .orElseThrow(() -> new PymeException(PymeExceptionType.DIMENSION_NOT_FOUND));
+
+        version.getDimensions().remove(dimension);
+
+        List<Level> levels = dimension.getLevels();
+        Level level = levels.stream()
+                .filter(level1 -> level1.getLevelId().equals(levelId))
+                .findAny()
+                .orElseThrow(() -> new PymeException(PymeExceptionType.LEVEL_NOT_FOUND));
+        levels.remove(level);
+        level.getQuestions().add(newQuestion.getQuestionId());
+        levels.add(level);
+        dimension.setLevels(levels);
+        version.getDimensions().add(dimension);
         return versionRepository.save(version);
     }
 

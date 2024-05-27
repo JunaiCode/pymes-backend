@@ -4,7 +4,6 @@ import com.pdg.pymesbackend.dto.DimensionDTO;
 import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.DimensionMapper;
-import com.pdg.pymesbackend.mapper.LevelMapper;
 import com.pdg.pymesbackend.model.Dimension;
 import com.pdg.pymesbackend.model.Level;
 import com.pdg.pymesbackend.model.Version;
@@ -24,7 +23,6 @@ public class DimensionServiceImpl implements DimensionService {
 
     private DimensionRepository dimensionRepository;
     private DimensionMapper dimensionMapper;
-    private LevelMapper levelMapper;
     private DimensionValidator dimensionValidator;
     private VersionService versionService;
 

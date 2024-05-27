@@ -1,7 +1,9 @@
 package com.pdg.pymesbackend.api;
 
 import com.pdg.pymesbackend.dto.DimensionQuestionInDTO;
+import com.pdg.pymesbackend.dto.QuestionDTO;
 import com.pdg.pymesbackend.dto.out.DimensionQuestionOutDTO;
+import com.pdg.pymesbackend.model.Question;
 import com.pdg.pymesbackend.model.Version;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,4 +21,7 @@ public interface VersionAPI {
 
     @PostMapping("/get/questions/company-type/level")
     List<DimensionQuestionOutDTO> getQuestionsByLevel(@RequestBody @Valid DimensionQuestionInDTO dimensionQuestionInDTO);
+
+    @PostMapping("/add/question")
+    Version createQuestion(@RequestBody @Valid QuestionDTO question);
 }
