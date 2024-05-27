@@ -38,8 +38,4 @@ public class EvaluationController implements EvaluationAPI {
         return null;
     }
 
-    @Override
-    public OnGoingEvaluationOutDTO checkUncompletedEvaluation(String companyId) {
-        return evaluationService.checkUncompletedEvaluation(companyId);
-    }
 }

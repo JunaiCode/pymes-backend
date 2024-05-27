@@ -23,6 +23,4 @@ public interface EvaluationAPI {
     @GetMapping("/{evaluationId}")
     Evaluation getEvaluation(@PathVariable String evaluationId);
 
-    @GetMapping("/company/{companyId}/results")
-    OnGoingEvaluationOutDTO checkUncompletedEvaluation(@PathVariable String companyId);
 }

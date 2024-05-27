@@ -22,22 +22,18 @@ public class EvaluationServiceImpl implements EvaluationService {
     private EvaluationRepository evaluationRepository;
     private QuestionServiceImpl questionService;
     private EvaluationResultServiceImpl evaluationResultService;
-    private CompanyServiceImpl companyService;
     private VersionServiceImpl versionService;
 
     @Override
     public Evaluation save(String companyId) {
 
-        Evaluation evaluation =  evaluationRepository.save(Evaluation.builder()
+        return evaluationRepository.save(Evaluation.builder()
                 .evaluationId(UUID.randomUUID().toString())
                 .date(LocalDateTime.now())
                 .questionResults(List.of())
                 .dimensionResults(List.of())
                 .completed(false)
                 .build());
-
-        companyService.addEvaluationToCompany(companyId, evaluation.getEvaluationId());
-        return evaluation;
     }
 
     @Override
@@ -161,8 +157,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
 
     @Override
-    public OnGoingEvaluationOutDTO checkUncompletedEvaluation(String companyId){
-        Company company = companyService.getCompanyById(companyId);
+    public OnGoingEvaluationOutDTO checkUncompletedEvaluation(Company company){
         List<String> evaluations = company.getEvaluations();
         if(evaluations.isEmpty()){
             return null;
