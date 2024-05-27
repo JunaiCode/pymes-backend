@@ -37,8 +37,13 @@ public class ActionPlanServiceImpl implements ActionPlanService {
         }else {
             String evaluationId = evaluations.get(evaluations.size()-1);
             Evaluation evaluation = evaluationService.getEvaluationById(evaluationId);
-            String actionPlanId = evaluation.getActionPlanId();
-            return actionPlanConstructor.constructActionPlan(findById(actionPlanId));
+            if (evaluation.isCompleted()) {
+                String actionPlanId = evaluation.getActionPlanId();
+                return actionPlanConstructor.constructActionPlan(findById(actionPlanId));
+            }else {
+                return null;
+            }
+
         }
     }
 
