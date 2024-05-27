@@ -14,7 +14,7 @@ public interface ActionPlanService {
 
     ActionPlan save(String evaluationId);
 
-    void updateEndDate(ActionPlanDateDTO date, String actionPlanId);
+    void updateEndDate(String date, String actionPlanId);
 
     void updateStepTrack(String actionPlanId, String recommendationActionPlanId, boolean completed);
 

@@ -141,11 +141,12 @@ public class ActionPlanServiceImpl implements ActionPlanService {
 
     }
 
+    //TODO bug al recibir request
     @Override
-    public void updateEndDate(ActionPlanDateDTO date, String actionPlanId) {
+    public void updateEndDate(String date, String actionPlanId) {
         ActionPlan actionPlan = findById(actionPlanId);
         try{
-            actionPlan.setEnd(LocalDateTime.parse(date.getDate()));
+            actionPlan.setEnd(LocalDateTime.parse(date));
             save(actionPlan);
         }catch (DateTimeParseException e){
             throw new PymeException(PymeExceptionType.INVALID_DATE_FORMAT);

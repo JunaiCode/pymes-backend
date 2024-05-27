@@ -28,7 +28,7 @@ public class ActionPlanController implements ActionPlanAPI {
     }
 
     @Override
-    public void updateEndDate(ActionPlanDateDTO date, String actionPlanId) {
+    public void updateEndDate(String date, String actionPlanId) {
         actionPlanService.updateEndDate(date, actionPlanId);
     }
 
