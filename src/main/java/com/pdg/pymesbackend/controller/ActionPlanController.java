@@ -1,7 +1,7 @@
 package com.pdg.pymesbackend.controller;
 
 import com.pdg.pymesbackend.api.ActionPlanAPI;
-import com.pdg.pymesbackend.dto.ActionPlanDateDTO;
+import com.pdg.pymesbackend.dto.DateDTO;
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.model.ActionPlan;
 import com.pdg.pymesbackend.service.modules.ActionPlanService;
@@ -28,7 +28,7 @@ public class ActionPlanController implements ActionPlanAPI {
     }
 
     @Override
-    public void updateEndDate(String date, String actionPlanId) {
+    public void updateEndDate(DateDTO date, String actionPlanId) {
         actionPlanService.updateEndDate(date, actionPlanId);
     }
 
