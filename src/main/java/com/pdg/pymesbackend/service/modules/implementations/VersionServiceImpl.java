@@ -11,6 +11,7 @@ import com.pdg.pymesbackend.model.Dimension;
 import com.pdg.pymesbackend.model.Level;
 import com.pdg.pymesbackend.model.Question;
 import com.pdg.pymesbackend.model.Version;
+import com.pdg.pymesbackend.repository.DimensionRepository;
 import com.pdg.pymesbackend.repository.VersionRepository;
 import com.pdg.pymesbackend.service.modules.VersionService;
 import com.pdg.pymesbackend.service.validator.implementations.VersionValidatorImpl;
@@ -34,6 +35,8 @@ public class VersionServiceImpl implements VersionService {
     private VersionMapper versionMapper;
     private VersionValidatorImpl versionValidator;
     private QuestionServiceImpl questionService;
+    private DimensionRepository dimensionRepository;
+
     @Override
     public Version save(VersionDTO version) {
         Version newVersion = versionMapper.fromDTO(version);
@@ -109,6 +112,7 @@ public class VersionServiceImpl implements VersionService {
         level.getQuestions().add(newQuestion.getQuestionId());
         levels.add(level);
         dimension.setLevels(levels);
+        dimensionRepository.save(dimension);
         version.getDimensions().add(dimension);
         return versionRepository.save(version);
     }
