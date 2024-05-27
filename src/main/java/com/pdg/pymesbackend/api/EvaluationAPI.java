@@ -1,7 +1,6 @@
 package com.pdg.pymesbackend.api;
 
 import com.pdg.pymesbackend.dto.EvaluationResultDTO;
-import com.pdg.pymesbackend.dto.out.OnGoingEvaluationOutDTO;
 import com.pdg.pymesbackend.model.Evaluation;
 import com.pdg.pymesbackend.model.EvaluationResult;
 import org.springframework.web.bind.annotation.*;

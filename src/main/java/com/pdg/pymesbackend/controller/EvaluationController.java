@@ -2,7 +2,6 @@ package com.pdg.pymesbackend.controller;
 
 import com.pdg.pymesbackend.api.EvaluationAPI;
 import com.pdg.pymesbackend.dto.EvaluationResultDTO;
-import com.pdg.pymesbackend.dto.out.OnGoingEvaluationOutDTO;
 import com.pdg.pymesbackend.model.Evaluation;
 import com.pdg.pymesbackend.model.EvaluationResult;
 import com.pdg.pymesbackend.service.modules.EvaluationService;
