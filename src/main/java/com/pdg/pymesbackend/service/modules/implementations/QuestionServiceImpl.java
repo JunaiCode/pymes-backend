@@ -7,11 +7,10 @@ import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.OptionMapper;
 import com.pdg.pymesbackend.mapper.QuestionMapper;
-import com.pdg.pymesbackend.model.EvaluationResult;
-import com.pdg.pymesbackend.model.Option;
-import com.pdg.pymesbackend.model.Question;
-import com.pdg.pymesbackend.model.Step;
+import com.pdg.pymesbackend.model.*;
+import com.pdg.pymesbackend.repository.LevelRepository;
 import com.pdg.pymesbackend.repository.QuestionRepository;
+import com.pdg.pymesbackend.service.modules.LevelService;
 import com.pdg.pymesbackend.service.modules.QuestionService;
 import com.pdg.pymesbackend.service.validator.DimensionValidator;
 import com.pdg.pymesbackend.service.validator.implementations.VersionValidatorImpl;
@@ -31,6 +30,7 @@ public class QuestionServiceImpl implements QuestionService {
     private OptionMapper optionMapper;
     private DimensionValidator dimensionValidator;
     private VersionValidatorImpl versionValidator;
+    private LevelRepository levelRepository;
 
     @Override
     public Question createQuestion(QuestionDTO questionDTO) {
@@ -49,7 +49,12 @@ public class QuestionServiceImpl implements QuestionService {
         }
         question.setQuestionId(UUID.randomUUID().toString());
         question.getRecommendation().setQuestionId(question.getQuestionId());
-        return questionRepository.save(question);
+        Question newQuestion = questionRepository.save(question);
+        Level level = levelRepository.findById(questionDTO.getLevelId()).orElseThrow(() -> new PymeException(PymeExceptionType.LEVEL_NOT_FOUND));
+        level.getQuestions().add(newQuestion.getQuestionId());
+        levelRepository.save(level);
+        return newQuestion;
+
     }
 
 
@@ -122,5 +127,12 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public List<Question> filterQuestionsByCompanyType(List<String> questionsId, String companyTypeId) {
         return questionRepository.findQuestionsByCompanyType(questionsId, companyTypeId);
+    }
+
+    @Override
+    public List<Question> getQuestionsByLevel(String level) {
+        Level levelObj = levelRepository.findById(level).orElseThrow(() -> new PymeException(PymeExceptionType.LEVEL_NOT_FOUND));
+        List<String> questionsId = levelObj.getQuestions();
+        return questionRepository.findAllById(questionsId);
     }
 }

@@ -1,7 +1,6 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.DimensionDTO;
-import com.pdg.pymesbackend.dto.LevelDTO;
 import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.DimensionMapper;
@@ -70,13 +69,11 @@ public class DimensionServiceImpl implements DimensionService {
     }
 
     @Override
-    public Dimension addLevelToDimension(LevelDTO level, String dimensionId) {
-        Level newLevel = levelMapper.fromLevelDTO(level);
+    public Dimension addLevelToDimension(Level level, String dimensionId) {
         Version version = versionService.findVersionByDimensionId(dimensionId);
         Dimension dimension = findById(dimensionId);
         version.getDimensions().remove(dimension);
-        newLevel.setLevelId(UUID.randomUUID().toString());
-        dimension.getLevels().add(newLevel);
+        dimension.getLevels().add(level);
         version.getDimensions().add(dimension);
         versionService.updateWithVersion(version);
         return dimensionRepository.save(dimension);

@@ -31,4 +31,7 @@ public interface QuestionAPI {
 
     @GetMapping("/get/tag/{tag}")
     List<Question> getQuestionsByTag(@PathVariable String tag);
+
+    @GetMapping("/get/level/{level}")
+    List<Question> getQuestionsByLevel(@PathVariable String level);
 }

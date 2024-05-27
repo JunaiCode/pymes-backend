@@ -6,10 +6,12 @@ import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.LevelMapper;
 import com.pdg.pymesbackend.model.Dimension;
 import com.pdg.pymesbackend.model.Level;
+import com.pdg.pymesbackend.model.Question;
 import com.pdg.pymesbackend.repository.LevelRepository;
 import com.pdg.pymesbackend.service.modules.DimensionService;
 import com.pdg.pymesbackend.service.modules.LevelService;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +23,7 @@ public class LevelServiceImpl implements LevelService {
 
     private LevelRepository levelRepository;
     private DimensionService dimensionService;
+    @Lazy
     private LevelMapper levelMapper;
 
     @Override
@@ -29,7 +32,7 @@ public class LevelServiceImpl implements LevelService {
         newLevel.setQuestions(List.of());
         checkIfLevelExists(newLevel, dimensionId);
         newLevel = levelRepository.save(newLevel);
-        dimensionService.addLevelToDimension(level, dimensionId);
+        dimensionService.addLevelToDimension(newLevel, dimensionId);
         return newLevel;
     }
 
@@ -46,5 +49,17 @@ public class LevelServiceImpl implements LevelService {
                 throw new PymeException(PymeExceptionType.LEVEL_ALREADY_EXISTS);
             }
         }
+    }
+
+    @Override
+    public void updateQuestions(String levelId, List<String> questionsId) {
+        Level level = levelRepository.findById(levelId).orElseThrow(() -> new PymeException(PymeExceptionType.LEVEL_NOT_FOUND));
+        level.setQuestions(questionsId);
+        levelRepository.save(level);
+    }
+
+    @Override
+    public Level getLevel(String levelId) {
+        return levelRepository.findById(levelId).orElseThrow(() -> new PymeException(PymeExceptionType.LEVEL_NOT_FOUND));
     }
 }

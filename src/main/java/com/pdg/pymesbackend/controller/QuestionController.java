@@ -48,4 +48,9 @@ public class QuestionController implements QuestionAPI {
     public List<Question> getQuestionsByTag(String tag) {
         return questionService.getQuestionsByTag(tag);
     }
+
+    @Override
+    public List<Question> getQuestionsByLevel(String level) {
+        return questionService.getQuestionsByLevel(level);
+    }
 }

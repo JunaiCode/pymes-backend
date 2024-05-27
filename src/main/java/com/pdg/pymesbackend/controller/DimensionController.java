@@ -42,8 +42,5 @@ public class DimensionController implements DimensionAPI {
         dimensionService.delete(id);
     }
 
-    @Override
-    public Dimension addLevelToDimension(LevelDTO level, String id) {
-        return dimensionService.addLevelToDimension(level,id);
-    }
+
 }

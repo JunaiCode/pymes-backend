@@ -12,4 +12,8 @@ public interface QuestionRepository extends MongoRepository<Question, String>{
 
     @Query("{ '_id': { '$in': ?0 }, 'companyTypeId': ?1 }")
     List<Question> findQuestionsByCompanyType(List<String> id, String companyTypeId);
+
+    @Query("{ 'level': ?0 }")
+    List<Question> findByLevel(String level);
+
 }
