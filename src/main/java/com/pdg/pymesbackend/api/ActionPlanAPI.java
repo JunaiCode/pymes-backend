@@ -1,7 +1,6 @@
 package com.pdg.pymesbackend.api;
 
 import com.pdg.pymesbackend.dto.DateDTO;
-import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.model.ActionPlan;
 import org.springframework.web.bind.annotation.*;
 

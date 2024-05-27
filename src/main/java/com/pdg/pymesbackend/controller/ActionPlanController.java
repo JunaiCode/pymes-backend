@@ -2,7 +2,6 @@ package com.pdg.pymesbackend.controller;
 
 import com.pdg.pymesbackend.api.ActionPlanAPI;
 import com.pdg.pymesbackend.dto.DateDTO;
-import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.model.ActionPlan;
 import com.pdg.pymesbackend.service.modules.ActionPlanService;
 import lombok.AllArgsConstructor;
