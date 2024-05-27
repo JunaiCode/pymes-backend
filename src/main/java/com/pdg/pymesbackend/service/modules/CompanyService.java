@@ -2,6 +2,7 @@ package com.pdg.pymesbackend.service.modules;
 
 
 import com.pdg.pymesbackend.dto.CompanyDTO;
+import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.dto.out.CompanyOutDTO;
 import com.pdg.pymesbackend.dto.out.OnGoingEvaluationOutDTO;
 import com.pdg.pymesbackend.model.Company;
@@ -13,6 +14,8 @@ public interface CompanyService {
     Company getCompanyById(String companyId);
 
     OnGoingEvaluationOutDTO checkUncompletedEvaluation(String companyId);
+
+    ActionPlanOutDTO getActualActionPlan(String companyId);
 
     Evaluation startEvaluation(String companyId);
 

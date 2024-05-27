@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/actionPlan")
 public interface ActionPlanAPI {
-    @GetMapping("/getActualActionPlan/{id}")
-    ActionPlanOutDTO getActualActionPlan(@PathVariable("id") String companyId);
 
     @PostMapping("/add/evaluation/{evaluationId}")
     ActionPlan createActionPlan(@PathVariable String evaluationId);

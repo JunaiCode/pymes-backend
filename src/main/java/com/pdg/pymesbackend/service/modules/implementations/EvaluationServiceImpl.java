@@ -182,6 +182,21 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
+    public Evaluation getRecentCompletedEvaluation(List<String> evaluations){
+        if(evaluations.isEmpty()){
+            return null;
+        }else {
+            Collections.reverse(evaluations);
+            return evaluations
+                    .stream()
+                    .map(this::getEvaluationById)
+                    .filter(Evaluation::isCompleted)
+                    .findFirst()
+                    .orElse(null);
+        }
+    }
+
+    @Override
     public Evaluation getEvaluationById(String evaluationId) {
         return evaluationRepository.findById(evaluationId).orElseThrow(() -> new PymeException(PymeExceptionType.EVALUATION_NOT_FOUND));
     }

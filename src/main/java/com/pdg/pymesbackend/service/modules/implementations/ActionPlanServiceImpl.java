@@ -22,28 +22,21 @@ public class ActionPlanServiceImpl implements ActionPlanService {
     private ActionPlanRepository actionPlanRepository;
     private ActionPlanMapper actionPlanMapper;
     private EvaluationServiceImpl evaluationService;
-    private CompanyServiceImpl companyService;
     private QuestionServiceImpl questionService;
     private ActionPlanConstructorImpl actionPlanConstructor;
     private EvaluationResultServiceImpl evaluationResultService;
 
 
     @Override
-    public ActionPlanOutDTO getActualActionPlanByCompanyId(String companyId) {
-        List<String> evaluations = companyService.getCompanyById(companyId).getEvaluations();
+    public ActionPlanOutDTO getActualActionPlanByCompanyId(Company company) {
+        List<String> evaluations = company.getEvaluations();
 
         if(evaluations.isEmpty()){
             return null;
         }else {
-            String evaluationId = evaluations.get(evaluations.size()-1);
-            Evaluation evaluation = evaluationService.getEvaluationById(evaluationId);
-            if (evaluation.isCompleted()) {
-                String actionPlanId = evaluation.getActionPlanId();
-                return actionPlanConstructor.constructActionPlan(findById(actionPlanId));
-            }else {
-                return null;
-            }
-
+            Evaluation recent = evaluationService.getRecentCompletedEvaluation(evaluations);
+            String actionPlanId = recent.getActionPlanId();
+            return actionPlanConstructor.constructActionPlan(findById(actionPlanId));
         }
     }
 

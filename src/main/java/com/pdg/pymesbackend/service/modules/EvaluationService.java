@@ -16,6 +16,8 @@ public interface EvaluationService {
 
     OnGoingEvaluationOutDTO checkUncompletedEvaluation(Company companyId);
 
+    Evaluation getRecentCompletedEvaluation(List<String> evaluations);
+
     Evaluation getEvaluationById(String evaluationId);
 
     List<EvaluationResult> addEvaluationResults(String evaluationId, List<EvaluationResultDTO> answers);

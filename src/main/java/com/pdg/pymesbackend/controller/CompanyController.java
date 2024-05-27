@@ -2,6 +2,7 @@ package com.pdg.pymesbackend.controller;
 
 import com.pdg.pymesbackend.api.CompanyAPI;
 import com.pdg.pymesbackend.dto.CompanyDTO;
+import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.dto.out.CompanyOutDTO;
 import com.pdg.pymesbackend.dto.out.OnGoingEvaluationOutDTO;
 import com.pdg.pymesbackend.model.Company;
@@ -35,5 +36,10 @@ public class CompanyController implements CompanyAPI {
     @Override
     public Evaluation startEvaluation(String companyId) {
         return companyService.startEvaluation(companyId);
+    }
+
+    @Override
+    public ActionPlanOutDTO getActualActionPlan(String companyId) {
+        return companyService.getActualActionPlan(companyId);
     }
 }

@@ -3,10 +3,11 @@ package com.pdg.pymesbackend.service.modules;
 import com.pdg.pymesbackend.dto.DateDTO;
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.model.ActionPlan;
+import com.pdg.pymesbackend.model.Company;
 
 public interface ActionPlanService {
 
-    ActionPlanOutDTO getActualActionPlanByCompanyId(String companyId);
+    ActionPlanOutDTO getActualActionPlanByCompanyId(Company company);
 
     ActionPlan findById(String id);
 

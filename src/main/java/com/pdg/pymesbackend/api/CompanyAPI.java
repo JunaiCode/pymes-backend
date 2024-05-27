@@ -1,6 +1,7 @@
 package com.pdg.pymesbackend.api;
 
 import com.pdg.pymesbackend.dto.CompanyDTO;
+import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.dto.out.CompanyOutDTO;
 import com.pdg.pymesbackend.dto.out.OnGoingEvaluationOutDTO;
 import com.pdg.pymesbackend.model.Company;
@@ -23,4 +24,7 @@ public interface CompanyAPI {
 
     @PostMapping("/{companyId}/evaluation")
     Evaluation startEvaluation(@PathVariable String companyId);
+
+    @GetMapping("/{id}/actionPlan/actual")
+    ActionPlanOutDTO getActualActionPlan(@PathVariable("id") String companyId);
 }

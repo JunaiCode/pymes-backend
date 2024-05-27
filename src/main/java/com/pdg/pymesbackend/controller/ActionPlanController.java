@@ -18,11 +18,6 @@ public class ActionPlanController implements ActionPlanAPI {
     private final ActionPlanService actionPlanService;
 
     @Override
-    public ActionPlanOutDTO getActualActionPlan(String id) {
-        return actionPlanService.getActualActionPlanByCompanyId(id);
-    }
-
-    @Override
     public ActionPlan createActionPlan(String evaluationId) {
         return actionPlanService.save(evaluationId);
     }

@@ -1,6 +1,7 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.CompanyDTO;
+import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.dto.out.CompanyOutDTO;
 import com.pdg.pymesbackend.dto.out.OnGoingEvaluationOutDTO;
 import com.pdg.pymesbackend.error.PymeException;
@@ -24,6 +25,7 @@ public class CompanyServiceImpl implements CompanyService {
     private CompanyMapper companyMapper;
     private CompanyRepository companyRepository;
     private EvaluationServiceImpl evaluationService;
+    private ActionPlanServiceImpl actionPlanService;
     @Override
     public Company save(CompanyDTO companyDTO) {
         Company company = companyMapper.fromCompanyDTO(companyDTO);
@@ -41,6 +43,12 @@ public class CompanyServiceImpl implements CompanyService {
     public OnGoingEvaluationOutDTO checkUncompletedEvaluation(String companyId) {
         Company company = getCompanyById(companyId);
         return evaluationService.checkUncompletedEvaluation(company);
+    }
+
+    @Override
+    public ActionPlanOutDTO getActualActionPlan(String companyId) {
+        Company company = getCompanyById(companyId);
+        return actionPlanService.getActualActionPlanByCompanyId(company);
     }
 
     @Override
