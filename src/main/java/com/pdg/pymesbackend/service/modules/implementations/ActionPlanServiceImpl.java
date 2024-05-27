@@ -115,7 +115,7 @@ public class ActionPlanServiceImpl implements ActionPlanService {
             if (selected >= scorePassed) {
                 passed = true;
             }
-            if(passed){
+            if(!passed){
                 recommendations.add(question.getRecommendation());
             }
         }
