@@ -2,6 +2,7 @@ package com.pdg.pymesbackend.controller;
 
 import com.pdg.pymesbackend.api.CompanyAPI;
 import com.pdg.pymesbackend.dto.CompanyDTO;
+import com.pdg.pymesbackend.dto.CompanyInfoDTO;
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.dto.out.CompanyOutDTO;
 import com.pdg.pymesbackend.dto.out.OnGoingEvaluationOutDTO;
@@ -26,6 +27,16 @@ public class CompanyController implements CompanyAPI {
     @Override
     public CompanyOutDTO getCompany(String id) {
         return companyService.getCompanyOut(id);
+    }
+
+    @Override
+    public CompanyInfoDTO getInfoCompany(String id) {
+        return  companyService.getCompanyInfo(id);
+    }
+
+    @Override
+    public Company setInfoCompany(String id, CompanyInfoDTO company) {
+        return companyService.setCompanyInfo(id,company);
     }
 
     @Override

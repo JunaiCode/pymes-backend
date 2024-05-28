@@ -2,6 +2,7 @@ package com.pdg.pymesbackend.service.modules;
 
 
 import com.pdg.pymesbackend.dto.CompanyDTO;
+import com.pdg.pymesbackend.dto.CompanyInfoDTO;
 import com.pdg.pymesbackend.dto.RegisterDTO;
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.dto.out.CompanyOutDTO;
@@ -24,5 +25,9 @@ public interface CompanyService {
 
     CompanyOutDTO getCompanyOut(String companyId);
 
+    CompanyInfoDTO getCompanyInfo(String companyId);
+
     Company getCompanyByEmail(String email);
+
+    Company setCompanyInfo(String companyId, CompanyInfoDTO companyInfo);
 }

@@ -1,6 +1,7 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.CompanyDTO;
+import com.pdg.pymesbackend.dto.CompanyInfoDTO;
 import com.pdg.pymesbackend.dto.RegisterDTO;
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.dto.out.CompanyOutDTO;
@@ -99,6 +100,22 @@ public class CompanyServiceImpl implements CompanyService {
 
     }
 
+    @Override
+    public CompanyInfoDTO getCompanyInfo(String companyId) {
+        Company company = getCompanyById(companyId);
+
+        return CompanyInfoDTO.builder()
+                .name(company.getName())
+                .numberEmployees(company.getEmployees())
+                .nit(company.getNit())
+                .tel(company.getTel())
+                .address(company.getAddress())
+                .legalRep(company.getLegalRep())
+                .legalRepEmail(company.getLegalRepEmail())
+                .legalRepTel(company.getLegalRepTel())
+                .build();
+    }
+
     private List<DimensionResult> getLastEvaluationResults(Company company){
         if(company.getEvaluations().isEmpty()){
             return null;
@@ -122,6 +139,20 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Company getCompanyByEmail(String email) {
         return companyRepository.findByLegalRepEmail(email).orElseThrow(() -> new PymeException(PymeExceptionType.COMPANY_NOT_FOUND));
+    }
+
+    @Override
+    public Company setCompanyInfo(String companyId, CompanyInfoDTO companyInfo) {
+        Company company = getCompanyById(companyId);
+        company.setAddress(companyInfo.getAddress());
+        company.setLegalRepEmail(companyInfo.getLegalRepEmail());
+        company.setLegalRep(companyInfo.getLegalRep());
+        company.setLegalRepTel(companyInfo.getLegalRepTel());
+        company.setName(companyInfo.getName());
+        company.setNit(companyInfo.getNit());
+        company.setEmployees(companyInfo.getNumberEmployees());
+        company.setTel(companyInfo.getTel());
+        return companyRepository.save(company);
     }
 
     private CompanyType companyTypeConstructor(Integer companyType){
