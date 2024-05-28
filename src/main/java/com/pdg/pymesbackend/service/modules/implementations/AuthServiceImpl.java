@@ -27,7 +27,7 @@ public class AuthServiceImpl implements AuthService {
 
     public LoginOutDTO login(LoginInDTO loginInDTO) {
         //Check if the user is admin
-        String versionId = versionService.getActualVersion();
+
         Optional<Admin> admin = adminRepository.findByEmail(loginInDTO.getEmail());
         if(admin.isPresent()){
             //Check if the password is correct
@@ -37,10 +37,12 @@ public class AuthServiceImpl implements AuthService {
                         .email(admin.get().getEmail())
                         .id(admin.get().getId())
                         .role("admin")
-                        .actualVersion(versionId)
                         .build();
+            }else{
+
             }
         }
+        String versionId = versionService.getActualVersion();
         //Check if the user is a company
         Company company = companyService.getCompanyByEmail(loginInDTO.getEmail());
         if(company != null){
