@@ -18,4 +18,5 @@ public class ModelDTO {
     @NotBlank
     private String description;
     private List<String> versions;
+    private boolean active;
 }

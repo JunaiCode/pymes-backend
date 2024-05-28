@@ -14,4 +14,5 @@ public class VersionDTO {
         @NotBlank
         private String name;
         private List<DimensionDTO> dimensions;
+        private boolean active;
 }

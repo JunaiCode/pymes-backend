@@ -41,7 +41,8 @@ public class VersionServiceImpl implements VersionService {
     public Version save(VersionDTO version) {
         Version newVersion = versionMapper.fromDTO(version);
         newVersion.setVersionId(UUID.randomUUID().toString());
-        newVersion.setActive(false);
+        newVersion.setActive(true);
+
         versionRepository.findByName(newVersion.getName())
                 .ifPresent(existingVersion -> {
                     throw new PymeException(PymeExceptionType.VERSION_ALREADY_EXISTS);

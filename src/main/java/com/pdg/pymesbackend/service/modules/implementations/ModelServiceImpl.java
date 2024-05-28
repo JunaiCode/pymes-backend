@@ -33,6 +33,9 @@ public class ModelServiceImpl implements ModelService {
     public Model save(ModelDTO model) {
 
         Model newModel = modelMapper.fromCreateDTO(model);
+        deactivateActiveModel();
+        newModel.setActive(true);
+
         newModel.setModelId(UUID.randomUUID().toString());
         newModel.setVersions(new ArrayList<>());
         return modelRepository.save(newModel);
@@ -66,11 +69,13 @@ public class ModelServiceImpl implements ModelService {
     public Model addVersion(String modelId, VersionDTO version) {
         Model model = modelRepository.findById(modelId)
                 .orElseThrow(() -> new PymeException(PymeExceptionType.MODEL_NOT_FOUND));
-
+        deactivateActiveModel();
         Version saved = versionService.save(version);
+
         List<String> updatedVersions = new ArrayList<>(model.getVersions());
         updatedVersions.add(saved.getVersionId());
         model.setVersions(updatedVersions);
+        model.setActive(true);
         return modelRepository.save(model);
     }
 
@@ -93,6 +98,30 @@ public class ModelServiceImpl implements ModelService {
 
     }
 
+    private void deactivateActiveVersion() {
+        Version activeVersion = versionRepository.findActiveVersion();
+        if (activeVersion != null) {
+            activeVersion.setActive(false);
+            versionRepository.save(activeVersion);
+        }
+
+
+    }
+
+    private void deactivateActiveModel() {
+        Model activeModel = modelRepository.findActiveModel();
+        if (activeModel != null) {
+            activeModel.setActive(false);
+
+            modelRepository.save(activeModel);
+        }
+
+        Version activeVersion = versionRepository.findActiveVersion();
+        if (activeVersion != null) {
+            activeVersion.setActive(false);
+            versionRepository.save(activeVersion);
+        }
+    }
 
 
 }
