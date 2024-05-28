@@ -35,6 +35,9 @@ public class ActionPlanServiceImpl implements ActionPlanService {
             return null;
         }else {
             Evaluation recent = evaluationService.getRecentCompletedEvaluation(evaluations);
+            if (recent == null) {
+                return null;
+            }
             String actionPlanId = recent.getActionPlanId();
             return actionPlanConstructor.constructActionPlan(findById(actionPlanId));
         }

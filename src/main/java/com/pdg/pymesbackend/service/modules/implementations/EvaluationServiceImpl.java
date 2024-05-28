@@ -151,7 +151,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     private boolean allQuestionsApproved(List<String> levelQuestions, Map<String, Boolean> approved){
         int approvedQuestions = 0;
         for(String question: levelQuestions){
-            if(approved.get(question)){
+            if(approved.containsKey(question) && approved.get(question)){
                 approvedQuestions++;
             }
         }
