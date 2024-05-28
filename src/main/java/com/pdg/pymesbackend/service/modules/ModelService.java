@@ -18,4 +18,6 @@ public interface ModelService {
     List<Version> findVersionsByModelId(String modelId);
 
     Model addVersion(String modelId, VersionDTO version);
+
+    String getActualVersion();
 }

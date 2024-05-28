@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -71,6 +72,25 @@ public class ModelServiceImpl implements ModelService {
         updatedVersions.add(saved.getVersionId());
         model.setVersions(updatedVersions);
         return modelRepository.save(model);
+    }
+
+    @Override
+    public String getActualVersion() {
+        Model model = modelRepository.findActiveModel();
+        if (model == null) {
+            return null;
+        }
+        Version activeVersion = null;
+        for (String versionId : model.getVersions()) {
+            Version version = versionRepository.findById(versionId)
+                    .orElseThrow(() -> new RuntimeException("Version not found"));
+            if (version.isActive()) {
+                activeVersion = version;
+                return activeVersion.getVersionId();
+            }
+        }
+        return null;
+
     }
 
 

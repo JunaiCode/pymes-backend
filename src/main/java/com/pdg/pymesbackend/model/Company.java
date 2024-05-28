@@ -17,10 +17,16 @@ public class Company {
     private String companyId;
     private String name;
     private String address;
+    private String cityId;
     private LocalDateTime creationDate;
-    private String email;
+    private String legalRepEmail;
+    private String legalRepTel;
+    private String legalRep;
+    private String nit;
     private int employees;
+    private String tel;
     private CompanyType companyType;
     private List<String> evaluations;
     private String economicSectorId;
+    private String password;
 }
