@@ -12,5 +12,6 @@ public interface CompanyMapper {
 
     @Mapping(target = "cityId", source ="city")
     @Mapping(target = "economicSectorId", source = "economicSector")
+    @Mapping(target="employees",source = "numberEmployees")
     Company fromRegisterDTO(RegisterDTO company);
 }
