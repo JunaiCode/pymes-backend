@@ -18,4 +18,5 @@ public class CompanyDTO {
     private int employees;
     private CompanyType companyType;
     private String economicSectorId;
+
 }

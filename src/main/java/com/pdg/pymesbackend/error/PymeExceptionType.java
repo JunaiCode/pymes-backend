@@ -27,7 +27,8 @@ public enum PymeExceptionType {
     EVALUATION_NOT_COMPLETED(1004, "Evaluation not completed", "evaluationId", HttpStatus.BAD_REQUEST, LogLevel.INFO),
     ACTION_PLAN_NOT_FOUND(1101, "Action plan not found", "actionPlanId", HttpStatus.NOT_FOUND, LogLevel.INFO),
     INVALID_DATE_FORMAT(1102, "Invalid date format", "date", HttpStatus.BAD_REQUEST, LogLevel.INFO),
-    RECOMMENDATION_ACTION_PLAN_NOT_FOUND(1103, "Recommendation action plan not found", "recommendationActionPlanId", HttpStatus.NOT_FOUND, LogLevel.INFO),;
+    RECOMMENDATION_ACTION_PLAN_NOT_FOUND(1103, "Recommendation action plan not found", "recommendationActionPlanId", HttpStatus.NOT_FOUND, LogLevel.INFO),
+    COMPANY_ALREADY_EXISTS(1201, "Company already exists", "email", HttpStatus.CONFLICT, LogLevel.INFO),;
     private final int code;
     private final String message;
     private final String parameterName;

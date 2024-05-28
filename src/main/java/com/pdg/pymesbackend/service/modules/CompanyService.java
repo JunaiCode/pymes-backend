@@ -2,6 +2,7 @@ package com.pdg.pymesbackend.service.modules;
 
 
 import com.pdg.pymesbackend.dto.CompanyDTO;
+import com.pdg.pymesbackend.dto.RegisterDTO;
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.dto.out.CompanyOutDTO;
 import com.pdg.pymesbackend.dto.out.OnGoingEvaluationOutDTO;
@@ -10,6 +11,8 @@ import com.pdg.pymesbackend.model.Evaluation;
 
 public interface CompanyService {
     Company save(CompanyDTO companyDTO);
+
+    Company save(RegisterDTO registerDTO);
 
     Company getCompanyById(String companyId);
 
@@ -20,4 +23,6 @@ public interface CompanyService {
     Evaluation startEvaluation(String companyId);
 
     CompanyOutDTO getCompanyOut(String companyId);
+
+    Company getCompanyByEmail(String email);
 }
