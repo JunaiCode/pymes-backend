@@ -29,4 +29,6 @@ public interface VersionService {
     List<DimensionQuestionOutDTO> getFirstQuestions(String versionId, String companyTypeId);
 
     List<DimensionQuestionOutDTO> getDimensionLevelQuestions(DimensionQuestionInDTO dimensionQuestionInDTO);
+
+    String getActualVersion();
 }

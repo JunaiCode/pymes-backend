@@ -159,6 +159,12 @@ public class VersionServiceImpl implements VersionService {
                 .toList();
     }
 
+    @Override
+    public String getActualVersion() {
+        return versionRepository.findActualVersion()
+                .orElseThrow(() -> new PymeException(PymeExceptionType.VERSION_NOT_FOUND))
+                .getVersionId();
+    }
 
 
 }

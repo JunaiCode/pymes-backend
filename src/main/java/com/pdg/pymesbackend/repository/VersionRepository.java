@@ -20,4 +20,7 @@ public interface VersionRepository extends MongoRepository<Version, String>{
 
     @Query(value = "{ 'active' : true }")
     Version findActiveVersion();
+
+    @Query(value = "{ 'active' : true }")
+    Optional<Version> findActualVersion();
 }

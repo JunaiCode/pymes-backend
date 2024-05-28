@@ -11,6 +11,7 @@ import com.pdg.pymesbackend.repository.AdminRepository;
 import com.pdg.pymesbackend.service.modules.AuthService;
 import com.pdg.pymesbackend.service.modules.CompanyService;
 import com.pdg.pymesbackend.service.modules.ModelService;
+import com.pdg.pymesbackend.service.modules.VersionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,12 @@ import java.util.Optional;
 public class AuthServiceImpl implements AuthService {
     AdminRepository adminRepository;
     CompanyService companyService;
+    VersionService versionService;
     ModelService modelService;
 
     public LoginOutDTO login(LoginInDTO loginInDTO) {
         //Check if the user is admin
-        String versionId = modelService.getActualVersion();
+        String versionId = versionService.getActualVersion();
         Optional<Admin> admin = adminRepository.findByEmail(loginInDTO.getEmail());
         if(admin.isPresent()){
             //Check if the password is correct
