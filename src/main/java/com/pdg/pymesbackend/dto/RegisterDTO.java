@@ -11,7 +11,7 @@ public class RegisterDTO {
     private String address;
     private Integer city;
     private Integer economicSector;
-    private Integer expectations;
+    private String expectations;
     private String legalRep;
     private String legalRepEmail;
     private String legalRepTel;
@@ -20,7 +20,7 @@ public class RegisterDTO {
     private Integer numberEmployees;
     private String opsYears;
     private String password;
-    private Integer specificNeeds;
+    private String specificNeeds;
     private String tel;
     private Boolean termsAndConditions;
     private Integer type;
