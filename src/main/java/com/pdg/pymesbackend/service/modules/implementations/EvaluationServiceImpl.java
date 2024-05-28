@@ -102,7 +102,11 @@ public class EvaluationServiceImpl implements EvaluationService {
             }
         }
 
-        final int approvedLevelFinal = approvedLevel+1;
+        if(approvedLevel < dimension.getLevels().size()){
+            approvedLevel++;
+        }
+        final int approvedLevelFinal = approvedLevel;
+
 
         Level level = dimension.getLevels()
                 .stream()
