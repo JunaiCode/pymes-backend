@@ -13,4 +13,5 @@ public class LoginOutDTO {
     private String company;
     private String id;
     private String actualVersion;
+    private String companyType;
 }

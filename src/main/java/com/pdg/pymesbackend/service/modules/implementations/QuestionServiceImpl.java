@@ -49,6 +49,7 @@ public class QuestionServiceImpl implements QuestionService {
         }
         question.setQuestionId(UUID.randomUUID().toString());
         question.getRecommendation().setQuestionId(question.getQuestionId());
+        question.setCompanyTypeId(companyTypeConstructor(questionDTO.getCompanyTypeId()).getCompanyTypeId());
         Question newQuestion = questionRepository.save(question);
         Level level = levelRepository.findById(questionDTO.getLevelId()).orElseThrow(() -> new PymeException(PymeExceptionType.LEVEL_NOT_FOUND));
         level.getQuestions().add(newQuestion.getQuestionId());
@@ -134,5 +135,26 @@ public class QuestionServiceImpl implements QuestionService {
         Level levelObj = levelRepository.findById(level).orElseThrow(() -> new PymeException(PymeExceptionType.LEVEL_NOT_FOUND));
         List<String> questionsId = levelObj.getQuestions();
         return questionRepository.findAllById(questionsId);
+    }
+
+    private CompanyType companyTypeConstructor(Integer companyType){
+        return switch (companyType) {
+            case 1 -> CompanyType.builder()
+                    .companyTypeId("MICRO")
+                    .name("Micro Empresa")
+                    .description("Menos de 10 empleados")
+                    .build();
+            case 2 -> CompanyType.builder()
+                    .companyTypeId("PEQUENA")
+                    .name("Pequeña Empresa")
+                    .description("Entre 10 y 50 empleados")
+                    .build();
+            case 3 -> CompanyType.builder()
+                    .companyTypeId("MEDIANA")
+                    .name("Mediana Empresa")
+                    .description("Entre 50 y 200 empleados")
+                    .build();
+            default -> null;
+        };
     }
 }

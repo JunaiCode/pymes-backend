@@ -27,8 +27,8 @@ public class QuestionDTO {
     private String dimensionId;
     @NotBlank
     private String tagId;
-    @NotBlank
-    private String companyTypeId;
+    @Min(0)
+    private Integer companyTypeId;
     @NotBlank
     private String levelId;
 }

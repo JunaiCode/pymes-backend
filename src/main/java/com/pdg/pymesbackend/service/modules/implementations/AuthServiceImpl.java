@@ -53,6 +53,7 @@ public class AuthServiceImpl implements AuthService {
                         .role("company")
                         .company(company.getName())
                         .actualVersion(versionId)
+                        .companyType(company.getCompanyType().getCompanyTypeId())
                         .build();
             }
         }
