@@ -4,6 +4,7 @@ import com.pdg.pymesbackend.dto.CompanyDTO;
 import com.pdg.pymesbackend.dto.RegisterDTO;
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.dto.out.CompanyOutDTO;
+import com.pdg.pymesbackend.dto.out.EvaluationHistoryOutDTO;
 import com.pdg.pymesbackend.dto.out.OnGoingEvaluationOutDTO;
 import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
@@ -15,12 +16,9 @@ import com.pdg.pymesbackend.model.Evaluation;
 import com.pdg.pymesbackend.repository.CompanyRepository;
 import com.pdg.pymesbackend.service.modules.CompanyService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -95,7 +93,8 @@ public class CompanyServiceImpl implements CompanyService {
                 .name(company.getName())
                 .employees(company.getEmployees())
                 .economicSectorId(company.getEconomicSectorId())
-                .dimensionResults(getLastEvaluationResults(company))
+                .currentEvaluation(getLastEvaluationResults(company))
+                .evaluationHistory(getEvaluationHistory(company))
                 .build();
 
     }
@@ -104,10 +103,20 @@ public class CompanyServiceImpl implements CompanyService {
         if(company.getEvaluations().isEmpty()){
             return null;
         }else {
-            String lastEvaluationId = company.getEvaluations().get(company.getEvaluations().size()-1);
-            Evaluation lastEvaluation = evaluationService.getEvaluationById(lastEvaluationId);
+            Evaluation lastEvaluation = evaluationService.getRecentCompletedEvaluation(company.getEvaluations());
             return lastEvaluation.getDimensionResults();
         }
+    }
+
+    private List<EvaluationHistoryOutDTO> getEvaluationHistory(Company company){
+        List<Evaluation> evaluations = evaluationService.getCompletedEvaluationsByIds(company.getEvaluations());
+        return evaluations
+                .stream()
+                .map(evaluation -> EvaluationHistoryOutDTO.builder()
+                        .dimensionResults(evaluation.getDimensionResults())
+                        .date(evaluation.getDate())
+                        .build())
+                .toList();
     }
 
     @Override

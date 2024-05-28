@@ -206,6 +206,11 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
+    public List<Evaluation> getCompletedEvaluationsByIds(List<String> evaluationsIds){
+        return evaluationRepository.findAllByEvaluationIdAndCompleted(evaluationsIds, true);
+    }
+
+    @Override
     public List<EvaluationResult> addEvaluationResults(String evaluationId, List<EvaluationResultDTO> answers) {
         Evaluation evaluation = getEvaluationById(evaluationId);
         //obtener antiguas respuestas

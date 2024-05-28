@@ -17,5 +17,6 @@ public class CompanyOutDTO {
     private int employees;
     private CompanyType companyType;
     private String economicSectorId;
-    private List<DimensionResult> dimensionResults;
+    private List<DimensionResult> currentEvaluation;
+    private List<EvaluationHistoryOutDTO> evaluationHistory;
 }

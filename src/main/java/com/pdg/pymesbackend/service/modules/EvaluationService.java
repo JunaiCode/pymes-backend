@@ -20,6 +20,8 @@ public interface EvaluationService {
 
     Evaluation getEvaluationById(String evaluationId);
 
+    List<Evaluation> getCompletedEvaluationsByIds(List<String> evaluationsIds);
+
     List<EvaluationResult> addEvaluationResults(String evaluationId, List<EvaluationResultDTO> answers);
 
     void addActionPlanToEvaluation(String evaluationId, String actionPlanId);
