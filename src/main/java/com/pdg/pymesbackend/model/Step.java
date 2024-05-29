@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class Step {
     private String stepId;
     private String description;

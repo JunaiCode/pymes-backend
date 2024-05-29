@@ -25,7 +25,8 @@ public class ActionPlanServiceTest {
     @Mock
     private ActionPlanRepository actionPlanRepository;
 
-    /*
+
+
 
     @Test
     void getActualActionPlan(){
@@ -36,5 +37,4 @@ public class ActionPlanServiceTest {
         System.out.println(service.getActualActionPlanByCompanyId(company.getCompanyId()));
     }
 
-     */
 }
