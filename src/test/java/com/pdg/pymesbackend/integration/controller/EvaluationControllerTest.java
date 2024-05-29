@@ -30,10 +30,12 @@ public class EvaluationControllerTest {
     @Autowired
     ObjectMapper mapper;
 
-    String companyId = "companyId2";
+    String companyId = "companyId3";
     String evaluationId = "Evaluation1Id";
 
     String Version1Id = "Version1Id";
+
+    String evaluationCompletedId ="EvaluationCompletedId";
     @Test
     public void createEvaluation() throws Exception{
         var result = mvc.perform(MockMvcRequestBuilders.post("/evaluation/add/{companyId}",companyId).contentType(MediaType.APPLICATION_JSON)
@@ -62,7 +64,7 @@ public class EvaluationControllerTest {
         EvaluationResultDTO evaluation2 = EvaluationResultDTO.builder().marked(true).questionId("questionProcess1Id").optionId("optionProcesos2").build();
         evaluationResultDTOS.add(evaluation);
         evaluationResultDTOS.add(evaluation2);
-        var result = mvc.perform(MockMvcRequestBuilders.post("/evaluation/{evaluationId}/addAnswers",evaluationId).content(
+        var result = mvc.perform(MockMvcRequestBuilders.post("/evaluation/{evaluationId}/addAnswers",evaluationCompletedId).content(
                 mapper.writeValueAsString(evaluationResultDTOS)).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
         System.out.println(result.getResponse().getContentAsString());

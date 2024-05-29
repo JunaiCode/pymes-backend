@@ -29,6 +29,8 @@ public class ActionPlanControllerTest {
 
     String evaluationId = "EvaluationCompletedId";
     String actionPlanId = "ActionPlan1Id";
+
+    String recommendationActionPlanId = "RecommendationPlanId1";
     @Test
     public void createActionPlan() throws Exception{
         var result = mvc.perform(MockMvcRequestBuilders.post("/actionPlan/add/evaluation/{evaluationId}",evaluationId).contentType(MediaType.APPLICATION_JSON)
@@ -46,11 +48,9 @@ public class ActionPlanControllerTest {
 
     @Test
     public void updateStepTrack() throws Exception{
-        /*
-        var result = mvc.perform(MockMvcRequestBuilders.put("/actionPlan/updateStepTrack/{actionPlanId}/{recommendationActionPlanId}/{completed}",actionPlanId).contentType(MediaType.APPLICATION_JSON)
+        var result = mvc.perform(MockMvcRequestBuilders.put("/actionPlan/updateStepTrack/{actionPlanId}/{recommendationActionPlanId}/{completed}",actionPlanId,recommendationActionPlanId,false).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
         System.out.println(result.getResponse().getContentAsString());
-         */
     }
 
 }

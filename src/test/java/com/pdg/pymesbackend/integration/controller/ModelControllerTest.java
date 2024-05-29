@@ -53,7 +53,7 @@ public class ModelControllerTest {
         ArrayList<DimensionDTO> dimensionDTOS = new ArrayList<>();
         dimensionDTOS.add(newDimension);
         var result = mvc.perform(MockMvcRequestBuilders.post("/model/add/version/{modelId}",modelId).content(
-                        mapper.writeValueAsString(new VersionDTO("Version Nueva",dimensionDTOS,false))
+                        mapper.writeValueAsString(new VersionDTO("Version Nueva",dimensionDTOS,true))
                 ).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
         System.out.println(result.getResponse().getContentAsString());

@@ -167,10 +167,19 @@ public class TestConfigurationData {
         Model model = Model.builder().modelId("modelId").active(true).description("Model").name("Modelo 1").versions(versionsModel).build();
 
         /*EVALUATION*/
-        ActionPlan actionPlan = ActionPlan.builder().actionPlanId("ActionPlan1Id").recommendationActionPlans(new ArrayList<>()).recommendations(new ArrayList<>()).start(LocalDateTime.now()).end(LocalDateTime.now()).build();
+        ArrayList<Recommendation> recommendationsPlan = new ArrayList<>();
+        recommendationsPlan.add(recommendationQuestionTecnologia1);
+        recommendationsPlan.add(recommendationQuestionProcesos1);
+        ArrayList<RecommendationActionPlan> recommendationActionPlans = new ArrayList<>();
+        RecommendationActionPlan recoPlan = RecommendationActionPlan.builder().recommendationActionPlanId("RecommendationPlanId1").completed(false).date(LocalDateTime.now()).step(recommendationQuestionTecnologia1.getSteps().get(0)).recommendationId(recommendationQuestionTecnologia1.getRecommendationId()).build();
+        RecommendationActionPlan recoPlan2 = RecommendationActionPlan.builder().recommendationActionPlanId("RecommendationPlanId2").completed(false).date(LocalDateTime.now()).step(recommendationQuestionProcesos1.getSteps().get(0)).recommendationId(recommendationQuestionProcesos1.getRecommendationId()).build();
+        recommendationActionPlans.add(recoPlan);
+        ActionPlan actionPlan = ActionPlan.builder().actionPlanId("ActionPlan1Id").recommendationActionPlans(recommendationActionPlans).recommendations(recommendationsPlan).start(LocalDateTime.now()).end(LocalDateTime.now()).build();
+        EvaluationResult evaluationResult1 = new EvaluationResult("evaluationResult1Id","dimensionTechId","questionTecnologia1Id","optionTecnologia1",false);
+        EvaluationResult evaluationResult2 = new EvaluationResult("evaluationResult2Id","dimensionProcessId","questionProcess1Id","optionProcesos3",false);
         ArrayList<String> questionResult = new ArrayList<>();
-        questionResult.add("questionTecnologia1Id");
-        questionResult.add("questionProcess1Id");
+        questionResult.add(evaluationResult1.getEvaluationResultId());
+        questionResult.add(evaluationResult2.getEvaluationResultId());
         ArrayList<DimensionResult> dimensionResults = new ArrayList<>();
         DimensionResult dimensionTechResult = DimensionResult.builder().dimensionName("Tech").dimensionId("dimensionTechId").levelId("level1TechId").levelName("Nivel 1").levelValue(1).build();
         DimensionResult dimensionProcessResult = DimensionResult.builder().dimensionName("Process").dimensionId("dimensionProcessId").levelId("level1ProcessId").levelName("Nivel 1").levelValue(1).build();
@@ -193,6 +202,8 @@ public class TestConfigurationData {
             evaluations.deleteAll();
             actionplans.deleteAll();
             evaluationResults.deleteAll();
+            evaluationResults.save(evaluationResult1);
+            evaluationResults.save(evaluationResult2);
             admins.save(admin);
             companies.save(company);
             companies.save(company2);
@@ -218,6 +229,7 @@ public class TestConfigurationData {
             actionplans.save(actionPlan);
             evaluations.save(evaluation);
             evaluations.save(evaluation2);
+
         };
     }
 }
