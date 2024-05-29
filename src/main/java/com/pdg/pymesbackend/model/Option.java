@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Option {
     @Id
     private String optionId;
