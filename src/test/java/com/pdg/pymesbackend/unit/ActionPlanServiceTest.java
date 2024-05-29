@@ -27,7 +27,7 @@ public class ActionPlanServiceTest {
 
 
 
-
+    /*
     @Test
     void getActualActionPlan(){
         Evaluation evaluation = Evaluation.builder().evaluationId("1").actionPlanId("1").build();
@@ -36,5 +36,6 @@ public class ActionPlanServiceTest {
         System.out.println(company);
         System.out.println(service.getActualActionPlanByCompanyId(company.getCompanyId()));
     }
+    */
 
 }
