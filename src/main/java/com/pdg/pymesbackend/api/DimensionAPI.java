@@ -18,10 +18,6 @@ public interface DimensionAPI {
     @GetMapping("/get/{id}")
     Dimension getDimension (@PathVariable String id);
 
-    @GetMapping("/get/all")
-    List<Dimension> getAllDimensions ();
-
-
     @PutMapping("/update/{id}")
     Dimension updateDimension (@RequestBody @Valid DimensionDTO dimension, @PathVariable String id);
 

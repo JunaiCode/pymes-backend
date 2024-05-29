@@ -23,7 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Import(TestConfigurationData.class)
 public class CompanyControllerTest {
 
@@ -33,19 +32,17 @@ public class CompanyControllerTest {
     @Autowired
     ObjectMapper mapper;
 
-    private String companyId;
+    String companyId = "companyId";
 
-    @BeforeAll
-    public void setUp() throws Exception {
-        var result = mvc.perform(MockMvcRequestBuilders.post("/company/add").content(
-                        mapper.writeValueAsString(new CompanyDTO("Emcali","Carrera 4a","emcali@hotmail.com",
-                                20,new CompanyType("MICRO","Micro empresa","MicroEmpresa"),"1"))
-                ).contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
+    String companyId2 ="companyId2";
 
-        String response = result.getResponse().getContentAsString();
-        JSONObject jsonResponse = new JSONObject(response);
-        companyId = jsonResponse.getString("companyId");
+
+    @Test
+    public void getCompany() throws Exception {
+        var result = mvc.perform(MockMvcRequestBuilders.get("/company/get/{id}", companyId2)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }
 
@@ -56,19 +53,6 @@ public class CompanyControllerTest {
                                 20,new CompanyType("MICRO","Micro empresa","MicroEmpresa"),"1"))
                 ).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
-
-        String response = result.getResponse().getContentAsString();
-        JSONObject jsonResponse = new JSONObject(response);
-        companyId = jsonResponse.getString("companyId");
-        System.out.println(result.getResponse().getContentAsString());
-    }
-
-    @Test
-    public void getCompany() throws Exception {
-        var result = mvc.perform(MockMvcRequestBuilders.get("/company/get/{id}", companyId)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
         System.out.println(result.getResponse().getContentAsString());
     }
 

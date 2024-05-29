@@ -28,11 +28,6 @@ public class DimensionController implements DimensionAPI {
     }
 
     @Override
-    public List<Dimension> getAllDimensions() {
-        return null;
-    }
-
-    @Override
     public Dimension updateDimension(DimensionDTO dimension, String id) {
         return dimensionService.update(id, dimension);
     }
