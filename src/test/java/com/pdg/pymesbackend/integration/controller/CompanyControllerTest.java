@@ -1,6 +1,7 @@
 package com.pdg.pymesbackend.integration.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pdg.pymesbackend.TestConfigurationData;
 import com.pdg.pymesbackend.dto.CompanyDTO;
 import com.pdg.pymesbackend.dto.CompanyInfoDTO;
 import com.pdg.pymesbackend.model.CompanyType;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Import(TestConfigurationData.class)
 public class CompanyControllerTest {
 
     @Autowired
