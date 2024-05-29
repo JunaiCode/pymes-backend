@@ -1,7 +1,6 @@
 package com.pdg.pymesbackend.controller;
 
 import com.pdg.pymesbackend.api.QuestionAPI;
-import com.pdg.pymesbackend.dto.OptionDTO;
 import com.pdg.pymesbackend.dto.QuestionDTO;
 import com.pdg.pymesbackend.model.Question;
 import com.pdg.pymesbackend.service.modules.QuestionService;

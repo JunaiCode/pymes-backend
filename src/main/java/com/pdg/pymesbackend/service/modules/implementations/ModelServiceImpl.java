@@ -2,8 +2,6 @@ package com.pdg.pymesbackend.service.modules.implementations;
 
 import com.pdg.pymesbackend.dto.ModelDTO;
 import com.pdg.pymesbackend.dto.VersionDTO;
-import com.pdg.pymesbackend.error.PymeException;
-import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.ModelMapper;
 import com.pdg.pymesbackend.model.Model;
 import com.pdg.pymesbackend.model.Version;
@@ -16,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service

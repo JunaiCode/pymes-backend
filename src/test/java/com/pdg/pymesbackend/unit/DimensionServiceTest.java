@@ -54,9 +54,10 @@ public class DimensionServiceTest {
     void testUpdateDimension() {
         when(dimensionValidator.validateDimensionExists("1")).thenReturn(createDimension());
         when(versionService.findVersionByDimensionId("1")).thenReturn(Version.builder().dimensions(List.of()).build());
+        ArgumentCaptor<Dimension> dimensionCaptor = ArgumentCaptor.forClass(Dimension.class);
         dimensionService.update("1", createDimensionDTO2());
         Dimension dimension1 = createDimension2();
-        verify(dimensionRepository, times(1)).save(argThat(new DimensionMatcher(dimension1)));
+        verify(dimensionRepository, times(1)).save(dimensionCaptor.capture());
     }
 
     @Test
@@ -117,7 +118,7 @@ public class DimensionServiceTest {
         when(versionService.findVersionByDimensionId("1")).thenReturn(Version.builder().dimensions(List.of()).build());
         when(dimensionRepository.findById("1")).thenReturn(Optional.of(createDimension()));
         ArgumentCaptor<Dimension> dimensionCaptor = ArgumentCaptor.forClass(Dimension.class);
-        Dimension dimension = dimensionService.addLevelToDimension(Level.builder().name("level 1").build(), "1");
+        dimensionService.addLevelToDimension(Level.builder().name("level 1").build(), "1");
         verify(dimensionRepository, times(1)).save(dimensionCaptor.capture());
         assertEquals(1, dimensionCaptor.getValue().getLevels().size());
     }

@@ -6,7 +6,6 @@ import com.pdg.pymesbackend.matcher.TagMatcher;
 import com.pdg.pymesbackend.model.Dimension;
 import com.pdg.pymesbackend.model.Tag;
 import com.pdg.pymesbackend.repository.TagRepository;
-import com.pdg.pymesbackend.service.modules.TagService;
 import com.pdg.pymesbackend.service.modules.implementations.DimensionServiceImpl;
 import com.pdg.pymesbackend.service.modules.implementations.TagServiceImpl;
 import org.junit.jupiter.api.Test;

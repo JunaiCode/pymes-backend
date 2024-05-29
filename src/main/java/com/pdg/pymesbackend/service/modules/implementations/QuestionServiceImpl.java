@@ -1,6 +1,5 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
-import com.pdg.pymesbackend.dto.OptionDTO;
 import com.pdg.pymesbackend.dto.QuestionDTO;
 import com.pdg.pymesbackend.dto.out.QuestionOutDTO;
 import com.pdg.pymesbackend.error.PymeException;
@@ -10,7 +9,6 @@ import com.pdg.pymesbackend.mapper.QuestionMapper;
 import com.pdg.pymesbackend.model.*;
 import com.pdg.pymesbackend.repository.LevelRepository;
 import com.pdg.pymesbackend.repository.QuestionRepository;
-import com.pdg.pymesbackend.service.modules.LevelService;
 import com.pdg.pymesbackend.service.modules.QuestionService;
 import com.pdg.pymesbackend.service.validator.DimensionValidator;
 import com.pdg.pymesbackend.service.validator.implementations.VersionValidatorImpl;

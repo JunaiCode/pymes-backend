@@ -17,7 +17,8 @@ public class DimensionMatcher implements ArgumentMatcher<Dimension> {
     public boolean matches(Dimension dimension) {
         return dimension.getDimensionId() != null &&
                 dimension.getName().equals(leftDimension.getName()) &&
-                dimension.getDescription().equals(leftDimension.getDescription());
+                dimension.getDescription().equals(leftDimension.getDescription())&&
+                compareLevels(dimension.getLevels(), leftDimension.getLevels());
     }
 
     private boolean compareLevels(List<Level> list1, List<Level> list2) {

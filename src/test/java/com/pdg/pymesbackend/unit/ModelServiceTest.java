@@ -43,7 +43,7 @@ public class ModelServiceTest {
     @Test
     void testCreateModel() {
         when(modelMapper.fromCreateDTO(defaultModelCreateDTO())).thenReturn(defaultModelCreate());
-        Model model = modelService.save(defaultModelCreateDTO());
+        modelService.save(defaultModelCreateDTO());
         Model model1 = defaultModelCreate();
         verify(modelRepository, times(1)).save(argThat(new ModelMatcher(model1)));
     }
@@ -98,7 +98,7 @@ public class ModelServiceTest {
     void testAddVersion() {
         when(modelRepository.findById("1")).thenReturn(java.util.Optional.of(defaultModelCreate()));
         when(versionService.save(createVersionDTO())).thenReturn(createVersion());
-        Model model = modelService.addVersion("1", createVersionDTO());
+        modelService.addVersion("1", createVersionDTO());
         Model model1 = defaultModelCreate2();
         verify(modelRepository, times(1)).save(argThat(new ModelMatcher(model1)));
     }

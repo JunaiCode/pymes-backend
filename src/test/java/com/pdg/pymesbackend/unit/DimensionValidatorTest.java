@@ -2,7 +2,6 @@ package com.pdg.pymesbackend.unit;
 
 import com.pdg.pymesbackend.model.Dimension;
 import com.pdg.pymesbackend.repository.DimensionRepository;
-import com.pdg.pymesbackend.service.modules.implementations.DimensionServiceImpl;
 import com.pdg.pymesbackend.service.validator.implementations.DimensionValidatorImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

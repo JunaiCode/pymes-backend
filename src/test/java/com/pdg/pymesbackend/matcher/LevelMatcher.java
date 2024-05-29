@@ -4,7 +4,6 @@ package com.pdg.pymesbackend.matcher;
 import com.pdg.pymesbackend.model.Level;
 import org.mockito.ArgumentMatcher;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class LevelMatcher implements ArgumentMatcher<Level> {

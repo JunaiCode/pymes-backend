@@ -6,7 +6,6 @@ import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.LevelMapper;
 import com.pdg.pymesbackend.model.Dimension;
 import com.pdg.pymesbackend.model.Level;
-import com.pdg.pymesbackend.model.Question;
 import com.pdg.pymesbackend.repository.LevelRepository;
 import com.pdg.pymesbackend.service.modules.DimensionService;
 import com.pdg.pymesbackend.service.modules.LevelService;
