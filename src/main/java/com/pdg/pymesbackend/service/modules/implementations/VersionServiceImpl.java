@@ -102,19 +102,24 @@ public class VersionServiceImpl implements VersionService {
                 .findAny()
                 .orElseThrow(() -> new PymeException(PymeExceptionType.DIMENSION_NOT_FOUND));
 
-        version.getDimensions().remove(dimension);
+        List<Dimension> dimensions = new ArrayList<>(version.getDimensions());
 
-        List<Level> levels = dimension.getLevels();
+        dimensions.remove(dimension);
+
+        List<Level> levels = new ArrayList<>(dimension.getLevels());
         Level level = levels.stream()
                 .filter(level1 -> level1.getLevelId().equals(levelId))
                 .findAny()
                 .orElseThrow(() -> new PymeException(PymeExceptionType.LEVEL_NOT_FOUND));
         levels.remove(level);
-        level.getQuestions().add(newQuestion.getQuestionId());
+        List<String> questions = new ArrayList<>(level.getQuestions());
+        questions.add(newQuestion.getQuestionId());
+        level.setQuestions(questions);
         levels.add(level);
         dimension.setLevels(levels);
         dimensionRepository.save(dimension);
-        version.getDimensions().add(dimension);
+        dimensions.add(dimension);
+        version.setDimensions(dimensions);
         return versionRepository.save(version);
     }
 

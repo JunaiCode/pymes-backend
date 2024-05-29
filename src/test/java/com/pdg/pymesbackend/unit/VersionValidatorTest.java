@@ -23,7 +23,7 @@ public class VersionValidatorTest {
 
     @Test
     void testValidateVersion(){
-        when(versionRepository.findById("1")).thenReturn(Optional.of(Version.builder().versionId("1").name("V 2.0").build()));
+        when(versionRepository.findByVersionId("1")).thenReturn(Optional.of(Version.builder().versionId("1").name("V 2.0").build()));
         Version version = versionValidator.validateVersion("1");
 
         assertEquals("1", version.getVersionId());
@@ -32,7 +32,12 @@ public class VersionValidatorTest {
     }
 
     @Test
-    void testNull(){
+    void testValidateVersionNotFound(){
+        try {
+            versionValidator.validateVersion("1");
+        } catch (Exception e) {
+            assertEquals("Version not found", e.getMessage());
+        }
 
     }
 }

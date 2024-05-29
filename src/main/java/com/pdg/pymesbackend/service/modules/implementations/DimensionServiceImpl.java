@@ -14,6 +14,7 @@ import com.pdg.pymesbackend.service.validator.DimensionValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,11 +42,13 @@ public class DimensionServiceImpl implements DimensionService {
     public Dimension update(String id, DimensionDTO dimension) {
         Dimension oldDimension = dimensionValidator.validateDimensionExists(id);
         Version version = versionService.findVersionByDimensionId(id);
-        version.getDimensions().remove(oldDimension);
+        List<Dimension> dimensions = new ArrayList<>(version.getDimensions());
+        dimensions.remove(oldDimension);
         oldDimension.setName(dimension.getName());
         oldDimension.setDescription(dimension.getDescription());
         //Update the dimension in the version
-        version.getDimensions().add(oldDimension);
+        dimensions.add(oldDimension);
+        version.setDimensions(dimensions);
         versionService.updateWithVersion(version);
         return dimensionRepository.save(oldDimension);
     }
@@ -70,9 +73,16 @@ public class DimensionServiceImpl implements DimensionService {
     public Dimension addLevelToDimension(Level level, String dimensionId) {
         Version version = versionService.findVersionByDimensionId(dimensionId);
         Dimension dimension = findById(dimensionId);
-        version.getDimensions().remove(dimension);
-        dimension.getLevels().add(level);
-        version.getDimensions().add(dimension);
+
+        List<Dimension> dimensions = new ArrayList<>(version.getDimensions());
+        dimensions.remove(dimension);
+
+        List<Level> levels = new ArrayList<>(dimension.getLevels());
+        levels.add(level);
+        dimension.setLevels(levels);
+        dimensions.add(dimension);
+        version.setDimensions(dimensions);
+
         versionService.updateWithVersion(version);
         return dimensionRepository.save(dimension);
     }

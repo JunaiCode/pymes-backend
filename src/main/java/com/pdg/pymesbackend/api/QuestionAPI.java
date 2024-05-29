@@ -17,9 +17,6 @@ public interface QuestionAPI {
     @PostMapping("/add")
     Question createQuestion(@RequestBody @Valid QuestionDTO question);
 
-    @PutMapping("/add/option/{questionId}")
-    Question addOption(@RequestBody @Valid OptionDTO option, @PathVariable String questionId);
-
     @DeleteMapping("/delete/{id}")
     void deleteQuestion(@PathVariable String id);
 

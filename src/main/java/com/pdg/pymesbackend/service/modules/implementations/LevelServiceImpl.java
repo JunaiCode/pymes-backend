@@ -53,7 +53,7 @@ public class LevelServiceImpl implements LevelService {
 
     @Override
     public void updateQuestions(String levelId, List<String> questionsId) {
-        Level level = levelRepository.findById(levelId).orElseThrow(() -> new PymeException(PymeExceptionType.LEVEL_NOT_FOUND));
+        Level level = getLevel(levelId);
         level.setQuestions(questionsId);
         levelRepository.save(level);
     }

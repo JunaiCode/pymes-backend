@@ -5,16 +5,15 @@ import org.mockito.ArgumentMatcher;
 
 public class ModelMatcher implements ArgumentMatcher<Model> {
 
-    /*private Model leftModel;
+    private final Model leftModel;
 
     public ModelMatcher(Model model) {
         leftModel = model;
-    }*/
+    }
     @Override
     public boolean matches(Model model) {
-        return false;
-        /*return  model.getModelId() != null &&
+        return  model.getModelId() != null &&
                 model.getName().equals(leftModel.getName()) &&
-                model.getDescription().equals(leftModel.getDescription());*/
+                model.getDescription().equals(leftModel.getDescription());
     }
 }

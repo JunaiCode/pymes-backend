@@ -1,13 +1,31 @@
 package com.pdg.pymesbackend.unit;
 
+import com.pdg.pymesbackend.dto.ModelDTO;
+import com.pdg.pymesbackend.dto.VersionDTO;
+import com.pdg.pymesbackend.mapper.ModelMapper;
+import com.pdg.pymesbackend.matcher.ModelMatcher;
+import com.pdg.pymesbackend.model.Model;
+import com.pdg.pymesbackend.model.Version;
+import com.pdg.pymesbackend.repository.ModelRepository;
+import com.pdg.pymesbackend.repository.VersionRepository;
+import com.pdg.pymesbackend.service.modules.implementations.ModelServiceImpl;
+import com.pdg.pymesbackend.service.modules.implementations.VersionServiceImpl;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ModelServiceTest {
-/*
+
     @Mock
     private ModelRepository modelRepository;
 
@@ -19,19 +37,11 @@ public class ModelServiceTest {
     @Spy
     private ModelMapper modelMapper;
     @InjectMocks
-    private ModelServiceImpl modelService;*/
+    private ModelServiceImpl modelService;
 
-    /*@BeforeEach
-    void init() {
-        modelRepository = mock(ModelRepository.class);
-        versionRepository = mock(VersionRepository.class);
-        modelMapper = spy(ModelMapper.class);
-        modelService = new ModelServiceImpl(modelRepository, versionRepository, modelMapper);
-    }*/
 
-    /*
     @Test
-    public void testCreateModel() {
+    void testCreateModel() {
         when(modelMapper.fromCreateDTO(defaultModelCreateDTO())).thenReturn(defaultModelCreate());
         Model model = modelService.save(defaultModelCreateDTO());
         Model model1 = defaultModelCreate();
@@ -39,28 +49,28 @@ public class ModelServiceTest {
     }
 
     @Test
-    public void testFindAll() {
+    void testFindAll() {
         when(modelRepository.findAll()).thenReturn(List.of(defaultModelCreate()));
         List<Model> models = modelService.findAll();
         assertEquals(1, models.size());
     }
 
     @Test
-    public void testFindAllEmpty() {
+    void testFindAllEmpty() {
         when(modelRepository.findAll()).thenReturn(List.of());
         List<Model> models = modelService.findAll();
         assertEquals(0, models.size());
     }
 
     @Test
-    public void testFindById() {
+    void testFindById() {
         when(modelRepository.findById("1")).thenReturn(java.util.Optional.of(defaultModelCreate()));
         Model model = modelService.findById("1");
         assertEquals(defaultModelCreate(), model);
     }
 
     @Test
-    public void testFindByIdNotFound() {
+    void testFindByIdNotFound() {
         when(modelRepository.findById("1")).thenReturn(java.util.Optional.empty());
         try {
             modelService.findById("1");
@@ -70,14 +80,14 @@ public class ModelServiceTest {
     }
 
     @Test
-    public void testFindVersionsByModelId() {
+    void testFindVersionsByModelIdEmpty() {
         when(modelRepository.findById("1")).thenReturn(java.util.Optional.of(defaultModelCreate()));
         List<Version> versions = modelService.findVersionsByModelId("1");
         assertEquals(0, versions.size());
     }
 
     @Test
-    public void testFindVersionsByModelId2() {
+    void testFindVersionsByModelId() {
         when(modelRepository.findById("1")).thenReturn(java.util.Optional.of(modelCreateTwo()));
         when(versionRepository.findVersionByVersionIdIn(List.of("1", "2"))).thenReturn(List.of(Version.builder().versionId("1").build(), Version.builder().versionId("2").build()));
         List<Version> versions = modelService.findVersionsByModelId("1");
@@ -85,7 +95,7 @@ public class ModelServiceTest {
     }
 
     @Test
-    public void testAddVersion() {
+    void testAddVersion() {
         when(modelRepository.findById("1")).thenReturn(java.util.Optional.of(defaultModelCreate()));
         when(versionService.save(createVersionDTO())).thenReturn(createVersion());
         Model model = modelService.addVersion("1", createVersionDTO());
@@ -94,7 +104,7 @@ public class ModelServiceTest {
     }
 
     @Test
-    public void testAddVersionNotFound() {
+    void testAddVersionNotFound() {
         when(modelRepository.findById("1")).thenReturn(java.util.Optional.empty());
         try {
             modelService.addVersion("1", createVersionDTO());
@@ -103,18 +113,39 @@ public class ModelServiceTest {
         }
     }
 
+    @Test
+    void testGetActualVersion() {
+        when(modelRepository.findActiveModel()).thenReturn(defaultModelCreate());
+        when(versionRepository.findById("1")).thenReturn(java.util.Optional.of(createVersion()));
+        String version = modelService.getActualVersion();
+        assertEquals("1", version);
+    }
+
+    @Test
+    void testGetActualVersionNotFound() {
+        when(modelRepository.findActiveModel()).thenReturn(defaultModelCreate());
+        when(versionRepository.findById("1")).thenReturn(java.util.Optional.empty());
+        try {
+            String versionId = modelService.getActualVersion();
+            assertNull(versionId);
+        } catch (Exception e) {
+            assertEquals("Version not found", e.getMessage());
+
+        }
+    }
+
+
     private VersionDTO createVersionDTO(){
         return VersionDTO.builder()
                 .dimensions(List.of())
-                .levels(List.of())
                 .build();
     }
 
     private Version createVersion(){
         return Version.builder()
                 .versionId("1")
+                .active(true)
                 .dimensions(List.of())
-                .levels(List.of())
                 .build();
     }
 
@@ -122,6 +153,7 @@ public class ModelServiceTest {
         return ModelDTO.builder()
                 .name("Model")
                 .description("Description")
+                .versions(List.of())
                 .build();
     }
 
@@ -138,7 +170,7 @@ public class ModelServiceTest {
                 .modelId("1")
                 .name("Model")
                 .description("Description")
-                .versions(List.of())
+                .versions(List.of("1"))
                 .build();
     }
 
@@ -150,5 +182,4 @@ public class ModelServiceTest {
                 .versions(List.of("1"))
                 .build();
     }
-*/
 }

@@ -67,8 +67,7 @@ public class ModelServiceImpl implements ModelService {
     @Transactional
     @Override
     public Model addVersion(String modelId, VersionDTO version) {
-        Model model = modelRepository.findById(modelId)
-                .orElseThrow(() -> new PymeException(PymeExceptionType.MODEL_NOT_FOUND));
+        Model model = findById(modelId);
         deactivateActiveModel();
         Version saved = versionService.save(version);
 

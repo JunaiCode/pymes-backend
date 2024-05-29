@@ -58,16 +58,6 @@ public class QuestionServiceImpl implements QuestionService {
 
     }
 
-
-    @Override
-    public Question addOption(String questionId, OptionDTO option) {
-        Question question = findById(questionId);
-        Option newOption = optionMapper.fromDTO(option);
-        newOption.setOptionId(UUID.randomUUID().toString());
-        question.getOptions().add(newOption);
-        return questionRepository.save(question);
-    }
-
     @Override
     public void deleteQuestion(String id) {
         Question question = findById(id);

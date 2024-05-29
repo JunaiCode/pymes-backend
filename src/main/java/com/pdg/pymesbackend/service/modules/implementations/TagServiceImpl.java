@@ -35,10 +35,8 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag update(String id, TagDTO tag) {
-        Tag oldTag = tagRepository.findById(id).orElseThrow(
-                () -> new PymeException(PymeExceptionType.TAG_NOT_FOUND)
-        );
-        //findByNameAndDimensionId(tag.getName(), tag.getDimensionId());
+        Tag oldTag = getTag(id);
+        findByNameAndDimensionId(tag.getName(), tag.getDimensionId());
         oldTag.setName(tag.getName());
         oldTag.setDescription(tag.getDescription());
         oldTag.setDimensionId(tag.getDimensionId());

@@ -1,13 +1,29 @@
 package com.pdg.pymesbackend.unit;
 
+import com.pdg.pymesbackend.dto.TagDTO;
+import com.pdg.pymesbackend.mapper.TagMapper;
+import com.pdg.pymesbackend.matcher.TagMatcher;
+import com.pdg.pymesbackend.model.Dimension;
+import com.pdg.pymesbackend.model.Tag;
+import com.pdg.pymesbackend.repository.TagRepository;
+import com.pdg.pymesbackend.service.modules.TagService;
+import com.pdg.pymesbackend.service.modules.implementations.DimensionServiceImpl;
+import com.pdg.pymesbackend.service.modules.implementations.TagServiceImpl;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TagServiceTest {
-/*
+
     @Mock
     private TagRepository tagRepository;
     @Mock
@@ -96,6 +112,23 @@ public class TagServiceTest {
         }
     }
 
+    @Test
+    void testGetTag() {
+        when(tagRepository.findById("1")).thenReturn(Optional.of(createTag()));
+        Tag result = tagService.getTag("1");
+        verify(tagRepository, times(1)).findById("1");
+        assertEquals(result.getName(), createTag().getName());
+    }
+    @Test
+    void testGetTagNotFound() {
+        when(tagRepository.findById("1")).thenReturn(Optional.empty());
+        try {
+            tagService.getTag("1");
+        } catch (Exception e) {
+            assertEquals("Tag not found", e.getMessage());
+        }
+    }
+
     Tag createTag() {
         return Tag.builder()
                 .tagId("1")
@@ -119,5 +152,5 @@ public class TagServiceTest {
                 .description("Tag 1 description")
                 .dimensionId("1")
                 .build();
-    }*/
+    }
 }

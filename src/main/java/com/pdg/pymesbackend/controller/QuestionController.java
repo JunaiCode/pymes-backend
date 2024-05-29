@@ -23,12 +23,6 @@ public class QuestionController implements QuestionAPI {
         return questionService.createQuestion(question);
     }
 
-
-    @Override
-    public Question addOption(OptionDTO option, String questionId) {
-        return questionService.addOption(questionId, option);
-    }
-
     @Override
     public void deleteQuestion(String id) {
         questionService.deleteQuestion(id);
