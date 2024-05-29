@@ -34,12 +34,12 @@ public class CompanyControllerTest {
 
     String companyId = "companyId";
 
-    String companyId2 ="companyId2";
+    String companyId3 ="companyId3";
 
 
     @Test
     public void getCompany() throws Exception {
-        var result = mvc.perform(MockMvcRequestBuilders.get("/company/get/{id}", companyId2)
+        var result = mvc.perform(MockMvcRequestBuilders.get("/company/get/{id}", companyId3)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();

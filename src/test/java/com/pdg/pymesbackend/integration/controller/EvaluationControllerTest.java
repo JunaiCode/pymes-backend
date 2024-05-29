@@ -2,7 +2,9 @@ package com.pdg.pymesbackend.integration.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pdg.pymesbackend.TestConfigurationData;
+import com.pdg.pymesbackend.dto.EvaluationResultDTO;
 import com.pdg.pymesbackend.dto.ModelDTO;
+import com.pdg.pymesbackend.dto.VersionDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.ArrayList;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -53,7 +57,15 @@ public class EvaluationControllerTest {
 
     @Test
     public void addAnswers() throws Exception {
-
+        ArrayList<EvaluationResultDTO> evaluationResultDTOS = new ArrayList<>();
+        EvaluationResultDTO evaluation = EvaluationResultDTO.builder().marked(false).questionId("questionTecnologia1Id").optionId("optionTecnologia1").build();
+        EvaluationResultDTO evaluation2 = EvaluationResultDTO.builder().marked(true).questionId("questionProcess1Id").optionId("optionProcesos2").build();
+        evaluationResultDTOS.add(evaluation);
+        evaluationResultDTOS.add(evaluation2);
+        var result = mvc.perform(MockMvcRequestBuilders.post("/evaluation/{evaluationId}/addAnswers",evaluationId).content(
+                mapper.writeValueAsString(evaluationResultDTOS)).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
+        System.out.println(result.getResponse().getContentAsString());
     }
 
 }

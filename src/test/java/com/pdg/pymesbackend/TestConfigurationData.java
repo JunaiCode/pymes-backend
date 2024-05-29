@@ -25,6 +25,7 @@ public class TestConfigurationData {
                                         TagRepository tags,
                                         VersionRepository versions,
                                         EvaluationRepository evaluations,
+                                        EvaluationResultRepository evaluationResults,
                                         ActionPlanRepository actionplans) {
 
         Admin admin = Admin.builder().name("Admin").email("admin@admin.com").password("password").id("adminId").build();
@@ -35,6 +36,8 @@ public class TestConfigurationData {
         evaluationsCompany2.add("Evaluation1Id");
         Company company2 = Company.builder().companyId("companyId2").companyType(companyType).employees(20).address("Carrera25").name("Alkosto").economicSectorId("4").cityId("1").nit("2032030345").legalRep("Pedro")
                 .legalRepEmail("pedro@hotmail.com").legalRepTel("1234567892").tel("9876543210").password("123").creationDate(LocalDateTime.now()).evaluations(evaluationsCompany2).build();
+        Company company3 = Company.builder().companyId("companyId3").companyType(companyType).employees(20).address("Carrera48").name("Unico").economicSectorId("4").cityId("1").nit("2032030345").legalRep("Pablo")
+                .legalRepEmail("pablo@hotmail.com").legalRepTel("1234567892").tel("9876543210").password("123").creationDate(LocalDateTime.now()).evaluations(new ArrayList<String>()).build();
         Level level1Tecnologia = Level.builder().levelId("level1TechId").description("Level 1 Tecnologia").name("Nivel 1").value(1).questions(new ArrayList<String>()).build();
         Level level2Tecnologia = Level.builder().levelId("level2TechId").description("Level 2 Tecnologia").name("Nivel 2").value(2).questions(new ArrayList<String>()).build();
         Level level1Procesos = Level.builder().levelId("level1ProcessId").description("Level 1 Procesos").name("Nivel 1").value(1).questions(new ArrayList<String>()).build();
@@ -166,8 +169,16 @@ public class TestConfigurationData {
         /*EVALUATION*/
         ActionPlan actionPlan = ActionPlan.builder().actionPlanId("ActionPlan1Id").recommendationActionPlans(new ArrayList<>()).recommendations(new ArrayList<>()).start(LocalDateTime.now()).end(LocalDateTime.now()).build();
         ArrayList<String> questionResult = new ArrayList<>();
-        questionResult.add("");
-        Evaluation evaluation = Evaluation.builder().evaluationId("Evaluation1Id").date(LocalDateTime.now()).dimensionResults(new ArrayList<>()).questionResults(questionResult).completed(false).actionPlanId(actionPlan.getActionPlanId()).build();
+        questionResult.add("questionTecnologia1Id");
+        questionResult.add("questionProcess1Id");
+        ArrayList<DimensionResult> dimensionResults = new ArrayList<>();
+        DimensionResult dimensionTechResult = DimensionResult.builder().dimensionName("Tech").dimensionId("dimensionTechId").levelId("level1TechId").levelName("Nivel 1").levelValue(1).build();
+        DimensionResult dimensionProcessResult = DimensionResult.builder().dimensionName("Process").dimensionId("dimensionProcessId").levelId("level1ProcessId").levelName("Nivel 1").levelValue(1).build();
+        dimensionResults.add(dimensionTechResult);
+        dimensionResults.add(dimensionProcessResult);
+        Evaluation evaluation = Evaluation.builder().evaluationId("Evaluation1Id").date(LocalDateTime.now()).dimensionResults(dimensionResults).questionResults(questionResult).completed(false).actionPlanId(actionPlan.getActionPlanId()).build();
+        Evaluation evaluation2 = Evaluation.builder().evaluationId("EvaluationCompletedId").date(LocalDateTime.now()).dimensionResults(new ArrayList<>()).questionResults(new ArrayList<>()).completed(true).actionPlanId(actionPlan.getActionPlanId()).build();
+
 
         return args -> {
             admins.deleteAll();
@@ -181,9 +192,11 @@ public class TestConfigurationData {
             questions.deleteAll();
             evaluations.deleteAll();
             actionplans.deleteAll();
+            evaluationResults.deleteAll();
             admins.save(admin);
             companies.save(company);
             companies.save(company2);
+            companies.save(company3);
             dimensions.save(dimension1);
             dimensions.save(dimension2);
             tags.save(tagProcesos);
@@ -204,6 +217,7 @@ public class TestConfigurationData {
             questions.save(questionProcesos2);
             actionplans.save(actionPlan);
             evaluations.save(evaluation);
+            evaluations.save(evaluation2);
         };
     }
 }
