@@ -14,6 +14,8 @@ public interface LevelService {
 
     void updateQuestions(String levelId, List<String> questionsId);
 
+    Level addQuestionToLevel(String levelId, String questionId);
+
     Level getLevel(String levelId);
 
 

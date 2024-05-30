@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,6 +56,15 @@ public class LevelServiceImpl implements LevelService {
         Level level = getLevel(levelId);
         level.setQuestions(questionsId);
         levelRepository.save(level);
+    }
+
+    @Override
+    public Level addQuestionToLevel(String levelId, String questionId) {
+        Level level = getLevel(levelId);
+        List<String> questions = new ArrayList<>(level.getQuestions());
+        questions.add(questionId);
+        level.setQuestions(questions);
+        return levelRepository.save(level);
     }
 
     @Override

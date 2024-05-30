@@ -52,11 +52,6 @@ public class ActionPlanServiceImpl implements ActionPlanService {
     }
 
     @Override
-    public ActionPlan getAll() {
-        return null;
-    }
-
-    @Override
     public ActionPlan save(String evaluationId) {
         Evaluation evaluation = evaluationService.getEvaluationById(evaluationId);
 

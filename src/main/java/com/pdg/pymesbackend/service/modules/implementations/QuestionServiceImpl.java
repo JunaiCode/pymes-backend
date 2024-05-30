@@ -28,6 +28,7 @@ public class QuestionServiceImpl implements QuestionService {
     private OptionMapper optionMapper;
     private DimensionValidator dimensionValidator;
     private VersionValidatorImpl versionValidator;
+    private LevelServiceImpl levelService;
     private LevelRepository levelRepository;
 
     @Override
@@ -49,23 +50,44 @@ public class QuestionServiceImpl implements QuestionService {
         question.getRecommendation().setQuestionId(question.getQuestionId());
         question.setCompanyTypeId(companyTypeConstructor(questionDTO.getCompanyTypeId()).getCompanyTypeId());
         Question newQuestion = questionRepository.save(question);
-        Level level = levelRepository.findById(questionDTO.getLevelId()).orElseThrow(() -> new PymeException(PymeExceptionType.LEVEL_NOT_FOUND));
+       /* Level level = levelRepository.findById(questionDTO.getLevelId()).orElseThrow(() -> new PymeException(PymeExceptionType.LEVEL_NOT_FOUND));
         level.getQuestions().add(newQuestion.getQuestionId());
-        levelRepository.save(level);
+        levelRepository.save(level);*/
+        levelService.addQuestionToLevel(newQuestion.getQuestionId(), questionDTO.getLevelId());
         return newQuestion;
 
     }
 
     @Override
-    public void deleteQuestion(String id) {
-        Question question = findById(id);
-        questionRepository.delete(question);
-    }
-
-    private Question findById(String id) {
+    public Question getQuestion(String id) {
         return questionRepository.findById(id).orElseThrow(() -> new PymeException(PymeExceptionType.QUESTION_NOT_FOUND));
     }
 
+    @Override
+    public List<Question> getQuestionsByTag(String tag) {
+        return questionRepository.findByTagId(tag);
+    }
+
+    @Override
+    public List<Question> getQuestionsByLevel(String level) {
+        //Level levelObj = levelRepository.findById(level).orElseThrow(() -> new PymeException(PymeExceptionType.LEVEL_NOT_FOUND));
+        Level levelObj = levelService.getLevel(level);
+        List<String> questionsId = levelObj.getQuestions();
+        return questionRepository.findAllById(questionsId);
+    }
+
+    @Override
+    public void deleteQuestion(String id) {
+        Question question = getQuestion(id);
+        questionRepository.delete(question);
+    }
+
+    @Override
+    public List<Question> filterQuestionsByCompanyType(List<String> questionsId, String companyTypeId) {
+        return questionRepository.findQuestionsByCompanyType(questionsId, companyTypeId);
+    }
+
+    @Override
     public QuestionOutDTO mapQuestionToOutDTO(Question question){
         return QuestionOutDTO.builder()
                 .question(question.getQuestion())
@@ -77,9 +99,10 @@ public class QuestionServiceImpl implements QuestionService {
                 .build();
     }
 
+    @Override
     public QuestionOutDTO mapAnswerToQuestionOutDTO(EvaluationResult evaluationResult){
 
-        Question question = findById(evaluationResult.getQuestionId());
+        Question question = getQuestion(evaluationResult.getQuestionId());
         Option answer = null;
 
         if(!Objects.equals(evaluationResult.getOptionId(), "")){
@@ -96,33 +119,6 @@ public class QuestionServiceImpl implements QuestionService {
                 .maxScore(question.getScorePositive())
                 .marked(evaluationResult.isMarked())
                 .build();
-    }
-
-    @Override
-    public List<Question> getQuestions() {
-        return questionRepository.findAll();
-    }
-
-    @Override
-    public Question getQuestion(String id) {
-        return findById(id);
-    }
-
-    @Override
-    public List<Question> getQuestionsByTag(String tag) {
-        return questionRepository.findByTagId(tag);
-    }
-
-    @Override
-    public List<Question> filterQuestionsByCompanyType(List<String> questionsId, String companyTypeId) {
-        return questionRepository.findQuestionsByCompanyType(questionsId, companyTypeId);
-    }
-
-    @Override
-    public List<Question> getQuestionsByLevel(String level) {
-        Level levelObj = levelRepository.findById(level).orElseThrow(() -> new PymeException(PymeExceptionType.LEVEL_NOT_FOUND));
-        List<String> questionsId = levelObj.getQuestions();
-        return questionRepository.findAllById(questionsId);
     }
 
     private CompanyType companyTypeConstructor(Integer companyType){

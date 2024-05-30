@@ -28,11 +28,6 @@ public class QuestionController implements QuestionAPI {
     }
 
     @Override
-    public List<Question> getQuestions() {
-        return questionService.getQuestions();
-    }
-
-    @Override
     public Question getQuestion(String id) {
         return questionService.getQuestion(id);
     }

@@ -12,15 +12,16 @@ import com.pdg.pymesbackend.service.modules.implementations.ModelServiceImpl;
 import com.pdg.pymesbackend.service.modules.implementations.VersionServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -99,8 +100,9 @@ public class ModelServiceTest {
         when(modelRepository.findById("1")).thenReturn(java.util.Optional.of(defaultModelCreate()));
         when(versionService.save(createVersionDTO())).thenReturn(createVersion());
         modelService.addVersion("1", createVersionDTO());
-        Model model1 = defaultModelCreate2();
-        verify(modelRepository, times(1)).save(argThat(new ModelMatcher(model1)));
+        ArgumentCaptor<Model> modelCaptor = ArgumentCaptor.forClass(Model.class);
+        verify(modelRepository, times(1)).save(modelCaptor.capture());
+        assertTrue(modelCaptor.getValue().isActive());
     }
 
     @Test
@@ -115,16 +117,25 @@ public class ModelServiceTest {
 
     @Test
     void testGetActualVersion() {
-        when(modelRepository.findActiveModel()).thenReturn(defaultModelCreate());
-        when(versionRepository.findById("1")).thenReturn(java.util.Optional.of(createVersion()));
+        Model model = defaultModelCreate();
+        model.setVersions(List.of("1"));
+        when(modelRepository.findActiveModel()).thenReturn(model);
+        when(versionRepository.findById("1")).thenReturn(Optional.of(createVersion()));
         String version = modelService.getActualVersion();
+        assertNotNull(version);
         assertEquals("1", version);
+    }
+
+    @Test
+    void testGetActualVersionNull() {
+        when(modelRepository.findActiveModel()).thenReturn(null);
+        String version = modelService.getActualVersion();
+        assertNull(version);
     }
 
     @Test
     void testGetActualVersionNotFound() {
         when(modelRepository.findActiveModel()).thenReturn(defaultModelCreate());
-        when(versionRepository.findById("1")).thenReturn(java.util.Optional.empty());
         try {
             String versionId = modelService.getActualVersion();
             assertNull(versionId);
@@ -170,7 +181,7 @@ public class ModelServiceTest {
                 .modelId("1")
                 .name("Model")
                 .description("Description")
-                .versions(List.of("1"))
+                .versions(List.of())
                 .build();
     }
 

@@ -11,8 +11,6 @@ public interface ActionPlanService {
 
     ActionPlan findById(String id);
 
-    ActionPlan getAll();
-
     ActionPlan save(String evaluationId);
 
     void updateEndDate(DateDTO date, String actionPlanId);

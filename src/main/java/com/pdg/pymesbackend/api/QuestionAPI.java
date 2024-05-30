@@ -19,9 +19,6 @@ public interface QuestionAPI {
     @DeleteMapping("/delete/{id}")
     void deleteQuestion(@PathVariable String id);
 
-    @GetMapping("/get/all")
-    List<Question> getQuestions();
-
     @GetMapping("/get/{id}")
     Question getQuestion(@PathVariable String id);
 
