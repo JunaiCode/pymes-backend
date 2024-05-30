@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class CompanyController implements CompanyAPI {
 
     private final CompanyService companyService;
-    @Override
+    /*@Override
     public Company createCompany(CompanyDTO companyDTO) {
         return companyService.save(companyDTO);
-    }
+    }*/
 
     @Override
     public CompanyOutDTO getCompany(String id) {

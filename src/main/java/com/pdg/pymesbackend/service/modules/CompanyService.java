@@ -1,7 +1,6 @@
 package com.pdg.pymesbackend.service.modules;
 
 
-import com.pdg.pymesbackend.dto.CompanyDTO;
 import com.pdg.pymesbackend.dto.CompanyInfoDTO;
 import com.pdg.pymesbackend.dto.RegisterDTO;
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
@@ -11,7 +10,7 @@ import com.pdg.pymesbackend.model.Company;
 import com.pdg.pymesbackend.model.Evaluation;
 
 public interface CompanyService {
-    Company save(CompanyDTO companyDTO);
+    //Company save(CompanyDTO companyDTO);
 
     Company save(RegisterDTO registerDTO);
 

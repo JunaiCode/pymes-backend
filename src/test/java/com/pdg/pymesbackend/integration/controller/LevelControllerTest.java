@@ -2,9 +2,7 @@ package com.pdg.pymesbackend.integration.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pdg.pymesbackend.TestConfigurationData;
-import com.pdg.pymesbackend.dto.CompanyDTO;
 import com.pdg.pymesbackend.dto.LevelDTO;
-import com.pdg.pymesbackend.model.CompanyType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

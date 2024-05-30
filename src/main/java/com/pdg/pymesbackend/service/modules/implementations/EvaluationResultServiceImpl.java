@@ -8,6 +8,7 @@ import com.pdg.pymesbackend.model.EvaluationResult;
 import com.pdg.pymesbackend.model.Question;
 import com.pdg.pymesbackend.repository.EvaluationResultRepository;
 import com.pdg.pymesbackend.service.modules.EvaluationResultService;
+import com.pdg.pymesbackend.service.modules.QuestionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class EvaluationResultServiceImpl implements EvaluationResultService {
 
     private EvaluationResultRepository evaluationResultRepository;
     private EvaluationResultMapper evaluationResultMapper;
-    private QuestionServiceImpl questionService;
+    private QuestionService questionService;
     @Override
     public EvaluationResult save(EvaluationResultDTO evaluationResultDTO) {
         EvaluationResult evaluationResult = evaluationResultMapper.fromDTO(evaluationResultDTO);

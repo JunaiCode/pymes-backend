@@ -1,7 +1,6 @@
 package com.pdg.pymesbackend.service.modules;
 
 import com.pdg.pymesbackend.dto.DimensionDTO;
-import com.pdg.pymesbackend.dto.LevelDTO;
 import com.pdg.pymesbackend.model.Dimension;
 import com.pdg.pymesbackend.model.Level;
 

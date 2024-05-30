@@ -6,8 +6,8 @@ import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.EvaluationResultMapper;
 import com.pdg.pymesbackend.model.*;
 import com.pdg.pymesbackend.repository.EvaluationResultRepository;
+import com.pdg.pymesbackend.service.modules.QuestionService;
 import com.pdg.pymesbackend.service.modules.implementations.EvaluationResultServiceImpl;
-import com.pdg.pymesbackend.service.modules.implementations.QuestionServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,7 +30,7 @@ public class EvaluationResultServiceTest {
     @Spy
     private EvaluationResultMapper evaluationResultMapper;
     @Mock
-    private QuestionServiceImpl questionService;
+    private QuestionService questionService;
     @InjectMocks
     private EvaluationResultServiceImpl evaluationResultService;
 

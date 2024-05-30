@@ -1,13 +1,10 @@
 package com.pdg.pymesbackend.api;
 
 import com.pdg.pymesbackend.dto.DimensionDTO;
-import com.pdg.pymesbackend.dto.LevelDTO;
 import com.pdg.pymesbackend.model.Dimension;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RequestMapping("/dimension")
 public interface DimensionAPI {

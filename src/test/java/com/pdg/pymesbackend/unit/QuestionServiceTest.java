@@ -10,7 +10,6 @@ import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.OptionMapper;
 import com.pdg.pymesbackend.mapper.QuestionMapper;
 import com.pdg.pymesbackend.model.*;
-import com.pdg.pymesbackend.repository.LevelRepository;
 import com.pdg.pymesbackend.repository.QuestionRepository;
 import com.pdg.pymesbackend.service.modules.implementations.LevelServiceImpl;
 import com.pdg.pymesbackend.service.modules.implementations.QuestionServiceImpl;

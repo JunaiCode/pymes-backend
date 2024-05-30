@@ -6,6 +6,10 @@ import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.mapper.ActionPlanMapper;
 import com.pdg.pymesbackend.model.*;
 import com.pdg.pymesbackend.repository.ActionPlanRepository;
+import com.pdg.pymesbackend.service.modules.ActionPlanConstructor;
+import com.pdg.pymesbackend.service.modules.EvaluationResultService;
+import com.pdg.pymesbackend.service.modules.EvaluationService;
+import com.pdg.pymesbackend.service.modules.QuestionService;
 import com.pdg.pymesbackend.service.modules.implementations.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,13 +34,13 @@ public class ActionPlanServiceTest {
     @Mock
     private ActionPlanMapper actionPlanMapper;
     @Mock
-    private EvaluationServiceImpl evaluationService;
+    private EvaluationService evaluationService;
     @Mock
-    private QuestionServiceImpl questionService;
+    private QuestionService questionService;
     @Mock
-    private ActionPlanConstructorImpl actionPlanConstructor;
+    private ActionPlanConstructor actionPlanConstructor;
     @Mock
-    private EvaluationResultServiceImpl evaluationResultService;
+    private EvaluationResultService evaluationResultService;
 
 
 

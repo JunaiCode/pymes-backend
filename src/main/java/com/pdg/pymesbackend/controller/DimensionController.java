@@ -2,14 +2,11 @@ package com.pdg.pymesbackend.controller;
 
 import com.pdg.pymesbackend.api.DimensionAPI;
 import com.pdg.pymesbackend.dto.DimensionDTO;
-import com.pdg.pymesbackend.dto.LevelDTO;
 import com.pdg.pymesbackend.model.Dimension;
 import com.pdg.pymesbackend.service.modules.DimensionService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin

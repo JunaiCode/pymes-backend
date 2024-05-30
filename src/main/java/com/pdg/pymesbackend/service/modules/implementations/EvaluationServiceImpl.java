@@ -9,8 +9,6 @@ import com.pdg.pymesbackend.model.*;
 import com.pdg.pymesbackend.repository.EvaluationRepository;
 import com.pdg.pymesbackend.service.modules.EvaluationService;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

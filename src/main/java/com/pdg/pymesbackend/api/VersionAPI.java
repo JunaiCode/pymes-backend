@@ -3,7 +3,6 @@ package com.pdg.pymesbackend.api;
 import com.pdg.pymesbackend.dto.DimensionQuestionInDTO;
 import com.pdg.pymesbackend.dto.QuestionDTO;
 import com.pdg.pymesbackend.dto.out.DimensionQuestionOutDTO;
-import com.pdg.pymesbackend.model.Question;
 import com.pdg.pymesbackend.model.Version;
 import org.springframework.web.bind.annotation.*;
 

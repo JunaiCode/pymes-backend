@@ -1,12 +1,10 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
-import com.pdg.pymesbackend.dto.CompanyDTO;
 import com.pdg.pymesbackend.dto.LoginOutDTO;
 import com.pdg.pymesbackend.dto.RegisterDTO;
 import com.pdg.pymesbackend.dto.out.LoginInDTO;
 import com.pdg.pymesbackend.model.Admin;
 import com.pdg.pymesbackend.model.Company;
-import com.pdg.pymesbackend.model.Version;
 import com.pdg.pymesbackend.repository.AdminRepository;
 import com.pdg.pymesbackend.service.modules.AuthService;
 import com.pdg.pymesbackend.service.modules.CompanyService;

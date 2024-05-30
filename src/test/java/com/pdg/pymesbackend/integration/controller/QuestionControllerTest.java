@@ -2,7 +2,6 @@ package com.pdg.pymesbackend.integration.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pdg.pymesbackend.TestConfigurationData;
-import com.pdg.pymesbackend.dto.OptionDTO;
 import com.pdg.pymesbackend.dto.QuestionDTO;
 import com.pdg.pymesbackend.dto.RecommendationDTO;
 import org.junit.jupiter.api.Test;

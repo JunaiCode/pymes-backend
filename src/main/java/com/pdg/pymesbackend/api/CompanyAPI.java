@@ -14,8 +14,8 @@ import javax.validation.Valid;
 @RequestMapping("/company")
 public interface CompanyAPI {
 
-    @PostMapping("/add")
-    Company createCompany(@RequestBody @Valid CompanyDTO companyDTO);
+   /* @PostMapping("/add")
+    Company createCompany(@RequestBody @Valid CompanyDTO companyDTO);*/
 
     @GetMapping("/get/{id}")
     CompanyOutDTO getCompany(@PathVariable String id);

@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @TestConfiguration
 public class TestConfigurationData {
@@ -31,17 +30,17 @@ public class TestConfigurationData {
         Admin admin = Admin.builder().name("Admin").email("admin@admin.com").password("password").id("adminId").build();
         CompanyType companyType = CompanyType.builder().companyTypeId("MICRO").name("Micro Empresa").description("Menos de 10 empleados").build();
         Company company = Company.builder().companyId("companyId").companyType(companyType).employees(20).address("Carrera24").name("Emcali").economicSectorId("4").cityId("1").nit("2032030345").legalRep("Juan")
-                .legalRepEmail("juan@hotmail.com").legalRepTel("1234567892").tel("9876543210").password("123").creationDate(LocalDateTime.now()).evaluations(new ArrayList<String>()).build();
+                .legalRepEmail("juan@hotmail.com").legalRepTel("1234567892").tel("9876543210").password("123").creationDate(LocalDateTime.now()).evaluations(new ArrayList<>()).build();
         ArrayList<String> evaluationsCompany2 = new ArrayList<>();
         evaluationsCompany2.add("Evaluation1Id");
         Company company2 = Company.builder().companyId("companyId2").companyType(companyType).employees(20).address("Carrera25").name("Alkosto").economicSectorId("4").cityId("1").nit("2032030345").legalRep("Pedro")
                 .legalRepEmail("pedro@hotmail.com").legalRepTel("1234567892").tel("9876543210").password("123").creationDate(LocalDateTime.now()).evaluations(evaluationsCompany2).build();
         Company company3 = Company.builder().companyId("companyId3").companyType(companyType).employees(20).address("Carrera48").name("Unico").economicSectorId("4").cityId("1").nit("2032030345").legalRep("Pablo")
-                .legalRepEmail("pablo@hotmail.com").legalRepTel("1234567892").tel("9876543210").password("123").creationDate(LocalDateTime.now()).evaluations(new ArrayList<String>()).build();
-        Level level1Tecnologia = Level.builder().levelId("level1TechId").description("Level 1 Tecnologia").name("Nivel 1").value(1).questions(new ArrayList<String>()).build();
-        Level level2Tecnologia = Level.builder().levelId("level2TechId").description("Level 2 Tecnologia").name("Nivel 2").value(2).questions(new ArrayList<String>()).build();
-        Level level1Procesos = Level.builder().levelId("level1ProcessId").description("Level 1 Procesos").name("Nivel 1").value(1).questions(new ArrayList<String>()).build();
-        Level level2Procesos = Level.builder().levelId("level2ProcessId").description("Level 2 Procesos").name("Nivel 2").value(2).questions(new ArrayList<String>()).build();
+                .legalRepEmail("pablo@hotmail.com").legalRepTel("1234567892").tel("9876543210").password("123").creationDate(LocalDateTime.now()).evaluations(new ArrayList<>()).build();
+        Level level1Tecnologia = Level.builder().levelId("level1TechId").description("Level 1 Tecnologia").name("Nivel 1").value(1).questions(new ArrayList<>()).build();
+        Level level2Tecnologia = Level.builder().levelId("level2TechId").description("Level 2 Tecnologia").name("Nivel 2").value(2).questions(new ArrayList<>()).build();
+        Level level1Procesos = Level.builder().levelId("level1ProcessId").description("Level 1 Procesos").name("Nivel 1").value(1).questions(new ArrayList<>()).build();
+        Level level2Procesos = Level.builder().levelId("level2ProcessId").description("Level 2 Procesos").name("Nivel 2").value(2).questions(new ArrayList<>()).build();
         ArrayList<Level> levelsTecnologia = new ArrayList<>();
         ArrayList<Level> levelsProcesos = new ArrayList<>();
 
@@ -67,7 +66,7 @@ public class TestConfigurationData {
         Option optionTecnologia2 = Option.builder().optionId("optionTecnologia2").value(-1).description("Opcion 2").build();
         Option optionTecnologia3 = Option.builder().optionId("optionTecnologia3").value(-2).description("Opcion 3").build();
         Option optionTecnologia4 = Option.builder().optionId("optionTecnologia4").value(-3).description("Opcion 4").build();
-        List<Option> optionsQuestionTecnologia1 = new ArrayList<Option>();
+        List<Option> optionsQuestionTecnologia1 = new ArrayList<>();
         optionsQuestionTecnologia1.add(optionTecnologia1);
         optionsQuestionTecnologia1.add(optionTecnologia2);
         optionsQuestionTecnologia1.add(optionTecnologia3);
@@ -93,7 +92,7 @@ public class TestConfigurationData {
         Option optionTecnologiaQ2_2 = Option.builder().optionId("optionTecnologiaQ2_2").value(-1).description("Opcion 2").build();
         Option optionTecnologiaQ2_3 = Option.builder().optionId("optionTecnologiaQ2_3").value(-2).description("Opcion 3").build();
         Option optionTecnologiaQ2_4 = Option.builder().optionId("optionTecnologiaQ2_4").value(-3).description("Opcion 4").build();
-        List<Option> optionsQuestionTecnologia2 = new ArrayList<Option>();
+        List<Option> optionsQuestionTecnologia2 = new ArrayList<>();
         optionsQuestionTecnologia2.add(optionTecnologiaQ2_1);
         optionsQuestionTecnologia2.add(optionTecnologiaQ2_2);
         optionsQuestionTecnologia2.add(optionTecnologiaQ2_3);
@@ -119,7 +118,7 @@ public class TestConfigurationData {
         Option optionProcesos2 = Option.builder().optionId("optionProcesos2").value(-1).description("Opcion 2").build();
         Option optionProcesos3 = Option.builder().optionId("optionProcesos3").value(-2).description("Opcion 3").build();
         Option optionProcesos4 = Option.builder().optionId("optionProcesos4").value(-3).description("Opcion 4").build();
-        List<Option> optionsQuestionProcesos1 = new ArrayList<Option>();
+        List<Option> optionsQuestionProcesos1 = new ArrayList<>();
         optionsQuestionProcesos1.add(optionProcesos1);
         optionsQuestionProcesos1.add(optionProcesos2);
         optionsQuestionProcesos1.add(optionProcesos3);
@@ -145,7 +144,7 @@ public class TestConfigurationData {
         Option optionProcesosQ2_2 = Option.builder().optionId("optionProcesosQ2_2").value(-1).description("Opcion 2").build();
         Option optionProcesosQ2_3 = Option.builder().optionId("optionProcesosQ2_3").value(-2).description("Opcion 3").build();
         Option optionProcesosQ2_4 = Option.builder().optionId("optionProcesosQ2_4").value(-3).description("Opcion 4").build();
-        List<Option> optionsQuestionProcesos2 = new ArrayList<Option>();
+        List<Option> optionsQuestionProcesos2 = new ArrayList<>();
         optionsQuestionProcesos2.add(optionProcesosQ2_1);
         optionsQuestionProcesos2.add(optionProcesosQ2_2);
         optionsQuestionProcesos2.add(optionProcesosQ2_3);

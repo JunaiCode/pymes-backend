@@ -7,7 +7,7 @@ import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.ActionPlanMapper;
 import com.pdg.pymesbackend.model.*;
 import com.pdg.pymesbackend.repository.ActionPlanRepository;
-import com.pdg.pymesbackend.service.modules.ActionPlanService;
+import com.pdg.pymesbackend.service.modules.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +21,10 @@ public class ActionPlanServiceImpl implements ActionPlanService {
 
     private ActionPlanRepository actionPlanRepository;
     private ActionPlanMapper actionPlanMapper;
-    private EvaluationServiceImpl evaluationService;
-    private QuestionServiceImpl questionService;
-    private ActionPlanConstructorImpl actionPlanConstructor;
-    private EvaluationResultServiceImpl evaluationResultService;
+    private EvaluationService evaluationService;
+    private QuestionService questionService;
+    private ActionPlanConstructor actionPlanConstructor;
+    private EvaluationResultService evaluationResultService;
 
 
     @Override

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface AuthAPI {
 
     @PostMapping("/login")
-    public LoginOutDTO login(@RequestBody LoginInDTO loginInDTO);
+    LoginOutDTO login(@RequestBody LoginInDTO loginInDTO);
 
     @PostMapping("/register")
-    public LoginOutDTO register(@RequestBody RegisterDTO registerDTO);
+    LoginOutDTO register(@RequestBody RegisterDTO registerDTO);
 }

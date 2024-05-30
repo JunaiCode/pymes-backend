@@ -5,6 +5,6 @@ import com.pdg.pymesbackend.dto.RegisterDTO;
 import com.pdg.pymesbackend.dto.out.LoginInDTO;
 
 public interface AuthService {
-    public LoginOutDTO login(LoginInDTO loginInDTO);
-    public LoginOutDTO register(RegisterDTO registerDTO);
+    LoginOutDTO login(LoginInDTO loginInDTO);
+    LoginOutDTO register(RegisterDTO registerDTO);
 }

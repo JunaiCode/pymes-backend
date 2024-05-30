@@ -1,6 +1,5 @@
 package com.pdg.pymesbackend.service.modules.implementations;
 
-import com.pdg.pymesbackend.dto.CompanyDTO;
 import com.pdg.pymesbackend.dto.CompanyInfoDTO;
 import com.pdg.pymesbackend.dto.RegisterDTO;
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
@@ -15,11 +14,14 @@ import com.pdg.pymesbackend.model.CompanyType;
 import com.pdg.pymesbackend.model.DimensionResult;
 import com.pdg.pymesbackend.model.Evaluation;
 import com.pdg.pymesbackend.repository.CompanyRepository;
+import com.pdg.pymesbackend.service.modules.ActionPlanService;
 import com.pdg.pymesbackend.service.modules.CompanyService;
+import com.pdg.pymesbackend.service.modules.EvaluationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,11 +31,11 @@ public class CompanyServiceImpl implements CompanyService {
 
     private CompanyMapper companyMapper;
     private CompanyRepository companyRepository;
-    private EvaluationServiceImpl evaluationService;
-    private ActionPlanServiceImpl actionPlanService;
+    private EvaluationService evaluationService;
+    private ActionPlanService actionPlanService;
     //private final PasswordEncoder encoder;
 
-
+    /*
     @Override
     public Company save(CompanyDTO companyDTO) {
         companyRepository.findByLegalRepEmail(companyDTO.getEmail()).ifPresent(company -> {
@@ -43,7 +45,7 @@ public class CompanyServiceImpl implements CompanyService {
         company.setCompanyId(UUID.randomUUID().toString());
         company.setEvaluations(List.of());
         return companyRepository.save(company);
-    }
+    }*/
 
     @Override
     public Company save(RegisterDTO registerDTO) {
@@ -80,7 +82,9 @@ public class CompanyServiceImpl implements CompanyService {
     public Evaluation startEvaluation(String companyId) {
         Company company = getCompanyById(companyId);
         Evaluation newEvaluation = evaluationService.save(companyId);
-        company.getEvaluations().add(newEvaluation.getEvaluationId());
+        List<String> evaluations = new ArrayList<>(company.getEvaluations());
+        evaluations.add(newEvaluation.getEvaluationId());
+        company.setEvaluations(evaluations);
         companyRepository.save(company);
         return newEvaluation;
     }

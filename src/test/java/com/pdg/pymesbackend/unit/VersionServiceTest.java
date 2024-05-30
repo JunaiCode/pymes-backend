@@ -98,9 +98,7 @@ public class VersionServiceTest {
     @Test
     void testFindDimensionInVersionByNameFalse() {
         when(versionValidator.validateVersion("1")).thenReturn(createVersion());
-        assertDoesNotThrow(() -> {
-            versionService.findDimensionInVersionByName("1", "D 2");
-        });
+        assertDoesNotThrow(() -> versionService.findDimensionInVersionByName("1", "D 2"));
     }
 
     @Test
