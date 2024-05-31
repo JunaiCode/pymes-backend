@@ -11,5 +11,9 @@ public interface EvaluationResultService {
 
     EvaluationResult findById(String id);
 
+    List<EvaluationResult> saveAll(List<EvaluationResultDTO> evaluationResults);
+
+    void deleteAllById(List<String> evaluationResultId);
+
     List<EvaluationResult> getEvaluationResults(List<String> evaluationResultId);
 }

@@ -7,6 +7,7 @@ import com.pdg.pymesbackend.error.PymeException;
 import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.model.*;
 import com.pdg.pymesbackend.repository.EvaluationRepository;
+import com.pdg.pymesbackend.service.modules.EvaluationResultService;
 import com.pdg.pymesbackend.service.modules.EvaluationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     private EvaluationRepository evaluationRepository;
     private QuestionServiceImpl questionService;
-    private EvaluationResultServiceImpl evaluationResultService;
+    private EvaluationResultService evaluationResultService;
     private VersionServiceImpl versionService;
 
     @Override
@@ -156,7 +157,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
         return approvedQuestions == levelQuestions.size();
     }
-
 
 
     @Override

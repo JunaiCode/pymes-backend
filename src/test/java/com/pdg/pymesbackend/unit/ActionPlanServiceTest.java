@@ -93,6 +93,20 @@ public class ActionPlanServiceTest {
     }
 
     @Test
+    void testSaveNoRecommendation(){
+        Evaluation evaluation = createEvaluation();
+        ActionPlan actionPlan = createActionPlan();
+        when(evaluationService.getEvaluationById("1")).thenReturn(evaluation);
+        when(evaluationResultService.findById("1")).thenReturn(createEvaluationResult());
+        when(questionService.getQuestion("1")).thenReturn(createQuestion());
+        when(actionPlanRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        ActionPlan result = actionPlanService.save("1");
+        assertNotNull(result);
+        assertEquals(0, result.getRecommendations().size());
+        assertEquals(0, result.getRecommendationActionPlans().size());
+    }
+
+    @Test
     void testSaveEvaluationNotCompleted(){
         Evaluation evaluation = createEvaluation();
         evaluation.setCompleted(false);
@@ -203,7 +217,7 @@ public class ActionPlanServiceTest {
         return EvaluationResult.builder()
                 .evaluationResultId("1")
                 .questionId("1")
-                .optionId("1")
+                .optionId("2")
                 .dimensionId("1")
                 .marked(true)
                 .build();
