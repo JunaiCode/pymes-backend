@@ -21,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -41,7 +42,6 @@ public class ActionPlanServiceTest {
     private ActionPlanConstructor actionPlanConstructor;
     @Mock
     private EvaluationResultService evaluationResultService;
-
 
 
     @Test
@@ -79,11 +79,11 @@ public class ActionPlanServiceTest {
     }
 
     @Test
-    void testSave(){
+    void testSave2(){
         Evaluation evaluation = createEvaluation();
         ActionPlan actionPlan = createActionPlan();
         when(evaluationService.getEvaluationById("1")).thenReturn(evaluation);
-        when(evaluationResultService.findById("1")).thenReturn(createEvaluationResult());
+        when(evaluationResultService.getEvaluationResults(any())).thenReturn(List.of(createEvaluationResult()));
         when(questionService.getQuestion("1")).thenReturn(createQuestion());
         when(actionPlanRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         ActionPlan result = actionPlanService.save("1");
@@ -93,14 +93,43 @@ public class ActionPlanServiceTest {
     }
 
     @Test
+    void testSave(){
+        Evaluation evaluation = createEvaluation2();
+        evaluation.setCompleted(true);
+        when(evaluationService.getEvaluationById("1")).thenReturn(evaluation);
+        when(evaluationResultService.getEvaluationResults(evaluation.getQuestionResults())).thenReturn(createEvaluationResults2());
+
+        //set questions
+        when(questionService.getQuestion("1")).thenReturn(createQuestion("1", "dimensionId1"));
+        when(questionService.getQuestion("2")).thenReturn(createQuestion("2", "dimensionId1"));
+        when(questionService.getQuestion("7")).thenReturn(createQuestion("7", "dimensionId2"));
+        when(questionService.getQuestion("8")).thenReturn(createQuestion("8", "dimensionId2"));
+        when(questionService.getQuestion("9")).thenReturn(createQuestion("9", "dimensionId2"));
+        when(questionService.getQuestion("10")).thenReturn(createQuestion("10", "dimensionId2"));
+        when(questionService.getQuestion("13")).thenReturn(createQuestion("13", "dimensionId3"));
+        when(questionService.getQuestion("14")).thenReturn(createQuestion("14", "dimensionId3"));
+        when(questionService.getQuestion("15")).thenReturn(createQuestion("15", "dimensionId3"));
+        when(questionService.getQuestion("16")).thenReturn(createQuestion("16", "dimensionId3"));
+        when(questionService.getQuestion("17")).thenReturn(createQuestion("17", "dimensionId3"));
+        when(questionService.getQuestion("18")).thenReturn(createQuestion("18", "dimensionId3"));
+
+        when(actionPlanRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        ActionPlan result = actionPlanService.save("1");
+        assertNotNull(result);
+        assertEquals(2, result.getRecommendations().size());
+        assertEquals(4, result.getRecommendationActionPlans().size());
+    }
+
+
+    @Test
     void testSaveNoRecommendation(){
         Evaluation evaluation = createEvaluation();
         ActionPlan actionPlan = createActionPlan();
         EvaluationResult evaluationResult = createEvaluationResult();
         evaluationResult.setOptionId("2");
         when(evaluationService.getEvaluationById("1")).thenReturn(evaluation);
-        when(evaluationResultService.findById("1")).thenReturn(evaluationResult);
-        when(questionService.getQuestion("1")).thenReturn(createQuestion());
+        // when(evaluationResultService.findById("1")).thenReturn(evaluationResult);
+        // when(questionService.getQuestion("1")).thenReturn(createQuestion());
         when(actionPlanRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         ActionPlan result = actionPlanService.save("1");
         assertNotNull(result);
@@ -252,6 +281,79 @@ public class ActionPlanServiceTest {
                 .dimensionId("1")
                 .tagId("1")
                 .companyTypeId("1")
+                .build();
+    }
+
+    Evaluation createEvaluation2(){
+        return Evaluation.builder()
+                .evaluationId(UUID.randomUUID().toString())
+                .date(LocalDateTime.now())
+                .questionResults(List.of("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"))
+                .dimensionResults(List.of())
+                .completed(false)
+                .build();
+    }
+
+    List<EvaluationResult> createEvaluationResults2(){
+
+        EvaluationResult dimension1level1question1 = createEvaluationResult("1", "1", "dimensionId1", 1);
+        EvaluationResult dimension1level1question2 = createEvaluationResult("2", "2", "dimensionId1", 0);
+        EvaluationResult dimension2level1question1 = createEvaluationResult("3", "7", "dimensionId2", 1);
+        EvaluationResult dimension2level1question2 = createEvaluationResult("4", "8", "dimensionId2", 1);
+        EvaluationResult dimension2level2question1 = createEvaluationResult("5", "9", "dimensionId2", 1);
+        EvaluationResult dimension2level2question2 = createEvaluationResult("6", "10", "dimensionId2", 0);
+        EvaluationResult dimension3level1question1 = createEvaluationResult("7", "13", "dimensionId3", 1);
+        EvaluationResult dimension3level1question2 = createEvaluationResult("8", "14", "dimensionId3", 1);
+        EvaluationResult dimension3level2question1 = createEvaluationResult("9", "15", "dimensionId3", 1);
+        EvaluationResult dimension3level2question2 = createEvaluationResult("10", "16", "dimensionId3", 1);
+        EvaluationResult dimension3level3question1 = createEvaluationResult("11", "17", "dimensionId3", 1);
+        EvaluationResult dimension3level3question2 = createEvaluationResult("12", "18", "dimensionId3", 1);
+
+        return List.of(dimension1level1question1,
+                dimension1level1question2,
+                dimension2level1question1,
+                dimension2level1question2,
+                dimension2level2question1,
+                dimension2level2question2,
+                dimension3level1question1,
+                dimension3level1question2,
+                dimension3level2question1,
+                dimension3level2question2,
+                dimension3level3question1,
+                dimension3level3question2);
+    }
+
+    Question createQuestion(String order, String dimensionId){
+        return Question.builder()
+                .questionId(order)
+                .question("Question"+order)
+                .scorePositive(1)
+                .dimensionId(dimensionId)
+                .recommendation(Recommendation.builder()
+                        .recommendationId("recommendationId")
+                        .steps(List.of(Step.builder().stepId("stepId"+order).build(),
+                                Step.builder().stepId("stepId2-"+order).build())).build())
+                .options(List.of(
+                        Option.builder()
+                                .optionId("optionId1")
+                                .description("Option1")
+                                .value(1)
+                                .build(),
+                        Option.builder()
+                                .optionId("optionId2")
+                                .description("Option2")
+                                .value(0)
+                                .build()
+                ))
+                .build();
+    }
+
+    EvaluationResult createEvaluationResult(String order, String question, String dimensionId, int option){
+        return EvaluationResult.builder()
+                .evaluationResultId("evaluationResultId"+order)
+                .questionId(question)
+                .optionId(option == 1 ? "optionId1" : "optionId2")
+                .dimensionId(dimensionId)
                 .build();
     }
 

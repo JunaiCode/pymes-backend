@@ -182,15 +182,16 @@ public class VersionServiceTest {
     @Test
     void testGetDimensionLevelQuestions(){
         DimensionQuestionInDTO data = DimensionQuestionInDTO.builder()
-                .companyTypeId("1")
+                .companyTypeId("2")
                 .dimensionId("1")
                 .levelId("2")
                 .versionId("1")
                 .build();
         when(versionValidator.validateVersion("1")).thenReturn(createVersion());
-        when(questionService.filterQuestionsByCompanyType(List.of(), "1")).thenReturn(List.of());
+        when(questionService.filterQuestionsByCompanyType(List.of("1", "2", "3", "4"), "2"))
+                .thenReturn(List.of(Question.builder().questionId("1").build(), Question.builder().questionId("2").build()));
         List<DimensionQuestionOutDTO> result = versionService.getDimensionLevelQuestions(data);
-        assertEquals(0, result.get(0).getQuestions().size());
+        assertEquals(2, result.get(0).getQuestions().size());
     }
 
     @Test
@@ -221,10 +222,11 @@ public class VersionServiceTest {
                                         .levelId("1")
                                         .value(1)
                                         .questions(List.of("1", "2", "3"))
-                                        .build(), Level.builder()
+                                        .build(),
+                                        Level.builder()
                                         .levelId("2")
                                         .value(2)
-                                        .questions(List.of()).build()))
+                                        .questions(List.of("1", "2", "3", "4")).build()))
                         .build()))
                 .build();
     }

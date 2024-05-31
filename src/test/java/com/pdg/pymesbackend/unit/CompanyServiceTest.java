@@ -135,7 +135,7 @@ public class CompanyServiceTest {
     void testStartEvaluation(){
         Company company = createCompany();
         when(companyRepository.findById(company.getCompanyId())).thenReturn(Optional.of(company));
-        when(evaluationService.save(company.getCompanyId())).thenReturn(Evaluation.builder().evaluationId("1").build());
+        when(evaluationService.save(company.getCompanyId())).thenReturn(Evaluation.builder().evaluationId("1").completed(false).build());
         ArgumentCaptor<Company> companyCaptor = ArgumentCaptor.forClass(Company.class);
         Evaluation result = companyService.startEvaluation(company.getCompanyId());
         verify(companyRepository, times(1)).save(companyCaptor.capture());

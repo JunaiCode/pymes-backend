@@ -77,9 +77,12 @@ public class ActionPlanServiceImpl implements ActionPlanService {
 
         //obtener todos los resultados
 
-        List<EvaluationResult> results = evaluation.getQuestionResults().stream()
+        /*List<EvaluationResult> results = evaluation.getQuestionResults().stream()
                 .map(evaluationResultService::findById)
-                .toList();
+                .toList();*/
+
+        List<EvaluationResult> results = evaluationResultService.getEvaluationResults(evaluation.getQuestionResults());
+
 
         //determinar que recomendaciones aplican a la hoja de ruta y
         //crear las entidades para hacer seguimiento de los pasos de las recomendaciones

@@ -141,6 +141,7 @@ public class EvaluationServiceTest {
     @Test
     void testAddEvaluationResults(){
         Evaluation evaluation = createEvaluation();
+        evaluation.setQuestionResults(List.of());
         List<EvaluationResult> evaluationResults = createEvaluationResults();
         List<EvaluationResultDTO> evaluationResultsDTO = createEvaluationResultsDTO();
         when(evaluationRepository.findById(evaluation.getEvaluationId())).thenReturn(Optional.of(evaluation));
@@ -422,6 +423,9 @@ public class EvaluationServiceTest {
                 .question("Question"+order)
                 .scorePositive(1)
                 .dimensionId(dimensionId)
+                .recommendation(Recommendation.builder()
+                        .recommendationId("recommendationId")
+                        .steps(List.of(Step.builder().stepId("stepId"+order).build())).build())
                 .options(List.of(
                         Option.builder()
                                 .optionId("optionId1")
