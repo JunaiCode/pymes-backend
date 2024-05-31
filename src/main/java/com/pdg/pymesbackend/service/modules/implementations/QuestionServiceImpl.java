@@ -15,6 +15,7 @@ import com.pdg.pymesbackend.service.validator.implementations.VersionValidatorIm
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -51,7 +52,10 @@ public class QuestionServiceImpl implements QuestionService {
         question.setCompanyTypeId(companyTypeConstructor(questionDTO.getCompanyTypeId()).getCompanyTypeId());
         Question newQuestion = questionRepository.save(question);
         Level level = levelRepository.findById(questionDTO.getLevelId()).orElseThrow(() -> new PymeException(PymeExceptionType.LEVEL_NOT_FOUND));
-        level.getQuestions().add(newQuestion.getQuestionId());
+
+        List<String> questions = new ArrayList<>(level.getQuestions());
+        questions.add(newQuestion.getQuestionId());
+        level.setQuestions(questions);
         levelRepository.save(level);
         //levelService.addQuestionToLevel(newQuestion.getQuestionId(), questionDTO.getLevelId());
         return newQuestion;

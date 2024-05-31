@@ -9,6 +9,8 @@ import com.pdg.pymesbackend.model.*;
 import com.pdg.pymesbackend.repository.EvaluationRepository;
 import com.pdg.pymesbackend.service.modules.EvaluationResultService;
 import com.pdg.pymesbackend.service.modules.EvaluationService;
+import com.pdg.pymesbackend.service.modules.QuestionService;
+import com.pdg.pymesbackend.service.modules.VersionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +23,9 @@ import java.util.stream.Collectors;
 public class EvaluationServiceImpl implements EvaluationService {
 
     private EvaluationRepository evaluationRepository;
-    private QuestionServiceImpl questionService;
+    private QuestionService questionService;
     private EvaluationResultService evaluationResultService;
-    private VersionServiceImpl versionService;
+    private VersionService versionService;
 
     @Override
     public Evaluation save(String companyId) {
@@ -43,9 +45,11 @@ public class EvaluationServiceImpl implements EvaluationService {
 
         //obtener todos los resultados
 
-        List<EvaluationResult> results = evaluation.getQuestionResults().stream()
+        /*List<EvaluationResult> results = evaluation.getQuestionResults().stream()
                 .map(evaluationResultService::findById)
-                .toList();
+                .toList();*/
+
+        List<EvaluationResult> results = evaluationResultService.getEvaluationResults(evaluation.getQuestionResults());
 
         //validar que todas las preguntas tengan respuesta
         boolean evaluationComplete = results
@@ -56,19 +60,18 @@ public class EvaluationServiceImpl implements EvaluationService {
             throw new PymeException(PymeExceptionType.EVALUATION_NOT_COMPLETED);
         }else {
             evaluation.setCompleted(true);
-            List<DimensionResult> dimensionResults = calculateLevel(evaluation, versionId);
+            List<DimensionResult> dimensionResults = calculateLevel(results, versionId);
             evaluation.setDimensionResults(dimensionResults);
             evaluationRepository.save(evaluation);
 
         }
     }
 
-    private List<DimensionResult> calculateLevel(Evaluation evaluation, String versionId){
+    private List<DimensionResult> calculateLevel(List<EvaluationResult> results, String versionId){
 
         //separar las respuestas por dimension
-        Map<String, List<EvaluationResult>> resultsByDimension = evaluation.getQuestionResults()
+        Map<String, List<EvaluationResult>> resultsByDimension = results
                 .stream()
-                .map(evaluationResultService::findById)
                 .collect(Collectors.groupingBy(EvaluationResult::getDimensionId));
 
         //obtener las dimensiones de la versión
@@ -88,13 +91,15 @@ public class EvaluationServiceImpl implements EvaluationService {
         int approvedLevel = 0;
         boolean continueCalculating = true;
 
+        //determinar cuales preguntas fueron aprobadas
+        Map<String, Boolean> approvedAnswers = getApprovedQuestions(answers);
+
         for(int i = 0; i < dimension.getLevels().size() && continueCalculating; i++){
             Level level = dimension.getLevels().get(i);
 
             //obtener las preguntas del nivel
             List<String> questions = level.getQuestions();
-            //determinar cuales preguntas fueron aprobadas
-            Map<String, Boolean> approvedAnswers = getApprovedQuestions(answers);
+
             if(allQuestionsApproved(questions, approvedAnswers)){
                 approvedLevel++;
             }else {
@@ -189,7 +194,8 @@ public class EvaluationServiceImpl implements EvaluationService {
         if(evaluations.isEmpty()){
             return null;
         }else {
-            Collections.reverse(evaluations);
+            List<String> evaluationsIds = new ArrayList<>(evaluations);
+            Collections.reverse(evaluationsIds);
             return evaluations
                     .stream()
                     .map(this::getEvaluationById)

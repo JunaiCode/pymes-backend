@@ -10,6 +10,7 @@ import com.pdg.pymesbackend.error.PymeExceptionType;
 import com.pdg.pymesbackend.mapper.OptionMapper;
 import com.pdg.pymesbackend.mapper.QuestionMapper;
 import com.pdg.pymesbackend.model.*;
+import com.pdg.pymesbackend.repository.LevelRepository;
 import com.pdg.pymesbackend.repository.QuestionRepository;
 import com.pdg.pymesbackend.service.modules.implementations.LevelServiceImpl;
 import com.pdg.pymesbackend.service.modules.implementations.QuestionServiceImpl;
@@ -23,6 +24,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -40,8 +42,9 @@ public class QuestionServiceTest {
     private DimensionValidator dimensionValidator;
     @Mock
     private VersionValidatorImpl versionValidator;
+
     @Mock
-    private LevelServiceImpl levelService;
+    private LevelRepository levelRepository;
 
     @InjectMocks
     private QuestionServiceImpl questionService;
@@ -52,6 +55,7 @@ public class QuestionServiceTest {
         Question question = createQuestion();
         when(questionMapper.fromDTO(questionDTO)).thenReturn(question);
         when(questionRepository.save(question)).thenAnswer(invocation -> invocation.getArgument(0));
+        when(levelRepository.findById("1")).thenReturn(Optional.ofNullable(createLevel()));
         ArgumentCaptor<Question> captor = ArgumentCaptor.forClass(Question.class);
         questionService.createQuestion(questionDTO);
         verify(questionRepository, times(1)).save(captor.capture());
@@ -109,7 +113,7 @@ public class QuestionServiceTest {
 
     @Test
     void testGetQuestionsByLevel(){
-        when(levelService.getLevel("1")).thenReturn(createLevel());
+        when(levelRepository.findById("1")).thenReturn(Optional.ofNullable(createLevel()));
         when(questionRepository.findAllById(List.of("1"))).thenReturn(List.of(createQuestion()));
         assertEquals(List.of(createQuestion()), questionService.getQuestionsByLevel("1"));
     }

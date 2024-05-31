@@ -1,6 +1,8 @@
 package com.pdg.pymesbackend.unit;
 
 import com.pdg.pymesbackend.dto.EvaluationResultDTO;
+import com.pdg.pymesbackend.dto.out.OnGoingEvaluationOutDTO;
+import com.pdg.pymesbackend.dto.out.QuestionOutDTO;
 import com.pdg.pymesbackend.model.*;
 import com.pdg.pymesbackend.repository.EvaluationRepository;
 import com.pdg.pymesbackend.service.modules.EvaluationResultService;
@@ -68,6 +70,57 @@ public class EvaluationServiceTest {
     }
 
     @Test
+    void testFinishEvaluationNotCompleted(){
+        Evaluation evaluation = createEvaluation();
+        when(evaluationRepository.findById(evaluation.getEvaluationId())).thenReturn(Optional.of(evaluation));
+        when(evaluationResultService.getEvaluationResults(any())).thenReturn(List.of(EvaluationResult.builder().optionId(null).build()));
+        try {
+            evaluationService.finishEvaluation(evaluation.getEvaluationId(), "versionId");
+        } catch (Exception e) {
+            verify(evaluationRepository, times(1)).findById(evaluation.getEvaluationId());
+            verify(evaluationResultService, times(1)).getEvaluationResults(any());
+            assertEquals("Evaluation not completed", e.getMessage());
+        }
+
+    }
+
+    @Test
+    void testFinishEvaluation(){
+        Evaluation evaluation = createEvaluation();
+        when(evaluationRepository.findById(evaluation.getEvaluationId())).thenReturn(Optional.of(evaluation));
+
+        //set version
+        when(versionService.get(any())).thenReturn(Version.builder().dimensions(List.of(createDimension(), createDimension2(), createDimension3())).build());
+
+        //set evaluationResults
+        when(evaluationResultService.getEvaluationResults(evaluation.getQuestionResults())).thenReturn(createEvaluationResults());
+
+        //set questions
+        when(questionService.getQuestion("1")).thenReturn(createQuestion("1", "dimensionId1"));
+        when(questionService.getQuestion("2")).thenReturn(createQuestion("2", "dimensionId1"));
+        when(questionService.getQuestion("7")).thenReturn(createQuestion("7", "dimensionId2"));
+        when(questionService.getQuestion("8")).thenReturn(createQuestion("8", "dimensionId2"));
+        when(questionService.getQuestion("9")).thenReturn(createQuestion("9", "dimensionId2"));
+        when(questionService.getQuestion("10")).thenReturn(createQuestion("10", "dimensionId2"));
+        when(questionService.getQuestion("13")).thenReturn(createQuestion("13", "dimensionId3"));
+        when(questionService.getQuestion("14")).thenReturn(createQuestion("14", "dimensionId3"));
+        when(questionService.getQuestion("15")).thenReturn(createQuestion("15", "dimensionId3"));
+        when(questionService.getQuestion("16")).thenReturn(createQuestion("16", "dimensionId3"));
+        when(questionService.getQuestion("17")).thenReturn(createQuestion("17", "dimensionId3"));
+        when(questionService.getQuestion("18")).thenReturn(createQuestion("18", "dimensionId3"));
+        evaluationService.finishEvaluation(evaluation.getEvaluationId(), "versionId");
+        verify(evaluationRepository, times(1)).findById(evaluation.getEvaluationId());
+        verify(evaluationResultService, times(1)).getEvaluationResults(evaluation.getQuestionResults());
+        verify(versionService, times(1)).get("versionId");
+        verify(questionService, times(12)).getQuestion(any());
+        assertTrue(evaluation.isCompleted());
+        assertEquals(3, evaluation.getDimensionResults().size());
+        assertEquals(1, evaluation.getDimensionResults().get(0).getLevelValue());
+        assertEquals(2, evaluation.getDimensionResults().get(1).getLevelValue());
+        assertEquals(3, evaluation.getDimensionResults().get(2).getLevelValue());
+    }
+
+    @Test
     void testGetCompletedEvaluations() {
         Evaluation evaluation = createCompletedEvaluation();
         when(evaluationRepository.findAllByEvaluationIdAndCompleted(List.of(evaluation.getEvaluationId()), true)).thenReturn(List.of(evaluation));
@@ -103,14 +156,80 @@ public class EvaluationServiceTest {
     @Test
     void testCheckUncompletedEvaluation(){
         Evaluation evaluation = createEvaluation();
+        EvaluationResult answer1 = createEvaluationResult("1", "1", "dimensionId1", 1);
+        EvaluationResult answer2 = createEvaluationResult("2", "2", "dimensionId1", 0);
+        QuestionOutDTO question1 = QuestionOutDTO.builder().questionId("1").build();
+        QuestionOutDTO question2 = QuestionOutDTO.builder().questionId("2").build();
+
         when(evaluationRepository.findById(evaluation.getEvaluationId())).thenReturn(Optional.of(evaluation));
-        when(evaluationResultService.getEvaluationResults(evaluation.getQuestionResults())).thenReturn(createEvaluationResults());
-        when(questionService.mapAnswerToQuestionOutDTO(any())).thenReturn(null);
-        Evaluation result = evaluationService.checkUncompletedEvaluation(evaluation.getEvaluationId());
+        when(evaluationResultService.getEvaluationResults(evaluation.getQuestionResults()))
+                .thenReturn(List.of(answer1, answer2));
+        when(questionService.mapAnswerToQuestionOutDTO(answer1)).thenReturn(question1);
+        when(questionService.mapAnswerToQuestionOutDTO(answer2)).thenReturn(question2);
+        OnGoingEvaluationOutDTO result = evaluationService.checkUncompletedEvaluation(Company.builder().evaluations(List.of("1", evaluation.getEvaluationId())).build());
         verify(evaluationRepository, times(1)).findById(evaluation.getEvaluationId());
         verify(evaluationResultService, times(1)).getEvaluationResults(evaluation.getQuestionResults());
-        verify(questionService, times(12)).mapAnswerToQuestionOutDTO(any());
+        verify(questionService, times(2)).mapAnswerToQuestionOutDTO(any());
         assertNotNull(result);
+        assertEquals(evaluation.getEvaluationId(), result.getEvaluationId());
+        assertEquals(2, result.getQuestions().size());
+    }
+
+    @Test
+    void testCheckUncompletedEvaluationEmpty(){
+        OnGoingEvaluationOutDTO result = evaluationService.checkUncompletedEvaluation(Company.builder().evaluations(List.of()).build());
+        assertNull(result);
+    }
+
+    @Test
+    void testCheckUncompletedEvaluationFalse(){
+        Evaluation evaluation = createCompletedEvaluation();
+        when(evaluationRepository.findById(evaluation.getEvaluationId())).thenReturn(Optional.of(evaluation));
+        OnGoingEvaluationOutDTO result = evaluationService.checkUncompletedEvaluation(Company.builder().evaluations(List.of(evaluation.getEvaluationId())).build());
+        assertNull(result);
+    }
+
+    @Test
+    void testGetRecentCompletedEvaluation(){
+        Evaluation evaluation = createCompletedEvaluation();
+        when(evaluationRepository.findById(evaluation.getEvaluationId())).thenReturn(Optional.of(evaluation));
+        Evaluation result = evaluationService.getRecentCompletedEvaluation(List.of(evaluation.getEvaluationId(), "evaluationId"));
+        verify(evaluationRepository, times(1)).findById(evaluation.getEvaluationId());
+        assertNotNull(result);
+        assertEquals(evaluation.getEvaluationId(), result.getEvaluationId());
+    }
+
+    @Test
+    void testGetRecentCompletedEvaluationEmpty(){
+        Evaluation result = evaluationService.getRecentCompletedEvaluation(List.of());
+        assertNull(result);
+    }
+
+    @Test
+    void testGetCompletedEvaluationsByIds(){
+        Evaluation evaluation = createCompletedEvaluation();
+        when(evaluationRepository.findAllByEvaluationIdAndCompleted(List.of(evaluation.getEvaluationId()), true)).thenReturn(List.of(evaluation));
+        List<Evaluation> result = evaluationService.getCompletedEvaluationsByIds(List.of(evaluation.getEvaluationId()));
+        verify(evaluationRepository, times(1)).findAllByEvaluationIdAndCompleted(List.of(evaluation.getEvaluationId()), true);
+        assertNotNull(result);
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    void testGetCompletedEvaluationsByIdsEmpty(){
+        List<Evaluation> result = evaluationService.getCompletedEvaluationsByIds(List.of());
+        assertNotNull(result);
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    void testAddActionPlan(){
+        Evaluation evaluation = createEvaluation();
+        when(evaluationRepository.findById(evaluation.getEvaluationId())).thenReturn(Optional.of(evaluation));
+        ArgumentCaptor<Evaluation> captor = ArgumentCaptor.forClass(Evaluation.class);
+        evaluationService.addActionPlanToEvaluation(evaluation.getEvaluationId(), "actionPlanId");
+        verify(evaluationRepository, times(1)).save(captor.capture());
+        assertEquals("actionPlanId", captor.getValue().getActionPlanId());
     }
 
 
@@ -118,7 +237,7 @@ public class EvaluationServiceTest {
         return Evaluation.builder()
                 .evaluationId(UUID.randomUUID().toString())
                 .date(LocalDateTime.now())
-                .questionResults(List.of())
+                .questionResults(List.of("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"))
                 .dimensionResults(List.of())
                 .completed(false)
                 .build();
@@ -152,8 +271,6 @@ public class EvaluationServiceTest {
                 dimension3level3question1,
                 dimension3level3question2);
     }
-
-    List<Question>
 
     List<EvaluationResultDTO> createEvaluationResultsDTO(){
         EvaluationResultDTO dimension1level1question1 = createEvaluationResultDTO("1", "1", "dimensionId1", 1);
@@ -248,7 +365,7 @@ public class EvaluationServiceTest {
 
     Dimension createDimension2(){
         return Dimension.builder()
-                .dimensionId(UUID.randomUUID().toString())
+                .dimensionId("dimensionId2")
                 .name("Dimension2")
                 .levels(List.of(
                         Level.builder()
@@ -275,7 +392,7 @@ public class EvaluationServiceTest {
 
     Dimension createDimension3(){
         return Dimension.builder()
-                .dimensionId(UUID.randomUUID().toString())
+                .dimensionId("dimensionId3")
                 .name("Dimension3")
                 .levels(List.of(
                         Level.builder()
