@@ -28,7 +28,7 @@ public class QuestionServiceImpl implements QuestionService {
     private OptionMapper optionMapper;
     private DimensionValidator dimensionValidator;
     private VersionValidatorImpl versionValidator;
-    private LevelServiceImpl levelService;
+    //private LevelServiceImpl levelService;
     private LevelRepository levelRepository;
 
     @Override
@@ -50,10 +50,10 @@ public class QuestionServiceImpl implements QuestionService {
         question.getRecommendation().setQuestionId(question.getQuestionId());
         question.setCompanyTypeId(companyTypeConstructor(questionDTO.getCompanyTypeId()).getCompanyTypeId());
         Question newQuestion = questionRepository.save(question);
-       /* Level level = levelRepository.findById(questionDTO.getLevelId()).orElseThrow(() -> new PymeException(PymeExceptionType.LEVEL_NOT_FOUND));
+        Level level = levelRepository.findById(questionDTO.getLevelId()).orElseThrow(() -> new PymeException(PymeExceptionType.LEVEL_NOT_FOUND));
         level.getQuestions().add(newQuestion.getQuestionId());
-        levelRepository.save(level);*/
-        levelService.addQuestionToLevel(newQuestion.getQuestionId(), questionDTO.getLevelId());
+        levelRepository.save(level);
+        //levelService.addQuestionToLevel(newQuestion.getQuestionId(), questionDTO.getLevelId());
         return newQuestion;
 
     }
@@ -70,8 +70,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public List<Question> getQuestionsByLevel(String level) {
-        //Level levelObj = levelRepository.findById(level).orElseThrow(() -> new PymeException(PymeExceptionType.LEVEL_NOT_FOUND));
-        Level levelObj = levelService.getLevel(level);
+        Level levelObj = levelRepository.findById(level).orElseThrow(() -> new PymeException(PymeExceptionType.LEVEL_NOT_FOUND));
+        //Level levelObj = levelService.getLevel(level);
         List<String> questionsId = levelObj.getQuestions();
         return questionRepository.findAllById(questionsId);
     }

@@ -34,7 +34,11 @@ public class ActionPlanConstructorImpl implements ActionPlanConstructor {
 
         Map<String, Tag> tagsMap = questionsMap.values().stream()
                 .map(question -> tagService.getTag(question.getTagId()))
-                .collect(Collectors.toMap(Tag::getTagId, tag -> tag));
+                .collect(Collectors.toMap(
+                        Tag::getTagId,
+                        tag -> tag,
+                        (existingTag, newTag) -> existingTag
+                ));
 
         //map steps in the action plan to the out entity and group them by recommendation
 
