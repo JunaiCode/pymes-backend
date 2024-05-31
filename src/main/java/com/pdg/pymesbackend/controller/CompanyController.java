@@ -1,7 +1,6 @@
 package com.pdg.pymesbackend.controller;
 
 import com.pdg.pymesbackend.api.CompanyAPI;
-import com.pdg.pymesbackend.dto.CompanyDTO;
 import com.pdg.pymesbackend.dto.CompanyInfoDTO;
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.dto.out.CompanyOutDTO;

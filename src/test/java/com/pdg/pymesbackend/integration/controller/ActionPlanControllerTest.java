@@ -26,10 +26,10 @@ public class ActionPlanControllerTest {
     @Autowired
     ObjectMapper mapper;
 
-    String evaluationId = "EvaluationCompletedId";
-    String actionPlanId = "ActionPlan1Id";
+    final String evaluationId = "EvaluationCompletedId";
+    final String actionPlanId = "ActionPlan1Id";
 
-    String recommendationActionPlanId = "RecommendationPlanId1";
+    final String recommendationActionPlanId = "RecommendationPlanId1";
     @Test
     public void createActionPlan() throws Exception{
         var result = mvc.perform(MockMvcRequestBuilders.post("/actionPlan/add/evaluation/{evaluationId}",evaluationId).contentType(MediaType.APPLICATION_JSON)

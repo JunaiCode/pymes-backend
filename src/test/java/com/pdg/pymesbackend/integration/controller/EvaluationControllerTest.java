@@ -28,12 +28,12 @@ public class EvaluationControllerTest {
     @Autowired
     ObjectMapper mapper;
 
-    String companyId = "companyId3";
-    String evaluationId = "Evaluation1Id";
+    final String companyId = "companyId3";
+    final String evaluationId = "Evaluation1Id";
 
-    String Version1Id = "Version1Id";
+    final String Version1Id = "Version1Id";
 
-    String evaluationCompletedId ="EvaluationCompletedId";
+    final String evaluationCompletedId ="EvaluationCompletedId";
     @Test
     public void createEvaluation() throws Exception{
         var result = mvc.perform(MockMvcRequestBuilders.post("/evaluation/add/{companyId}",companyId).contentType(MediaType.APPLICATION_JSON)

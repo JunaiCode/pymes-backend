@@ -29,11 +29,11 @@ public class QuestionControllerTest {
     @Autowired
     ObjectMapper mapper;
 
-    String questionId = "questionTecnologia2Id";
+    final String questionId = "questionTecnologia2Id";
 
-    String tagId = "tagProcessId";
+    final String tagId = "tagProcessId";
 
-    String levelId = "level2ProcessId";
+    final String levelId = "level2ProcessId";
 
     @Test
     public void createQuestion() throws Exception{

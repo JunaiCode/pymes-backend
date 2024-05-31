@@ -1,6 +1,5 @@
 package com.pdg.pymesbackend.api;
 
-import com.pdg.pymesbackend.dto.CompanyDTO;
 import com.pdg.pymesbackend.dto.CompanyInfoDTO;
 import com.pdg.pymesbackend.dto.out.ActionPlanOutDTO;
 import com.pdg.pymesbackend.dto.out.CompanyOutDTO;
@@ -8,8 +7,6 @@ import com.pdg.pymesbackend.dto.out.OnGoingEvaluationOutDTO;
 import com.pdg.pymesbackend.model.Company;
 import com.pdg.pymesbackend.model.Evaluation;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RequestMapping("/company")
 public interface CompanyAPI {

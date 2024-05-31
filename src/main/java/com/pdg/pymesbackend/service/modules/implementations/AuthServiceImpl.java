@@ -36,8 +36,6 @@ public class AuthServiceImpl implements AuthService {
                         .id(admin.get().getId())
                         .role("admin")
                         .build();
-            }else{
-
             }
         }
         String versionId = versionService.getActualVersion();

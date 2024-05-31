@@ -30,13 +30,13 @@ public class VersionControllerTest {
     @Autowired
     ObjectMapper mapper;
 
-    String versionId = "Version1Id";
+    final String versionId = "Version1Id";
 
-    String companyTypeId="MICRO";
+    final String companyTypeId="MICRO";
 
-    String level2ProcessId = "level2ProcessId";
+    final String level2ProcessId = "level2ProcessId";
 
-    String dimensionProcessId = "dimensionProcessId";
+    final String dimensionProcessId = "dimensionProcessId";
 
     @Test
     public void get() throws Exception{

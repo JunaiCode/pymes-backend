@@ -29,9 +29,9 @@ public class CompanyControllerTest {
     @Autowired
     ObjectMapper mapper;
 
-    String companyId = "companyId";
+    final String companyId = "companyId";
 
-    String companyId3 ="companyId3";
+    final String companyId3 ="companyId3";
 
 
     @Test

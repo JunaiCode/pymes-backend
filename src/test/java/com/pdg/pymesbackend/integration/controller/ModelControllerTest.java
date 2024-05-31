@@ -28,7 +28,7 @@ public class ModelControllerTest {
     @Autowired
     ObjectMapper mapper;
 
-    String modelId = "modelId";
+    final String modelId = "modelId";
     @Test
     public void createModel() throws Exception{
         ArrayList<String> versions = new ArrayList<>();

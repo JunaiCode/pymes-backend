@@ -29,13 +29,13 @@ public class DimensionControllerTest {
     @Autowired
     ObjectMapper mapper;
 
-    String versionId = "Version1Id";
+    final String versionId = "Version1Id";
 
-    String questionId = "questionProcess1Id";
+    final String questionId = "questionProcess1Id";
 
-    String dimensionId = "dimensionTechId";
+    final String dimensionId = "dimensionTechId";
 
-    String dimensionIdDeleted = "dimensionProcessId";
+    final String dimensionIdDeleted = "dimensionProcessId";
     @Test
     public void createDimension() throws Exception{
         ArrayList<String> questions = new ArrayList<>();

@@ -12,7 +12,6 @@ import com.pdg.pymesbackend.mapper.QuestionMapper;
 import com.pdg.pymesbackend.model.*;
 import com.pdg.pymesbackend.repository.LevelRepository;
 import com.pdg.pymesbackend.repository.QuestionRepository;
-import com.pdg.pymesbackend.service.modules.implementations.LevelServiceImpl;
 import com.pdg.pymesbackend.service.modules.implementations.QuestionServiceImpl;
 import com.pdg.pymesbackend.service.validator.DimensionValidator;
 import com.pdg.pymesbackend.service.validator.implementations.VersionValidatorImpl;

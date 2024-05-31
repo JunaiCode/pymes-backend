@@ -26,11 +26,11 @@ public class TagControllerTest {
     @Autowired
     ObjectMapper mapper;
 
-    String dimensionTechId = "dimensionTechId";
+    final String dimensionTechId = "dimensionTechId";
 
-    String dimensionProcessId = "dimensionProcessId";
+    final String dimensionProcessId = "dimensionProcessId";
 
-    String tagProcessId = "tagProcessId";
+    final String tagProcessId = "tagProcessId";
     @Test
     public void save() throws Exception{
         var result = mvc.perform(MockMvcRequestBuilders.post("/tag/add").content(

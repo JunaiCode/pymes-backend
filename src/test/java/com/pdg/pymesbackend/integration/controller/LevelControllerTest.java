@@ -28,7 +28,7 @@ public class LevelControllerTest {
     @Autowired
     ObjectMapper mapper;
 
-    String dimensionId = "dimensionTechId";
+    final String dimensionId = "dimensionTechId";
 
     @Test
     public void createLevel() throws Exception{
