@@ -147,12 +147,13 @@ public class CompanyServiceTest {
     @Test
     void testGetCompanyOut(){
         Company company = createCompany();
+        company.setEvaluations(List.of("1", "2"));
         when(companyRepository.findById(company.getCompanyId())).thenReturn(Optional.of(company));
         when(evaluationService.getRecentCompletedEvaluation(company.getEvaluations())).thenReturn(createEvaluation());
-        when(evaluationService.getCompletedEvaluationsByIds(company.getEvaluations())).thenReturn(List.of(createEvaluation()));
+        when(evaluationService.getCompletedEvaluationsByIds(company.getEvaluations())).thenReturn(List.of(createEvaluation(), createEvaluation()));
         CompanyOutDTO result = companyService.getCompanyOut(company.getCompanyId());
         assertNotNull(result);
-        assertEquals(1, result.getEvaluationHistory().size());
+        assertEquals(2, result.getEvaluationHistory().size());
         assertEquals(1, result.getEvaluationHistory().get(0).getDimensionResults().get(0).getLevelValue());
         assertNotNull(result.getCurrentEvaluation());
         assertEquals(1, result.getCurrentEvaluation().get(0).getLevelValue());
